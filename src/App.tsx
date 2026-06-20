@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Hub } from './routes/Hub'
 import { Vectors } from './routes/topics/Vectors'
 import { Functions } from './routes/topics/Functions'
+import { Derivatives } from './routes/topics/Derivatives'
 import { Probability } from './routes/topics/Probability'
 import { Expectation } from './routes/topics/Expectation'
 import { Matrices } from './routes/topics/Matrices'
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/" element={<Hub />} />
         <Route path="/vectors" element={<Vectors />} />
         <Route path="/functions" element={<Functions />} />
+        <Route path="/derivatives" element={<Derivatives />} />
         <Route path="/probability" element={<Probability />} />
         <Route path="/expectation" element={<Expectation />} />
         <Route path="/matrices" element={<Matrices />} />

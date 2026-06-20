@@ -34,6 +34,16 @@ Try the scrubber at small values of $h$. You'll see the secant tip into the tang
 
 Now: this works for $x = 1$ on the parabola $x^2$ and gives us `2`. What if we wanted the slope at $x = 1.5$? Or at $x = -2$? You can do the same algebra and find — the slope of $x^2$ at the point $x$ is always $2x$. Plug in any $x$ you like. So $f'(x) = 2x$ for $f(x) = x^2$. That's a *new function*. It eats an $x$ and gives back the slope of $f$ at that $x$.
 
+Notice also — the derivative is *itself* a function. You feed it an $x$, you get back the slope of $f$ at that $x$. So you can take its derivative. The result is called the *second* derivative, written $f''(x)$, and it measures how fast the slope is changing. For $f(x) = x^2$, $f'(x) = 2x$, $f''(x) = 2$. The second derivative is constant: the curvature of a parabola is uniform. (For a sine wave, the second derivative is the original function negated — the curvature *is* the function. Strange and beautiful and a problem for another chapter.)
+
+The notation, all collected:
+
+- *Newton* writes $\dot f$ — a dot over the variable. Still used in physics for time derivatives.
+- *Leibniz* writes $\dfrac{df}{dx}$ — a stylized fraction. Best for chain-ruling and changing variables.
+- *Lagrange* writes $f'(x)$ — a prime mark. Cleanest for one-line statements.
+
+The platform uses all three. So does every textbook. Pick whichever fits your moment.
+
 What we want next is a way to do this without re-doing the algebra every time. We want *rules*.
 
 </Act>

@@ -18,7 +18,7 @@ export const topics: Topic[] = [
   // Part I — Foundations (bottom-left cluster)
   { id: 'vectors', number: 1, name: 'Vectors', x: 150, y: 540, status: 'available', part: 'I', prereqs: [] },
   { id: 'functions', number: 2, name: 'Functions and change', x: 250, y: 380, status: 'available', part: 'I', prereqs: [] },
-  { id: 'derivatives', number: 3, name: 'Derivatives', x: 380, y: 320, status: 'coming-soon', part: 'I', prereqs: ['functions'] },
+  { id: 'derivatives', number: 3, name: 'Derivatives', x: 380, y: 320, status: 'available', part: 'I', prereqs: ['functions'] },
   { id: 'integrals', number: 4, name: 'Integrals', x: 480, y: 390, status: 'coming-soon', part: 'I', prereqs: ['functions', 'derivatives'] },
   { id: 'matrices', number: 5, name: 'Matrices as transformations', x: 280, y: 590, status: 'available', part: 'I', prereqs: ['vectors'] },
   { id: 'eigenvalues', number: 6, name: 'Eigenvalues', x: 410, y: 640, status: 'available', part: 'I', prereqs: ['matrices'] },

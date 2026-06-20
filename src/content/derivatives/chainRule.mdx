@@ -24,6 +24,10 @@ There's a way to read the chain rule that I find more honest than the formula. T
 
 Try the slider at $x = 0$. The bottom machine's slope is $f'(0) = 0$ — at the bottom of a parabola, the slope is flat. The top machine's slope is still $2$. The product is $0$. The composite has zero slope at $x = 0$ because $4x^2$ has its minimum there. Two non-zero machines composed can have zero output-slope, because one of them, at the operating point, has zero output-slope. This is what gradient-based optimization eats: layered systems where you can find out, by chain-ruling backwards, where each input should move to push the final answer somewhere useful.
 
+A historical bracket for the chain rule, because the formula has a longer pedigree than most. Leibniz wrote down the rule in his 1684 paper, in a slightly disguised form using differentials: $dy = (dy/du)(du/dx)$, which is the chain rule with the units made completely explicit. Newton, around the same time, was doing essentially the same composition with his fluxions. Lagrange, much later, gave the prime-notation version. The single most general form, the one you'd see in a modern textbook, was nailed down by Cauchy in the 1820s.
+
+But the *teaching* of it — the picture of stacked machines whose slopes multiply — has, as far as I can find, no single author. It's the kind of intuition that emerged in classrooms over a century and got formalised, on paper, only later. If you have a friend who's learning calculus and is intimidated by the algebra of the chain rule, drawing two stacked boxes with arrows between them — labelling each box's slope, multiplying them along the wire — is, in my experience, the single best way to bypass the formula entirely. It's how I think about it. It's how every machine-learning engineer I know thinks about it. The formula is shorthand for the picture.
+
 One more rule to go.
 
 </Act>
