@@ -100,7 +100,7 @@ function Arrow({ from, to }: { from: [number, number, number]; to: [number, numb
       {/* Origin dot */}
       <mesh position={fromV.toArray()}>
         <sphereGeometry args={[0.04, 12, 12]} />
-        <meshStandardMaterial color="#1A1A1A" />
+        <meshStandardMaterial color="#ECE4D2" />
       </mesh>
       {/* Suppress unused-var lints by referencing mid */}
       <group position={mid.toArray()} visible={false} />

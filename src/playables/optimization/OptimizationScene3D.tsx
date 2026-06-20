@@ -99,7 +99,7 @@ function BasinMarkers() {
       {[-1, 1].map((sx) => (
         <mesh key={sx} position={[sx, f(sx, 0) * Z_SCALE - 0.005, 0]}>
           <sphereGeometry args={[0.04, 16, 16]} />
-          <meshStandardMaterial color="#1A1A1A" />
+          <meshStandardMaterial color="#ECE4D2" />
         </mesh>
       ))}
     </group>

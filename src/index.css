@@ -9,12 +9,20 @@
 @import "@fontsource/jetbrains-mono/400.css";
 
 @theme {
-  --color-cream: #FAF8F4;
-  --color-ink: #1A1A1A;
-  --color-vermilion: #C44536;
-  --color-vermilion-deep: #A8392C;
-  --color-dim: #6B6B6B;
-  --color-fade: #B5AEA5;
+  /* Warm dark mode. `--color-cream` is the *page background* token (kept as
+     `cream` to avoid renaming 200+ references); in dark mode it resolves to
+     a deep warm near-black. `--color-ink` is the body-text token; in dark
+     mode it resolves to a warm off-cream. The vermilion accent stays but
+     brightens slightly for legibility on dark. */
+  --color-cream: #16140F;          /* page bg — warm near-black */
+  --color-cream-deep: #1F1C16;     /* secondary surfaces */
+  --color-ink: #ECE4D2;            /* body text — warm off-cream */
+  --color-vermilion: #E0584A;      /* accent — slightly brighter on dark */
+  --color-vermilion-deep: #C44536; /* hover / pressed */
+  --color-dim: #8E8675;            /* sidenote text */
+  --color-fade: #4D4740;           /* coming-soon / faint */
+  --color-graph-ink: #D5CEBF;      /* SVG strokes on dark */
+  --color-graph-fade: #3A352D;     /* grid lines */
 
   --font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
   --font-sans: "Inter", -apple-system, system-ui, sans-serif;
@@ -32,7 +40,7 @@ html, body {
 }
 
 html {
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 body {

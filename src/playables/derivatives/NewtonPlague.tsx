@@ -110,9 +110,9 @@ export function NewtonPlague() {
         />
 
         {/* Canopy — overlapping soft ellipses, ink wash */}
-        <ellipse cx={ORIGIN_X} cy={ORIGIN_Y - 30} rx="105" ry="78" fill="#1A1A1A" fillOpacity="0.06" />
-        <ellipse cx={ORIGIN_X - 30} cy={ORIGIN_Y - 18} rx="78" ry="56" fill="#1A1A1A" fillOpacity="0.08" />
-        <ellipse cx={ORIGIN_X + 28} cy={ORIGIN_Y - 22} rx="74" ry="58" fill="#1A1A1A" fillOpacity="0.08" />
+        <ellipse cx={ORIGIN_X} cy={ORIGIN_Y - 30} rx="105" ry="78" fill="var(--color-ink)" fillOpacity="0.06" />
+        <ellipse cx={ORIGIN_X - 30} cy={ORIGIN_Y - 18} rx="78" ry="56" fill="var(--color-ink)" fillOpacity="0.08" />
+        <ellipse cx={ORIGIN_X + 28} cy={ORIGIN_Y - 22} rx="74" ry="58" fill="var(--color-ink)" fillOpacity="0.08" />
 
         {/* Branches — short ink strokes radiating out of the upper trunk */}
         {BRANCHES.map((b, i) => (

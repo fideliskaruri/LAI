@@ -46,12 +46,12 @@ const PANEL_X_MAX = ORIGIN_X + X_MAX * UNIT
 const PANEL_Y_MIN = ORIGIN_Y - Y_MAX * UNIT
 const PANEL_Y_MAX = ORIGIN_Y - Y_MIN * UNIT
 
-// Heat color — interpolate from cream (low) to vermilion-deep (high).
+// Heat color — interpolate from page bg (low) to bright vermilion (high).
 function heatColor(value: number): string {
   const t = Math.min(1, Math.max(0, value / F_MAX))
-  // Endpoints: low ~ #F3EFE6 (cream-deep), high ~ #6E1C14 (deep vermilion)
-  const r1 = 243, g1 = 239, b1 = 230
-  const r2 = 110, g2 = 28, b2 = 20
+  // Endpoints: low ~ #1F1C16 (warm dark, page bg), high ~ #E0584A (bright vermilion)
+  const r1 = 31, g1 = 28, b1 = 22
+  const r2 = 224, g2 = 88, b2 = 74
   const r = Math.round(r1 + (r2 - r1) * t)
   const g = Math.round(g1 + (g2 - g1) * t)
   const b = Math.round(b1 + (b2 - b1) * t)

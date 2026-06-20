@@ -96,7 +96,7 @@ function PlaneGrid() {
 function Line({
   a,
   b,
-  colour = '#1A1A1A',
+  colour = '#ECE4D2',
   opacity = 1,
 }: {
   a: THREE.Vector3
@@ -186,7 +186,7 @@ function Arrow({
       </mesh>
       <mesh position={geom.basePos}>
         <sphereGeometry args={[0.04, 12, 12]} />
-        <meshStandardMaterial color="#1A1A1A" />
+        <meshStandardMaterial color="#ECE4D2" />
       </mesh>
     </group>
   )
