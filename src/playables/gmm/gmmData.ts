@@ -27,15 +27,15 @@ export const K = 3
  */
 export const COMPONENT_COLORS = [
   'var(--color-vermilion)',
-  '#3a6f8c', // muted blue
-  '#7a8a3a', // muted olive
+  '#5a93b0', // brighter blue for dark mode
+  '#9bab57', // brighter olive for dark mode
 ] as const
 
 /** Same as scatterData.CLUSTER_RGB — needed for color mixing. */
 export const COMPONENT_RGB = [
   [192, 67, 42], // vermilion
-  [58, 111, 140], // blue
-  [122, 138, 58], // olive
+  [90, 147, 176], // blue
+  [155, 171, 87], // olive
 ] as const
 
 /**

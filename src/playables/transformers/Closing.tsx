@@ -215,7 +215,7 @@ export function RightPane() {
           y="40"
           width={VIEW_W - 80}
           height={VIEW_H - 80}
-          fill="#F9F5EA"
+          fill="var(--color-paper)"
           stroke="var(--color-graph-fade)"
           strokeWidth={1}
         />
@@ -251,7 +251,7 @@ export function RightPane() {
           fontStyle="italic"
           fontSize="26"
           fontWeight="600"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           So now what?
         </text>
@@ -276,7 +276,7 @@ export function RightPane() {
             fontFamily="Source Serif 4, Georgia, serif"
             fontStyle="italic"
             fontSize="15"
-            fill="var(--color-ink)"
+            fill="var(--color-paper-ink)"
             fillOpacity={line.trim() === '' ? 0 : 1}
           >
             {line}

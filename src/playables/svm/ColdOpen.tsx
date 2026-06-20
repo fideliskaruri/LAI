@@ -45,7 +45,7 @@ export function LeftPane() {
           y="32"
           width={VIEW_W - 112}
           height={VIEW_H - 64}
-          fill="#F9F5EA"
+          fill="var(--color-paper)"
           stroke="var(--color-graph-fade)"
           strokeWidth="1"
         />
@@ -79,7 +79,7 @@ export function LeftPane() {
           fontFamily="Georgia, serif"
           fontSize="22"
           fontWeight="700"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           Support-Vector Networks
         </text>
@@ -91,7 +91,7 @@ export function LeftPane() {
           textAnchor="middle"
           fontFamily="Georgia, serif"
           fontSize="13"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           CORINNA CORTES &nbsp;&middot;&nbsp; VLADIMIR VAPNIK
         </text>
@@ -127,7 +127,7 @@ export function LeftPane() {
           fontFamily="Georgia, serif"
           fontStyle="italic"
           fontSize="12"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           The support-vector network is a new learning machine for
         </text>
@@ -138,7 +138,7 @@ export function LeftPane() {
           fontFamily="Georgia, serif"
           fontStyle="italic"
           fontSize="12"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           two-group classification problems&hellip;
         </text>

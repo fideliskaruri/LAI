@@ -40,8 +40,8 @@ export function CauchyMemoir() {
           y={PAGE_Y + 12}
           width={PAGE_W + 24}
           height={PAGE_H}
-          fill="#1A1A1A"
-          fillOpacity="0.08"
+          fill="var(--color-paper-shadow)"
+          fillOpacity="0.4"
         />
 
         {/* Page */}
@@ -50,7 +50,7 @@ export function CauchyMemoir() {
           y={PAGE_Y}
           width={PAGE_W}
           height={PAGE_H}
-          fill="#F4ECDB"
+          fill="var(--color-paper)"
           stroke="var(--color-graph-ink)"
           strokeWidth="1.2"
         />
@@ -116,7 +116,7 @@ export function CauchyMemoir() {
           fontFamily="Georgia, serif"
           fontSize="17"
           fontWeight="bold"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           MÉTHODE GÉNÉRALE
         </text>
@@ -127,7 +127,7 @@ export function CauchyMemoir() {
           fontFamily="Georgia, serif"
           fontStyle="italic"
           fontSize="12"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           pour la résolution
         </text>
@@ -138,7 +138,7 @@ export function CauchyMemoir() {
           fontFamily="Georgia, serif"
           fontStyle="italic"
           fontSize="12"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           des systèmes d'équations simultanées
         </text>
@@ -160,7 +160,7 @@ export function CauchyMemoir() {
           textAnchor="middle"
           fontFamily="Georgia, serif"
           fontSize="12"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           par M. AUGUSTIN CAUCHY
         </text>
@@ -182,7 +182,7 @@ export function CauchyMemoir() {
           y={PAGE_Y + 252}
           width={PAGE_W - 112}
           height={102}
-          fill="#F9F1DF"
+          fill="var(--color-paper-deep)"
           stroke="var(--color-vermilion)"
           strokeWidth="0.8"
           strokeOpacity="0.55"
@@ -205,7 +205,7 @@ export function CauchyMemoir() {
           fontFamily="Georgia, serif"
           fontStyle="italic"
           fontSize="12"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           marcher à rebours du gradient
         </text>
@@ -215,7 +215,7 @@ export function CauchyMemoir() {
           textAnchor="middle"
           fontFamily="Georgia, serif"
           fontSize="11"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           walk against the gradient
         </text>

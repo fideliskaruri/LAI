@@ -317,7 +317,7 @@ function Machine({ box, name, formula, slopeLabel, inLabel, outLabel }: MachineP
         y={box.y}
         width={MACHINE_W}
         height={MACHINE_H}
-        fill="#F9F5EA"
+        fill="var(--color-paper)"
         stroke="var(--color-graph-ink)"
         strokeWidth="1.4"
         rx="4"
@@ -346,7 +346,7 @@ function Machine({ box, name, formula, slopeLabel, inLabel, outLabel }: MachineP
         fontFamily="Georgia, serif"
         fontStyle="italic"
         fontSize="14"
-        fill="var(--color-ink)"
+        fill="var(--color-paper-ink)"
       >
         {formula}
       </text>

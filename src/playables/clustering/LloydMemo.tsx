@@ -39,7 +39,7 @@ export function LloydMemo() {
           y="32"
           width="480"
           height="416"
-          fill="#F9F5EA"
+          fill="var(--color-paper)"
           stroke="var(--color-graph-fade)"
           strokeWidth="1"
         />
@@ -102,7 +102,7 @@ export function LloydMemo() {
           fontFamily="Georgia, serif"
           fontSize="17"
           fontWeight="700"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           LEAST SQUARES QUANTIZATION
         </text>
@@ -112,7 +112,7 @@ export function LloydMemo() {
           fontFamily="Georgia, serif"
           fontSize="17"
           fontWeight="700"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           IN PCM
         </text>

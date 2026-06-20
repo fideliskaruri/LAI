@@ -353,7 +353,7 @@ export function Rules() {
             y={CURVE_PANEL_Y}
             width={CURVE_PANEL_W}
             height={CURVE_PANEL_H}
-            fill="#F9F5EA"
+            fill="var(--color-paper)"
             stroke="var(--color-graph-fade)"
             strokeWidth="1"
           />

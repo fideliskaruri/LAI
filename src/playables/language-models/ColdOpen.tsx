@@ -50,7 +50,7 @@ export function LeftPane() {
           y="40"
           width={VIEW_W - 80}
           height={VIEW_H - 80}
-          fill="#f6f1e7"
+          fill="var(--color-paper)"
           stroke="var(--color-graph-fade)"
           strokeWidth="1"
         />
@@ -64,7 +64,7 @@ export function LeftPane() {
           fontStyle="italic"
           fontSize="16"
           fontWeight="600"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           The Bell System Technical Journal
         </text>
@@ -73,7 +73,7 @@ export function LeftPane() {
           y1="96"
           x2={VIEW_W - 80}
           y2="96"
-          stroke="var(--color-ink)"
+          stroke="var(--color-paper-ink)"
           strokeWidth="0.6"
         />
         <text
@@ -105,7 +105,7 @@ export function LeftPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontSize="22"
           fontWeight="600"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           A Mathematical Theory
         </text>
@@ -115,7 +115,7 @@ export function LeftPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontSize="22"
           fontWeight="600"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           of Communication
         </text>
@@ -126,7 +126,7 @@ export function LeftPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontStyle="italic"
           fontSize="13"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           by C. E. Shannon
         </text>
@@ -149,7 +149,7 @@ export function LeftPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontStyle="italic"
           fontSize="12"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           “One might try to approximate English text by generating
         </text>
@@ -159,7 +159,7 @@ export function LeftPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontStyle="italic"
           fontSize="12"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           successive letters with the appropriate digram or trigram
         </text>
@@ -169,7 +169,7 @@ export function LeftPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontStyle="italic"
           fontSize="12"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           frequencies … the result is text such as
         </text>

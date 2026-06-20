@@ -34,7 +34,7 @@ export function LeftPane() {
           y="40"
           width={VIEW_W - 80}
           height={VIEW_H - 80}
-          fill="#f6f1e7"
+          fill="var(--color-paper)"
           stroke="var(--color-graph-fade)"
           strokeWidth="1"
         />
@@ -47,7 +47,7 @@ export function LeftPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontStyle="italic"
           fontSize="18"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           The New York Times
         </text>
@@ -56,7 +56,7 @@ export function LeftPane() {
           y1="92"
           x2={VIEW_W - PADX - 20}
           y2="92"
-          stroke="var(--color-ink)"
+          stroke="var(--color-paper-ink)"
           strokeWidth="0.6"
         />
         <text
@@ -100,7 +100,7 @@ export function LeftPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontSize="28"
           fontWeight="600"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           New Navy Device
         </text>
@@ -110,7 +110,7 @@ export function LeftPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontSize="28"
           fontWeight="600"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           Learns By Doing
         </text>
@@ -122,7 +122,7 @@ export function LeftPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontStyle="italic"
           fontSize="14"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           Psychologist Shows Embryo
         </text>
@@ -132,7 +132,7 @@ export function LeftPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontStyle="italic"
           fontSize="14"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           Of Computer Designed to
         </text>
@@ -142,7 +142,7 @@ export function LeftPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontStyle="italic"
           fontSize="14"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           Read and Grow Wiser
         </text>
@@ -153,7 +153,7 @@ export function LeftPane() {
           y="318"
           fontFamily="Source Serif 4, Georgia, serif"
           fontSize="11"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           <tspan x={PADX + 20} dy="0">
             WASHINGTON, July 7 — The Navy revealed the

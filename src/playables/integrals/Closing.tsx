@@ -91,7 +91,7 @@ function MiniPanel({
         y={panel.y}
         width={PANEL_W}
         height={PANEL_H}
-        fill="#F9F5EA"
+        fill="var(--color-paper)"
         stroke="var(--color-graph-fade)"
         strokeWidth="1"
       />

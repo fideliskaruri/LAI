@@ -45,7 +45,7 @@ export function SalonDice() {
           width={size}
           height={size}
           rx={6}
-          fill="#F4ECDB"
+          fill="var(--color-paper)"
           stroke="var(--color-graph-ink)"
           strokeWidth="1.2"
         />
@@ -55,7 +55,7 @@ export function SalonDice() {
             cx={px * half * 0.55}
             cy={py * half * 0.55}
             r={size * 0.07}
-            fill="var(--color-ink)"
+            fill="var(--color-paper-ink)"
           />
         ))}
       </g>
@@ -75,7 +75,7 @@ export function SalonDice() {
         aria-label="A 17th-century salon, evening. Two ivory dice on a small green-baize card table, a candle on the right, a half-empty wineglass on the left. The setting where Antoine Gombaud, the self-styled Chevalier de Méré, posed his dice puzzle to Blaise Pascal in 1654."
       >
         {/* Wall paneling */}
-        <rect width="600" height="300" y="0" fill="#EFE6D2" />
+        <rect width="600" height="300" y="0" fill="var(--color-paper-deep)" />
         {/* Wainscot */}
         <rect width="600" height="180" y="300" fill="#D9C9A7" />
         <line

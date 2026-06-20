@@ -39,7 +39,7 @@ export function LeftPane() {
           y="120"
           width={VIEW_W - 120}
           height="280"
-          fill="#f6f1e7"
+          fill="var(--color-paper)"
           stroke="var(--color-graph-ink)"
           strokeWidth="1.2"
         />
@@ -99,7 +99,7 @@ export function LeftPane() {
           y="240"
           fontFamily="Source Serif 4, Georgia, serif"
           fontSize="13"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           Mr. F. K. Cooper
         </text>
@@ -108,7 +108,7 @@ export function LeftPane() {
           y="262"
           fontFamily="Source Serif 4, Georgia, serif"
           fontSize="13"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           1432 Sycamore Lane
         </text>
@@ -117,7 +117,7 @@ export function LeftPane() {
           y="284"
           fontFamily="Source Serif 4, Georgia, serif"
           fontSize="13"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           Beverly Hills, CA
         </text>
@@ -200,7 +200,7 @@ export function RightPane() {
           y="40"
           width={VIEW_W - 80}
           height={VIEW_H - 80}
-          fill="#f6f1e7"
+          fill="var(--color-paper)"
           stroke="var(--color-graph-fade)"
           strokeWidth="1"
         />
@@ -214,7 +214,7 @@ export function RightPane() {
           fontStyle="italic"
           fontSize="20"
           fontWeight="600"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           Neural Computation
         </text>
@@ -223,7 +223,7 @@ export function RightPane() {
           y1="100"
           x2={VIEW_W - 80}
           y2="100"
-          stroke="var(--color-ink)"
+          stroke="var(--color-paper-ink)"
           strokeWidth="0.6"
         />
         <text
@@ -267,7 +267,7 @@ export function RightPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontSize="22"
           fontWeight="600"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           Backpropagation Applied
         </text>
@@ -277,7 +277,7 @@ export function RightPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontSize="22"
           fontWeight="600"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           to Handwritten Zip Code
         </text>
@@ -287,7 +287,7 @@ export function RightPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontSize="22"
           fontWeight="600"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           Recognition
         </text>
@@ -299,7 +299,7 @@ export function RightPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontStyle="italic"
           fontSize="13"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           Y. LeCun, B. Boser, J. S. Denker,
         </text>
@@ -309,7 +309,7 @@ export function RightPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontStyle="italic"
           fontSize="13"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           D. Henderson, R. E. Howard,
         </text>
@@ -319,7 +319,7 @@ export function RightPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontStyle="italic"
           fontSize="13"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           W. Hubbard, and L. D. Jackel
         </text>

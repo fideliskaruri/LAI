@@ -55,13 +55,13 @@ export function NewtonPlague() {
         aria-label="A hand-drawn silhouette of an apple tree on a hillside, inscribed annus mirabilis 1666. A small fallen apple rests on the ground. Newton spent that plague year at his family farm at Woolsthorpe."
       >
         {/* Faint paper panel */}
-        <rect x="40" y="40" width={VIEW_W - 80} height={VIEW_H - 80} fill="#F9F5EA" stroke="var(--color-graph-fade)" strokeWidth="1" />
+        <rect x="40" y="40" width={VIEW_W - 80} height={VIEW_H - 80} fill="var(--color-paper)" stroke="var(--color-graph-fade)" strokeWidth="1" />
 
         {/* Eyebrow */}
         <text x="62" y="74" fontFamily="Inter, sans-serif" fontSize="10" letterSpacing="0.22em" fill="var(--color-dim)">
           WOOLSTHORPE  ·  LINCOLNSHIRE  ·  1666
         </text>
-        <text x="62" y="94" fontFamily="Georgia, serif" fontSize="13" fontStyle="italic" fill="var(--color-ink)">
+        <text x="62" y="94" fontFamily="Georgia, serif" fontSize="13" fontStyle="italic" fill="var(--color-paper-ink)">
           Isaac Newton, twenty-three, home from a plague-closed Cambridge.
         </text>
 
@@ -110,9 +110,9 @@ export function NewtonPlague() {
         />
 
         {/* Canopy — overlapping soft ellipses, ink wash */}
-        <ellipse cx={ORIGIN_X} cy={ORIGIN_Y - 30} rx="105" ry="78" fill="var(--color-ink)" fillOpacity="0.06" />
-        <ellipse cx={ORIGIN_X - 30} cy={ORIGIN_Y - 18} rx="78" ry="56" fill="var(--color-ink)" fillOpacity="0.08" />
-        <ellipse cx={ORIGIN_X + 28} cy={ORIGIN_Y - 22} rx="74" ry="58" fill="var(--color-ink)" fillOpacity="0.08" />
+        <ellipse cx={ORIGIN_X} cy={ORIGIN_Y - 30} rx="105" ry="78" fill="var(--color-paper-ink)" fillOpacity="0.06" />
+        <ellipse cx={ORIGIN_X - 30} cy={ORIGIN_Y - 18} rx="78" ry="56" fill="var(--color-paper-ink)" fillOpacity="0.08" />
+        <ellipse cx={ORIGIN_X + 28} cy={ORIGIN_Y - 22} rx="74" ry="58" fill="var(--color-paper-ink)" fillOpacity="0.08" />
 
         {/* Branches — short ink strokes radiating out of the upper trunk */}
         {BRANCHES.map((b, i) => (
@@ -169,7 +169,7 @@ export function NewtonPlague() {
           fontFamily="Georgia, serif"
           fontStyle="italic"
           fontSize="22"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           annus mirabilis
         </text>

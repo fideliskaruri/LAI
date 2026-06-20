@@ -39,7 +39,7 @@ export function LeftPane() {
           y="32"
           width="480"
           height="416"
-          fill="#F9F5EA"
+          fill="var(--color-paper)"
           stroke="var(--color-graph-fade)"
           strokeWidth="1"
         />
@@ -84,7 +84,7 @@ export function LeftPane() {
           fontFamily="Georgia, serif"
           fontSize="26"
           fontWeight="700"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           Attention Is
         </text>
@@ -117,7 +117,7 @@ export function LeftPane() {
           textAnchor="middle"
           fontFamily="Georgia, serif"
           fontSize="12"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           Vaswani &middot; Shazeer &middot; Parmar &middot; Uszkoreit
         </text>
@@ -127,7 +127,7 @@ export function LeftPane() {
           textAnchor="middle"
           fontFamily="Georgia, serif"
           fontSize="12"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           Jones &middot; Gomez &middot; Kaiser &middot; Polosukhin
         </text>

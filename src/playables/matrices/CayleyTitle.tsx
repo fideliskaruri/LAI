@@ -33,7 +33,7 @@ export function CayleyTitle() {
           y="32"
           width="480"
           height="416"
-          fill="#F9F5EA"
+          fill="var(--color-paper)"
           stroke="var(--color-graph-fade)"
           strokeWidth="1"
         />
@@ -74,7 +74,7 @@ export function CayleyTitle() {
           fontFamily="Georgia, serif"
           fontSize="20"
           fontWeight="700"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           A MEMOIR
         </text>
@@ -85,7 +85,7 @@ export function CayleyTitle() {
           fontFamily="Georgia, serif"
           fontStyle="italic"
           fontSize="13"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           on the
         </text>
@@ -109,7 +109,7 @@ export function CayleyTitle() {
           fontFamily="Georgia, serif"
           fontStyle="italic"
           fontSize="12"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           By Arthur Cayley, Esq., F.R.S.
         </text>

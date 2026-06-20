@@ -103,13 +103,13 @@ export function GalileoIncline() {
         aria-label={`A stylized inclined plane in the manner of Galileo around 1604. A bronze ball ${reducedRef.current ? 'rests' : 'rolls'} down the ramp; its speed is not constant. ${narrationText}`}
       >
         {/* Faint paper background panel */}
-        <rect x="40" y="40" width={VIEW_W - 80} height={VIEW_H - 80} fill="#F9F5EA" stroke="var(--color-graph-fade)" strokeWidth="1" />
+        <rect x="40" y="40" width={VIEW_W - 80} height={VIEW_H - 80} fill="var(--color-paper)" stroke="var(--color-graph-fade)" strokeWidth="1" />
 
         {/* Sketch eyebrow */}
         <text x="62" y="78" fontFamily="Inter, sans-serif" fontSize="10" letterSpacing="0.22em" fill="var(--color-dim)">
           PADUA  ·  GALILEO GALILEI  ·  ~1604
         </text>
-        <text x="62" y="98" fontFamily="Georgia, serif" fontSize="13" fontStyle="italic" fill="var(--color-ink)">
+        <text x="62" y="98" fontFamily="Georgia, serif" fontSize="13" fontStyle="italic" fill="var(--color-paper-ink)">
           De motu locali — equal times, unequal distances
         </text>
 
@@ -119,7 +119,7 @@ export function GalileoIncline() {
         {/* Ramp triangle (the inclined plane) */}
         <polygon
           points={`${RAMP_TOP.x},${RAMP_TOP.y} ${RAMP_BOT.x},${RAMP_BOT.y} ${RAMP_TOP.x},${RAMP_BOT.y}`}
-          fill="#E9DDC7"
+          fill="var(--color-paper-deep)"
           stroke="var(--color-graph-ink)"
           strokeWidth="1.4"
         />

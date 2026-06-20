@@ -82,7 +82,7 @@ export function LeftPane({
           y="62"
           width={VIEW_W - 96}
           height={VIEW_H - 158}
-          fill="#f6f1e7"
+          fill="var(--color-paper)"
           stroke="var(--color-graph-fade)"
           strokeWidth="0.8"
           rx="4"
@@ -122,7 +122,7 @@ export function LeftPane({
                 y={y}
                 fontFamily="JetBrains Mono, monospace"
                 fontSize="13"
-                fill="var(--color-ink)"
+                fill="var(--color-paper-ink)"
               >
                 {ex.q}
               </text>
@@ -145,7 +145,7 @@ export function LeftPane({
           y={156 + deck.examples.length * 56 + 8}
           fontFamily="JetBrains Mono, monospace"
           fontSize="13"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           {deck.query}
         </text>

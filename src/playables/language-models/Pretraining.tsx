@@ -154,7 +154,7 @@ export function LeftPane({
           y="56"
           width={VIEW_W - 72}
           height={VIEW_H - 160}
-          fill="#f6f1e7"
+          fill="var(--color-paper)"
           stroke="var(--color-graph-fade)"
           strokeWidth="0.8"
         />
@@ -186,7 +186,7 @@ export function LeftPane({
                     : 'Source Serif 4, Georgia, serif'
                 }
                 fontSize={isMono ? 11 : 14}
-                fill={isCurrent ? 'var(--color-ink)' : 'var(--color-dim)'}
+                fill={isCurrent ? 'var(--color-paper-ink)' : 'var(--color-dim)'}
                 fillOpacity={isCurrent ? 1 : 0.7}
               >
                 {line.length > 64 ? line.slice(0, 62) + '…' : line}

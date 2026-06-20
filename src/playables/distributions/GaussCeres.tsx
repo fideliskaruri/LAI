@@ -77,8 +77,9 @@ export function GaussCeres() {
       >
         <g aria-hidden="true" data-origin-x={ORIGIN_X} data-origin-y={ORIGIN_Y} data-unit={UNIT} />
 
-        {/* Deep-blue night sky background */}
-        <rect width={VIEW_W} height={VIEW_H} fill="#0E1422" />
+        {/* Deep-blue night sky background — bordered so it reads as a
+            depicted scene rather than the page bg bleeding through */}
+        <rect width={VIEW_W} height={VIEW_H} fill="#0E1422" stroke="var(--color-graph-fade)" strokeWidth="1" />
         {/* Subtle horizon wash */}
         <rect y={VIEW_H - 90} width={VIEW_W} height={90} fill="#161E33" />
         <line x1={0} y1={VIEW_H - 90} x2={VIEW_W} y2={VIEW_H - 90} stroke="#22304F" strokeWidth="0.6" />

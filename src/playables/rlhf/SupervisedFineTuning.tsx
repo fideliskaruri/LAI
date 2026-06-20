@@ -137,7 +137,7 @@ export function LeftPane({
           y="60"
           width={VIEW_W - 80}
           height={310}
-          fill="#f6f1e7"
+          fill="var(--color-paper)"
           stroke="var(--color-graph-fade)"
           strokeWidth="1"
         />
@@ -182,7 +182,7 @@ export function LeftPane({
               fontStyle: 'italic',
               fontSize: '14px',
               lineHeight: 1.45,
-              color: 'var(--color-ink)',
+              color: 'var(--color-paper-ink)',
             }}
           >
             {demo.prompt}
@@ -215,7 +215,7 @@ export function LeftPane({
               fontFamily: replyLines.length > 1 ? 'JetBrains Mono, monospace' : 'Source Serif 4, Georgia, serif',
               fontSize: replyLines.length > 1 ? '12px' : '14px',
               lineHeight: 1.5,
-              color: 'var(--color-ink)',
+              color: 'var(--color-paper-ink)',
               whiteSpace: 'pre-wrap',
             }}
           >
@@ -402,7 +402,7 @@ export function RightPane({
           y="128"
           width={VIEW_W - 80}
           height={280}
-          fill="#f6f1e7"
+          fill="var(--color-paper)"
           stroke="var(--color-graph-fade)"
           strokeWidth="1"
         />
@@ -423,7 +423,7 @@ export function RightPane({
           fontFamily="Source Serif 4, Georgia, serif"
           fontStyle="italic"
           fontSize="13"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           {TEST_PROMPT}
         </text>
@@ -455,7 +455,7 @@ export function RightPane({
             y={258 + i * 18}
             fontFamily="Source Serif 4, Georgia, serif"
             fontSize="13"
-            fill="var(--color-ink)"
+            fill="var(--color-paper-ink)"
           >
             {line}
           </text>

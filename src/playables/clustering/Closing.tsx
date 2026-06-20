@@ -60,12 +60,12 @@ function softProbs(p: Pt, centroids: Pt[]): number[] {
 }
 
 /** Blend cluster colours by per-cluster probability. The three CLUSTER_COLORS
-    are 'var(--color-vermilion)', '#3a6f8c' (blue), '#7a8a3a' (olive). We
+    are 'var(--color-vermilion)', '#5a93b0' (blue), '#9bab57' (olive). We
     hardcode RGB to mix; vermilion is approximated as #c0432a. */
 const CLUSTER_RGB = [
   [192, 67, 42], // vermilion
-  [58, 111, 140], // blue
-  [122, 138, 58], // olive
+  [90, 147, 176], // blue
+  [155, 171, 87], // olive
 ]
 
 function mix(probs: number[]): string {

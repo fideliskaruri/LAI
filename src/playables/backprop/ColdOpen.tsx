@@ -36,7 +36,7 @@ export function LeftPane() {
           y="40"
           width={VIEW_W - 80}
           height={VIEW_H - 80}
-          fill="#f6f1e7"
+          fill="var(--color-paper)"
           stroke="var(--color-graph-fade)"
           strokeWidth="1"
         />
@@ -50,7 +50,7 @@ export function LeftPane() {
           fontStyle="italic"
           fontSize="22"
           fontWeight="600"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           Nature
         </text>
@@ -59,7 +59,7 @@ export function LeftPane() {
           y1="98"
           x2={VIEW_W - PADX - 20}
           y2="98"
-          stroke="var(--color-ink)"
+          stroke="var(--color-paper-ink)"
           strokeWidth="0.6"
         />
         <text
@@ -103,7 +103,7 @@ export function LeftPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontSize="24"
           fontWeight="600"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           Learning representations
         </text>
@@ -113,7 +113,7 @@ export function LeftPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontSize="24"
           fontWeight="600"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           by back-propagating errors
         </text>
@@ -125,7 +125,7 @@ export function LeftPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontStyle="italic"
           fontSize="14"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           David E. Rumelhart*, Geoffrey E. Hinton†
         </text>
@@ -135,7 +135,7 @@ export function LeftPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontStyle="italic"
           fontSize="14"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           &amp; Ronald J. Williams*
         </text>

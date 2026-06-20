@@ -374,7 +374,7 @@ export function RightPane({ state }: { state: KlState }) {
           y="98"
           width={VIEW_W - 80}
           height={310}
-          fill="#f6f1e7"
+          fill="var(--color-paper)"
           stroke="var(--color-graph-fade)"
           strokeWidth="1"
         />
@@ -395,7 +395,7 @@ export function RightPane({ state }: { state: KlState }) {
           fontFamily="Source Serif 4, Georgia, serif"
           fontStyle="italic"
           fontSize="13"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           How do I cook rice?
         </text>
@@ -427,7 +427,7 @@ export function RightPane({ state }: { state: KlState }) {
             y={216 + i * 18}
             fontFamily="Source Serif 4, Georgia, serif"
             fontSize="13"
-            fill="var(--color-ink)"
+            fill="var(--color-paper-ink)"
           >
             {line}
           </text>

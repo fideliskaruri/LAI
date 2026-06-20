@@ -30,13 +30,13 @@ export function ColdOpenScene() {
           y="32"
           width="480"
           height="416"
-          fill="#F9F5EA"
+          fill="var(--color-paper)"
           stroke="var(--color-graph-fade)"
           strokeWidth="1"
         />
 
         {/* Masthead */}
-        <text x="84" y="74" fontFamily="Georgia, serif" fontSize="22" fontWeight="700" fill="var(--color-ink)">
+        <text x="84" y="74" fontFamily="Georgia, serif" fontSize="22" fontWeight="700" fill="var(--color-paper-ink)">
           NATURE
         </text>
         <text x="84" y="91" fontFamily="Inter, sans-serif" fontSize="9" fill="var(--color-dim)">
@@ -45,7 +45,7 @@ export function ColdOpenScene() {
         <line x1="84" y1="105" x2="516" y2="105" stroke="var(--color-graph-ink)" strokeWidth="0.8" />
 
         {/* Article title */}
-        <text x="84" y="132" fontFamily="Georgia, serif" fontSize="13" fontWeight="700" fill="var(--color-ink)">
+        <text x="84" y="132" fontFamily="Georgia, serif" fontSize="13" fontWeight="700" fill="var(--color-paper-ink)">
           QUATERNIONS AND VECTOR ANALYSIS
         </text>
         <text x="84" y="148" fontFamily="Georgia, serif" fontSize="9" fontStyle="italic" fill="var(--color-dim)">
@@ -78,7 +78,7 @@ export function ColdOpenScene() {
         ))}
 
         {/* Signature */}
-        <text x="84" y="438" fontFamily="Georgia, serif" fontSize="10" fontStyle="italic" fill="var(--color-ink)">
+        <text x="84" y="438" fontFamily="Georgia, serif" fontSize="10" fontStyle="italic" fill="var(--color-paper-ink)">
           — J. Willard Gibbs
         </text>
       </svg>

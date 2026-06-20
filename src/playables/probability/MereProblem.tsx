@@ -65,7 +65,7 @@ export function MereProblem() {
           width={size}
           height={size}
           rx={4}
-          fill="#F4ECDB"
+          fill="var(--color-paper)"
           stroke="var(--color-graph-ink)"
           strokeWidth="1"
         />
@@ -76,7 +76,7 @@ export function MereProblem() {
           fontFamily="JetBrains Mono, monospace"
           fontSize="16"
           fontWeight="600"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           {value === '?' ? '?' : value}
         </text>

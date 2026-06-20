@@ -119,7 +119,7 @@ export function ClosingRightPane() {
         aria-label="A short reference card listing three downstream uses of PCA: gene-expression analysis, word embedding visualization, and feature preprocessing in modern machine learning pipelines."
       >
         {/* Card backdrop */}
-        <rect x="60" y="60" width={VIEW_W - 120} height={VIEW_H - 120} fill="#F9F5EA" stroke="var(--color-graph-fade)" strokeWidth="0.7" />
+        <rect x="60" y="60" width={VIEW_W - 120} height={VIEW_H - 120} fill="var(--color-paper)" stroke="var(--color-graph-fade)" strokeWidth="0.7" />
 
         {/* Header rule */}
         <text
@@ -139,7 +139,7 @@ export function ClosingRightPane() {
           <text fontFamily="JetBrains Mono, monospace" fontSize="11" fill="var(--color-vermilion)">
             01
           </text>
-          <text x="44" fontFamily="Source Serif 4, Georgia, serif" fontSize="15" fontWeight="600" fill="var(--color-ink)">
+          <text x="44" fontFamily="Source Serif 4, Georgia, serif" fontSize="15" fontWeight="600" fill="var(--color-paper-ink)">
             Gene expression
           </text>
           <text x="44" y="22" fontFamily="Source Serif 4, Georgia, serif" fontStyle="italic" fontSize="12" fill="var(--color-dim)">
@@ -151,7 +151,7 @@ export function ClosingRightPane() {
           <text fontFamily="JetBrains Mono, monospace" fontSize="11" fill="var(--color-vermilion)">
             02
           </text>
-          <text x="44" fontFamily="Source Serif 4, Georgia, serif" fontSize="15" fontWeight="600" fill="var(--color-ink)">
+          <text x="44" fontFamily="Source Serif 4, Georgia, serif" fontSize="15" fontWeight="600" fill="var(--color-paper-ink)">
             Word embeddings
           </text>
           <text x="44" y="22" fontFamily="Source Serif 4, Georgia, serif" fontStyle="italic" fontSize="12" fill="var(--color-dim)">
@@ -163,7 +163,7 @@ export function ClosingRightPane() {
           <text fontFamily="JetBrains Mono, monospace" fontSize="11" fill="var(--color-vermilion)">
             03
           </text>
-          <text x="44" fontFamily="Source Serif 4, Georgia, serif" fontSize="15" fontWeight="600" fill="var(--color-ink)">
+          <text x="44" fontFamily="Source Serif 4, Georgia, serif" fontSize="15" fontWeight="600" fill="var(--color-paper-ink)">
             Preprocessing
           </text>
           <text x="44" y="22" fontFamily="Source Serif 4, Georgia, serif" fontStyle="italic" fontSize="12" fill="var(--color-dim)">

@@ -34,7 +34,7 @@ export function LeftPane() {
           y="40"
           width={VIEW_W - 80}
           height={VIEW_H - 80}
-          fill="#f6f1e7"
+          fill="var(--color-paper)"
           stroke="var(--color-graph-fade)"
           strokeWidth="1"
         />
@@ -89,7 +89,7 @@ export function LeftPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontSize="22"
           fontWeight="600"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           Deep Reinforcement Learning
         </text>
@@ -99,7 +99,7 @@ export function LeftPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontSize="22"
           fontWeight="600"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           from Human Preferences
         </text>
@@ -111,7 +111,7 @@ export function LeftPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontStyle="italic"
           fontSize="13"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           Paul F. Christiano, Jan Leike, Tom B. Brown,
         </text>
@@ -121,7 +121,7 @@ export function LeftPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontStyle="italic"
           fontSize="13"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           Miljan Martic, Shane Legg, Dario Amodei
         </text>

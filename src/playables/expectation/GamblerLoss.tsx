@@ -56,7 +56,7 @@ export function GamblerLoss() {
         aria-label="A 17th-century Paris gambling table at night. The Chevalier de Méré sits behind dwindling jeton stacks, holding a slip of paper covered in arithmetic. A candle burns at his elbow. The historical setup for the expected-value question."
       >
         {/* Wall + floor */}
-        <rect width="600" height="320" y="0" fill="#EFE6D2" />
+        <rect width="600" height="320" y="0" fill="var(--color-paper-deep)" />
         <rect width="600" height="160" y="320" fill="#D9C9A7" />
         <line x1="0" y1="320" x2="600" y2="320" stroke="var(--color-graph-ink)" strokeWidth="0.8" strokeOpacity="0.35" />
 
@@ -92,7 +92,7 @@ export function GamblerLoss() {
             strokeWidth="0.8"
           />
           {/* Collar */}
-          <path d="M -22 62 Q 0 55 22 62 L 18 80 L -18 80 Z" fill="#F4ECDB" stroke="var(--color-graph-ink)" strokeWidth="0.6" />
+          <path d="M -22 62 Q 0 55 22 62 L 18 80 L -18 80 Z" fill="var(--color-paper)" stroke="var(--color-graph-ink)" strokeWidth="0.6" />
           {/* Head */}
           <circle cx="0" cy="38" r="22" fill="#E4C9A0" stroke="var(--color-graph-ink)" strokeWidth="0.8" />
           {/* Hair — long curls of a 1650s nobleman */}
@@ -108,12 +108,12 @@ export function GamblerLoss() {
 
         {/* Slip of paper covered in scribbled ratios */}
         <g transform="translate(290, 340)">
-          <rect x="-30" y="-22" width="64" height="34" fill="#F8F2DF" stroke="var(--color-graph-ink)" strokeWidth="0.8" rx={1} transform="rotate(-6)" />
+          <rect x="-30" y="-22" width="64" height="34" fill="var(--color-paper)" stroke="var(--color-graph-ink)" strokeWidth="0.8" rx={1} transform="rotate(-6)" />
           <g transform="rotate(-6)">
-            <text x="-24" y="-10" fontFamily="Source Serif 4, Georgia, serif" fontStyle="italic" fontSize="7" fill="var(--color-ink)">
+            <text x="-24" y="-10" fontFamily="Source Serif 4, Georgia, serif" fontStyle="italic" fontSize="7" fill="var(--color-paper-ink)">
               4/6 ?
             </text>
-            <text x="-24" y="0" fontFamily="Source Serif 4, Georgia, serif" fontStyle="italic" fontSize="7" fill="var(--color-ink)">
+            <text x="-24" y="0" fontFamily="Source Serif 4, Georgia, serif" fontStyle="italic" fontSize="7" fill="var(--color-paper-ink)">
               24/36 ?
             </text>
             <text x="-24" y="9" fontFamily="Source Serif 4, Georgia, serif" fontStyle="italic" fontSize="7" fill="var(--color-vermilion)">
@@ -156,15 +156,15 @@ export function GamblerLoss() {
 
         {/* Dice on the table, scattered */}
         <g transform="translate(220, 366) rotate(14)">
-          <rect x={-9} y={-9} width={18} height={18} rx={2} fill="#F4ECDB" stroke="var(--color-graph-ink)" strokeWidth="0.8" />
-          <circle cx={-3} cy={-3} r={1.4} fill="var(--color-ink)" />
-          <circle cx={3} cy={3} r={1.4} fill="var(--color-ink)" />
+          <rect x={-9} y={-9} width={18} height={18} rx={2} fill="var(--color-paper)" stroke="var(--color-graph-ink)" strokeWidth="0.8" />
+          <circle cx={-3} cy={-3} r={1.4} fill="var(--color-paper-ink)" />
+          <circle cx={3} cy={3} r={1.4} fill="var(--color-paper-ink)" />
         </g>
         <g transform="translate(196, 358) rotate(-12)">
-          <rect x={-9} y={-9} width={18} height={18} rx={2} fill="#F4ECDB" stroke="var(--color-graph-ink)" strokeWidth="0.8" />
-          <circle cx={0} cy={0} r={1.4} fill="var(--color-ink)" />
-          <circle cx={-4} cy={-4} r={1.4} fill="var(--color-ink)" />
-          <circle cx={4} cy={4} r={1.4} fill="var(--color-ink)" />
+          <rect x={-9} y={-9} width={18} height={18} rx={2} fill="var(--color-paper)" stroke="var(--color-graph-ink)" strokeWidth="0.8" />
+          <circle cx={0} cy={0} r={1.4} fill="var(--color-paper-ink)" />
+          <circle cx={-4} cy={-4} r={1.4} fill="var(--color-paper-ink)" />
+          <circle cx={4} cy={4} r={1.4} fill="var(--color-paper-ink)" />
         </g>
 
         {/* Place & date whisper */}

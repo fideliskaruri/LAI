@@ -38,8 +38,8 @@ export function LeibnizPaper() {
           y={PAGE_Y + 12}
           width={PAGE_W + 24}
           height={PAGE_H}
-          fill="#1A1A1A"
-          fillOpacity="0.08"
+          fill="var(--color-paper-shadow)"
+          fillOpacity="0.4"
         />
 
         {/* The page itself — aged ivory */}
@@ -48,7 +48,7 @@ export function LeibnizPaper() {
           y={PAGE_Y}
           width={PAGE_W}
           height={PAGE_H}
-          fill="#F4ECDB"
+          fill="var(--color-paper)"
           stroke="var(--color-graph-ink)"
           strokeWidth="1.2"
         />
@@ -103,7 +103,7 @@ export function LeibnizPaper() {
           fontFamily="Georgia, serif"
           fontSize="22"
           fontWeight="bold"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           NOVA METHODUS
         </text>
@@ -114,7 +114,7 @@ export function LeibnizPaper() {
           fontFamily="Georgia, serif"
           fontSize="13"
           fontStyle="italic"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           pro maximis et minimis
         </text>
@@ -127,7 +127,7 @@ export function LeibnizPaper() {
           fontFamily="Georgia, serif"
           fontSize="11"
           fontStyle="italic"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           itemque tangentibus, quae nec fractas
         </text>
@@ -138,7 +138,7 @@ export function LeibnizPaper() {
           fontFamily="Georgia, serif"
           fontSize="11"
           fontStyle="italic"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           nec irrationales quantitates moratur
         </text>
@@ -160,7 +160,7 @@ export function LeibnizPaper() {
           textAnchor="middle"
           fontFamily="Georgia, serif"
           fontSize="12"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           autore G. G. L.
         </text>
@@ -183,7 +183,7 @@ export function LeibnizPaper() {
           y={PAGE_Y + 286}
           width={PAGE_W - 160}
           height={84}
-          fill="#F9F1DF"
+          fill="var(--color-paper-deep)"
           stroke="var(--color-vermilion)"
           strokeWidth="0.8"
           strokeOpacity="0.55"
@@ -207,7 +207,7 @@ export function LeibnizPaper() {
           fontFamily="Georgia, serif"
           fontStyle="italic"
           fontSize="22"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           dy
         </text>
@@ -216,7 +216,7 @@ export function LeibnizPaper() {
           y1={PAGE_Y + 348}
           x2={PAGE_X + PAGE_W / 2 - 10}
           y2={PAGE_Y + 348}
-          stroke="var(--color-ink)"
+          stroke="var(--color-paper-ink)"
           strokeWidth="1.2"
         />
         <text
@@ -226,7 +226,7 @@ export function LeibnizPaper() {
           fontFamily="Georgia, serif"
           fontStyle="italic"
           fontSize="22"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           dx
         </text>
@@ -236,7 +236,7 @@ export function LeibnizPaper() {
           y={PAGE_Y + 352}
           fontFamily="Georgia, serif"
           fontSize="12"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           = rate of change
         </text>

@@ -194,7 +194,7 @@ export function HeaderPopover({ open, onClose, items, triggerRef }: HeaderPopove
         // Mobile: bottom-sheet, full width, anchored to bottom.
         'fixed inset-x-0 bottom-0 z-40',
         'border-t border-graph-fade',
-        'bg-cream shadow-md',
+        'bg-cream-deep shadow-md',
         'py-2',
         // Desktop (>=900px): small dropdown anchored under the ⋯ button.
         // The button lives in a `pointer-events-none` header; the popover

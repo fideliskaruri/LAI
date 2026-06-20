@@ -45,7 +45,7 @@ export function LeftPane() {
           y="32"
           width="480"
           height="416"
-          fill="#F9F5EA"
+          fill="var(--color-paper)"
           stroke="var(--color-graph-fade)"
           strokeWidth="1"
         />
@@ -90,7 +90,7 @@ export function LeftPane() {
           fontFamily="Georgia, serif"
           fontSize="22"
           fontWeight="700"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           Neural Machine Translation
         </text>
@@ -101,7 +101,7 @@ export function LeftPane() {
           fontFamily="Georgia, serif"
           fontStyle="italic"
           fontSize="16"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           by Jointly Learning to
         </text>
@@ -134,7 +134,7 @@ export function LeftPane() {
           textAnchor="middle"
           fontFamily="Georgia, serif"
           fontSize="13"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           Dzmitry Bahdanau &middot; Kyunghyun Cho &middot; Yoshua Bengio
         </text>

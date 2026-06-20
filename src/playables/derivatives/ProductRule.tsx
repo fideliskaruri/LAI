@@ -161,7 +161,7 @@ export function ProductRule() {
           y={RY}
           width={outerW}
           height={outerH}
-          fill="#F9F5EA"
+          fill="var(--color-paper)"
           stroke="var(--color-graph-ink)"
           strokeWidth="1.4"
         />
@@ -172,7 +172,7 @@ export function ProductRule() {
           y={innerY}
           width={innerW}
           height={innerH}
-          fill="#E9DDC7"
+          fill="var(--color-paper-deep)"
           stroke="var(--color-graph-ink)"
           strokeWidth="1"
           strokeDasharray="4 4"

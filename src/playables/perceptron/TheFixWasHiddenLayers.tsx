@@ -250,7 +250,7 @@ export function RightPane() {
           y="60"
           width={VIEW_W - 120}
           height={VIEW_H - 120}
-          fill="#f6f1e7"
+          fill="var(--color-paper)"
           stroke="var(--color-graph-fade)"
           strokeWidth="1"
         />
@@ -274,7 +274,7 @@ export function RightPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontSize="20"
           fontWeight="600"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           Learning representations
         </text>
@@ -285,7 +285,7 @@ export function RightPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontSize="20"
           fontWeight="600"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           by back-propagating errors
         </text>
@@ -318,7 +318,7 @@ export function RightPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontStyle="italic"
           fontSize="14"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           Stack the neurons.
         </text>
@@ -329,7 +329,7 @@ export function RightPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontStyle="italic"
           fontSize="14"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           Push the gradient backward.
         </text>
@@ -340,7 +340,7 @@ export function RightPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontStyle="italic"
           fontSize="14"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           Train every layer at once.
         </text>

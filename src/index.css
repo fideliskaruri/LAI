@@ -20,9 +20,18 @@
   --color-vermilion: #E0584A;      /* accent — slightly brighter on dark */
   --color-vermilion-deep: #C44536; /* hover / pressed */
   --color-dim: #8E8675;            /* sidenote text */
-  --color-fade: #4D4740;           /* coming-soon / faint */
+  --color-fade: #6A6356;           /* coming-soon / faint */
   --color-graph-ink: #D5CEBF;      /* SVG strokes on dark */
   --color-graph-fade: #3A352D;     /* grid lines */
+
+  /* "Paper" tokens: depicted artifacts (manuscript pages, dice, plaques,
+     scanned papers) keep an ivory-cream background with dark ink, regardless
+     of light/dark mode. They are diegetic — part of the depicted scene,
+     not the page chrome — so they do NOT flip when the theme flips. */
+  --color-paper: #F4ECDB;          /* page stock — ivory */
+  --color-paper-deep: #E9DDC7;     /* aged paper, vellum */
+  --color-paper-ink: #1A1A1A;      /* text/ink drawn on a paper plate */
+  --color-paper-shadow: #000000;   /* drop-shadow under a paper card */
 
   --font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
   --font-sans: "Inter", -apple-system, system-ui, sans-serif;
@@ -54,7 +63,7 @@ body {
 
 ::selection {
   background: var(--color-vermilion);
-  color: var(--color-cream);
+  color: #FFFFFF;
 }
 
 @keyframes glyph-pulse {

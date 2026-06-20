@@ -376,7 +376,7 @@ function PanelChrome({ panel, titleA, titleB }: { panel: Panel; titleA: string; 
         y={panel.y}
         width={panel.w}
         height={panel.h}
-        fill="#F9F5EA"
+        fill="var(--color-paper)"
         stroke="var(--color-graph-fade)"
         strokeWidth="1"
       />

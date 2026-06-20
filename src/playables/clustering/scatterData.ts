@@ -58,8 +58,8 @@ export const K = 3
 /** Stable, deterministic palette for the K=3 clusters. */
 export const CLUSTER_COLORS = [
   'var(--color-vermilion)',
-  '#3a6f8c', // muted blue
-  '#7a8a3a', // muted olive
+  '#5a93b0', // brighter blue for dark mode
+  '#9bab57', // brighter olive for dark mode
 ] as const
 
 /**

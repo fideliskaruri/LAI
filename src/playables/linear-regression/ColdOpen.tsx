@@ -184,7 +184,7 @@ export function RightPane() {
           y="32"
           width="480"
           height="416"
-          fill="#F9F5EA"
+          fill="var(--color-paper)"
           stroke="var(--color-graph-fade)"
           strokeWidth="1"
         />
@@ -231,7 +231,7 @@ export function RightPane() {
           fontFamily="Georgia, serif"
           fontSize="17"
           fontWeight="700"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           NOUVELLES MÉTHODES
         </text>
@@ -242,7 +242,7 @@ export function RightPane() {
           fontFamily="Georgia, serif"
           fontStyle="italic"
           fontSize="13"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           pour la détermination des
         </text>
@@ -276,7 +276,7 @@ export function RightPane() {
           fontFamily="Georgia, serif"
           fontStyle="italic"
           fontSize="12"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           avec un Appendice
         </text>
@@ -317,7 +317,7 @@ export function RightPane() {
           fontFamily="Georgia, serif"
           fontStyle="italic"
           fontSize="12"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           Paris &mdash; Firmin Didot &mdash; MDCCCV
         </text>

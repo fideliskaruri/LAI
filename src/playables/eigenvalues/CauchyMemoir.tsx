@@ -37,7 +37,7 @@ export function CauchyMemoir() {
           y="32"
           width="480"
           height="416"
-          fill="#F9F5EA"
+          fill="var(--color-paper)"
           stroke="var(--color-graph-fade)"
           strokeWidth="1"
         />
@@ -93,7 +93,7 @@ export function CauchyMemoir() {
           fontFamily="Georgia, serif"
           fontSize="16"
           fontWeight="700"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           SUR L&apos;ÉQUATION À L&apos;AIDE DE LAQUELLE
         </text>
@@ -104,7 +104,7 @@ export function CauchyMemoir() {
           fontFamily="Georgia, serif"
           fontSize="16"
           fontWeight="700"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           ON DÉTERMINE LES
         </text>
@@ -126,7 +126,7 @@ export function CauchyMemoir() {
           fontFamily="Georgia, serif"
           fontStyle="italic"
           fontSize="13"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           des mouvements des planètes
         </text>
@@ -139,7 +139,7 @@ export function CauchyMemoir() {
           fontFamily="Georgia, serif"
           fontStyle="italic"
           fontSize="12"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           Par M. Augustin-Louis Cauchy
         </text>

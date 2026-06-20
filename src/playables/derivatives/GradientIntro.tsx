@@ -49,8 +49,8 @@ const PANEL_Y_MAX = ORIGIN_Y - Y_MIN * UNIT
 // Heat color — interpolate from page bg (low) to bright vermilion (high).
 function heatColor(value: number): string {
   const t = Math.min(1, Math.max(0, value / F_MAX))
-  // Endpoints: low ~ #1F1C16 (warm dark, page bg), high ~ #E0584A (bright vermilion)
-  const r1 = 31, g1 = 28, b1 = 22
+  // Endpoints: low ~ #16140F (warm dark, page bg), high ~ #E0584A (bright vermilion)
+  const r1 = 22, g1 = 20, b1 = 15
   const r2 = 224, g2 = 88, b2 = 74
   const r = Math.round(r1 + (r2 - r1) * t)
   const g = Math.round(g1 + (g2 - g1) * t)

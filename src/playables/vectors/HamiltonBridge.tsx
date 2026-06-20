@@ -22,7 +22,7 @@ export function HamiltonBridge() {
         aria-label="A stylized sketch of Brougham Bridge in Dublin, where on October 16 1843, William Rowan Hamilton carved the equation i squared equals j squared equals k squared equals i j k equals minus one into the stone."
       >
         {/* Sky */}
-        <rect width="600" height="290" y="0" fill="#FAF6EC" />
+        <rect width="600" height="290" y="0" fill="var(--color-paper)" />
         {/* Canal */}
         <rect width="600" height="190" y="290" fill="var(--color-graph-fade)" opacity="0.35" />
         {/* Water lines */}
@@ -90,7 +90,7 @@ export function HamiltonBridge() {
           fontFamily="Georgia, serif"
           fontSize="15"
           fontStyle="italic"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           i² = j² = k² =
         </text>
@@ -101,7 +101,7 @@ export function HamiltonBridge() {
           fontFamily="Georgia, serif"
           fontSize="15"
           fontStyle="italic"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           i&#160;j&#160;k = −1
         </text>

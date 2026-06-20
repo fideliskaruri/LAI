@@ -47,7 +47,7 @@ export function LeftPane() {
           y="74"
           width={VIEW_W - 96}
           height="76"
-          fill="#f6f1e7"
+          fill="var(--color-paper)"
           stroke="var(--color-vermilion)"
           strokeWidth="1.2"
           rx="4"
@@ -68,7 +68,7 @@ export function LeftPane() {
           fontFamily="Source Serif 4, Georgia, serif"
           fontStyle="italic"
           fontSize="15"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           “{prompt}”
         </text>

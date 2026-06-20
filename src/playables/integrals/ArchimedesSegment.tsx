@@ -115,7 +115,7 @@ export function ArchimedesSegment() {
           y="40"
           width={VIEW_W - 80}
           height={VIEW_H - 80}
-          fill="#F9F5EA"
+          fill="var(--color-paper)"
           stroke="var(--color-graph-fade)"
           strokeWidth="1"
         />
@@ -137,7 +137,7 @@ export function ArchimedesSegment() {
           fontFamily="Georgia, serif"
           fontSize="13"
           fontStyle="italic"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           Archimedes squares a parabolic segment by exhaustion.
         </text>
@@ -188,15 +188,15 @@ export function ArchimedesSegment() {
         <path
           d={curvePath()}
           fill="none"
-          stroke="var(--color-ink)"
+          stroke="var(--color-paper-ink)"
           strokeWidth="2"
           strokeLinejoin="round"
         />
 
         {/* Endpoints */}
-        <circle cx={toPx(X_MIN, 0).px} cy={toPx(0, 0).py} r="3" fill="var(--color-ink)" />
-        <circle cx={toPx(X_MAX, 0).px} cy={toPx(0, 0).py} r="3" fill="var(--color-ink)" />
-        <circle cx={toPx(0, 4).px} cy={toPx(0, 4).py} r="3" fill="var(--color-ink)" />
+        <circle cx={toPx(X_MIN, 0).px} cy={toPx(0, 0).py} r="3" fill="var(--color-paper-ink)" />
+        <circle cx={toPx(X_MAX, 0).px} cy={toPx(0, 0).py} r="3" fill="var(--color-paper-ink)" />
+        <circle cx={toPx(0, 4).px} cy={toPx(0, 4).py} r="3" fill="var(--color-paper-ink)" />
 
         {/* Squeeze annotation — small bracket on the right */}
         <g transform={`translate(${VIEW_W - 160}, 130)`}>
@@ -259,7 +259,7 @@ export function ArchimedesSegment() {
             fontFamily="Georgia, serif"
             fontStyle="italic"
             fontSize="13"
-            fill="var(--color-ink)"
+            fill="var(--color-paper-ink)"
           >
             area = &nbsp;
             <tspan fontFamily="JetBrains Mono, monospace">4/3</tspan>
@@ -284,7 +284,7 @@ export function ArchimedesSegment() {
           fontFamily="Georgia, serif"
           fontStyle="italic"
           fontSize="20"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           tetrag&#333;nismos
         </text>

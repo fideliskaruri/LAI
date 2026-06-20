@@ -45,7 +45,7 @@ export function PearsonLeftPane() {
         aria-label="A pen-and-ink vignette of Karl Pearson seated at his desk, sketching a line of closest fit through a scatter of points on a sheet of paper."
       >
         {/* Wall (warm ivory) and floor line */}
-        <rect x="0" y="0" width={VIEW_W} height={VIEW_H} fill="#F6F1E4" />
+        <rect x="0" y="0" width={VIEW_W} height={VIEW_H} fill="var(--color-paper-deep)" />
         <line
           x1="0"
           y1="430"
@@ -66,7 +66,7 @@ export function PearsonLeftPane() {
         <line x1="520" y1="234" x2="520" y2="430" stroke="var(--color-graph-ink)" strokeWidth="0.9" />
 
         {/* Paper on the desk */}
-        <rect x={PAGE_X} y={PAGE_Y} width={PAGE_W} height={PAGE_H} fill="#FBF7EB" stroke="var(--color-graph-ink)" strokeWidth="0.7" />
+        <rect x={PAGE_X} y={PAGE_Y} width={PAGE_W} height={PAGE_H} fill="var(--color-paper)" stroke="var(--color-graph-ink)" strokeWidth="0.7" />
 
         {/* Scatter and best-fit line, drawn on the page */}
         <g transform={`translate(${PAPER_CX}, ${PAPER_CY})`}>
@@ -83,7 +83,7 @@ export function PearsonLeftPane() {
             strokeWidth="1.4"
           />
           {pts.map((p, i) => (
-            <circle key={i} cx={p.x * 40} cy={-p.y * 40} r="2" fill="var(--color-ink)" fillOpacity="0.7" />
+            <circle key={i} cx={p.x * 40} cy={-p.y * 40} r="2" fill="var(--color-paper-ink)" fillOpacity="0.7" />
           ))}
         </g>
 
@@ -155,7 +155,7 @@ export function PearsonTitlePagePane() {
         aria-label="A stylized mockup of the title page of Karl Pearson's 1901 paper, On Lines and Planes of Closest Fit to Systems of Points in Space."
       >
         {/* Page */}
-        <rect x="60" y="32" width="480" height="416" fill="#F9F5EA" stroke="var(--color-graph-fade)" strokeWidth="1" />
+        <rect x="60" y="32" width="480" height="416" fill="var(--color-paper)" stroke="var(--color-graph-fade)" strokeWidth="1" />
 
         {/* Top rule */}
         <line x1="120" y1="80" x2="480" y2="80" stroke="var(--color-graph-ink)" strokeWidth="0.6" />
@@ -204,7 +204,7 @@ export function PearsonTitlePagePane() {
           fontFamily="Georgia, serif"
           fontSize="16"
           fontWeight="700"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           ON LINES AND PLANES
         </text>
@@ -215,7 +215,7 @@ export function PearsonTitlePagePane() {
           fontFamily="Georgia, serif"
           fontStyle="italic"
           fontSize="14"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           of
         </text>
@@ -237,7 +237,7 @@ export function PearsonTitlePagePane() {
           fontFamily="Georgia, serif"
           fontStyle="italic"
           fontSize="13"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           to Systems of Points in Space
         </text>
@@ -250,7 +250,7 @@ export function PearsonTitlePagePane() {
           fontFamily="Georgia, serif"
           fontStyle="italic"
           fontSize="12"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           By Karl Pearson, F.R.S.
         </text>

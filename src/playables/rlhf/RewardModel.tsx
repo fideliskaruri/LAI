@@ -111,7 +111,7 @@ export function LeftPane({
           y="60"
           width={VIEW_W - 80}
           height={280}
-          fill="#f6f1e7"
+          fill="var(--color-paper)"
           stroke="var(--color-graph-fade)"
           strokeWidth="1"
         />
@@ -132,7 +132,7 @@ export function LeftPane({
           fontFamily="Source Serif 4, Georgia, serif"
           fontStyle="italic"
           fontSize="12"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           {pair.prompt}
         </text>
@@ -182,7 +182,7 @@ export function LeftPane({
           y="292"
           fontFamily="JetBrains Mono, monospace"
           fontSize="14"
-          fill="var(--color-ink)"
+          fill="var(--color-paper-ink)"
         >
           P(A &gt; B) = σ(r(A) − r(B)) = σ({fmt2(rA - rB).trim()})
         </text>

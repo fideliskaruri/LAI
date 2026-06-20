@@ -44,7 +44,7 @@ export function MikolovMoment() {
           <rect
             width="280"
             height="280"
-            fill="#F4EFE0"
+            fill="var(--color-paper)"
             stroke="var(--color-graph-ink)"
             strokeWidth="1"
           />
@@ -77,7 +77,7 @@ export function MikolovMoment() {
             fontFamily="Georgia, serif"
             fontSize="11"
             fontStyle="italic"
-            fill="var(--color-ink)"
+            fill="var(--color-paper-ink)"
           >
             Brown et al. — IBM, 1992
           </text>
@@ -99,7 +99,7 @@ export function MikolovMoment() {
                 y={60 + i * 22}
                 fontFamily="Georgia, serif"
                 fontSize="13"
-                fill="var(--color-ink)"
+                fill="var(--color-paper-ink)"
               >
                 {r.word}
               </text>
@@ -121,7 +121,7 @@ export function MikolovMoment() {
           <rect
             width="320"
             height="295"
-            fill="#FCFAF1"
+            fill="var(--color-paper)"
             stroke="var(--color-graph-ink)"
             strokeWidth="1.2"
           />
@@ -151,7 +151,7 @@ export function MikolovMoment() {
             fontFamily="Georgia, serif"
             fontSize="15"
             fontWeight="700"
-            fill="var(--color-ink)"
+            fill="var(--color-paper-ink)"
           >
             Efficient Estimation of Word
           </text>
@@ -162,7 +162,7 @@ export function MikolovMoment() {
             fontFamily="Georgia, serif"
             fontSize="15"
             fontWeight="700"
-            fill="var(--color-ink)"
+            fill="var(--color-paper-ink)"
           >
             Representations in Vector Space
           </text>
@@ -174,7 +174,7 @@ export function MikolovMoment() {
             fontFamily="Georgia, serif"
             fontSize="11"
             fontStyle="italic"
-            fill="var(--color-ink)"
+            fill="var(--color-paper-ink)"
           >
             Tomas Mikolov, Kai Chen,
           </text>
@@ -185,7 +185,7 @@ export function MikolovMoment() {
             fontFamily="Georgia, serif"
             fontSize="11"
             fontStyle="italic"
-            fill="var(--color-ink)"
+            fill="var(--color-paper-ink)"
           >
             Greg Corrado, Jeffrey Dean
           </text>
@@ -207,7 +207,7 @@ export function MikolovMoment() {
             fontFamily="Georgia, serif"
             fontSize="10"
             fontWeight="700"
-            fill="var(--color-ink)"
+            fill="var(--color-paper-ink)"
           >
             Abstract
           </text>
@@ -240,7 +240,7 @@ export function MikolovMoment() {
             fontFamily="Georgia, serif"
             fontSize="12"
             fontStyle="italic"
-            fill="var(--color-ink)"
+            fill="var(--color-paper-ink)"
           >
             king − man + woman ≈ queen
           </text>
