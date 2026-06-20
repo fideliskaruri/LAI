@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { Canvas, useFrame, type RootState } from '@react-three/fiber'
 import * as THREE from 'three'
+import { PALETTE_3D } from '../../lib/palette3d'
 
 /**
  * The actual three.js scene for the nD leap (states nd-2 and nd-3).
@@ -49,9 +50,10 @@ export default function NDLeapScene3D({ fadeAxes, showNumbers, numbers }: Props)
 }
 
 function Axes({ opacity }: { opacity: number }) {
-  // Three orthogonal lines, each unit-length
+  // Three orthogonal lines, each unit-length. Use graphFade so the axes
+  // read as the same secondary stroke as SVG grid lines elsewhere on the page.
   const mat = new THREE.LineBasicMaterial({
-    color: 0x2a2a2a,
+    color: PALETTE_3D.graphFade,
     transparent: true,
     opacity,
   })
@@ -91,16 +93,16 @@ function Arrow({ from, to }: { from: [number, number, number]; to: [number, numb
     <group>
       <mesh position={shaftPos.toArray()} quaternion={quat}>
         <cylinderGeometry args={[0.02, 0.02, shaftLength, 12]} />
-        <meshStandardMaterial color="#C44536" />
+        <meshStandardMaterial color={PALETTE_3D.vermilion} />
       </mesh>
       <mesh position={headPos.toArray()} quaternion={quat}>
         <coneGeometry args={[headRadius, headLength, 16]} />
-        <meshStandardMaterial color="#C44536" />
+        <meshStandardMaterial color={PALETTE_3D.vermilion} />
       </mesh>
       {/* Origin dot */}
       <mesh position={fromV.toArray()}>
         <sphereGeometry args={[0.04, 12, 12]} />
-        <meshStandardMaterial color="#ECE4D2" />
+        <meshStandardMaterial color={PALETTE_3D.ink} />
       </mesh>
       {/* Suppress unused-var lints by referencing mid */}
       <group position={mid.toArray()} visible={false} />

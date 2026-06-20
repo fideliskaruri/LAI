@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { Canvas, useFrame, type RootState } from '@react-three/fiber'
 import * as THREE from 'three'
+import { PALETTE_3D } from '../../lib/palette3d'
 
 /**
  * The 3D loss landscape for the Optimization chapter. Same surface as the
@@ -82,6 +83,9 @@ function LandscapeMesh() {
   return (
     <mesh geometry={geometry} rotation={[-Math.PI / 2, 0, 0]}>
       <meshStandardMaterial
+        // Warm parchment for the landscape — slightly desaturated from --color-ink
+        // so the descent ball (vermilion) and basin markers (ink) both pop off it.
+        // Not in PALETTE_3D: unique to this scene's surface material.
         color="#E2D4C2"
         metalness={0.05}
         roughness={0.85}
@@ -99,7 +103,7 @@ function BasinMarkers() {
       {[-1, 1].map((sx) => (
         <mesh key={sx} position={[sx, f(sx, 0) * Z_SCALE - 0.005, 0]}>
           <sphereGeometry args={[0.04, 16, 16]} />
-          <meshStandardMaterial color="#ECE4D2" />
+          <meshStandardMaterial color={PALETTE_3D.ink} />
         </mesh>
       ))}
     </group>
@@ -172,14 +176,18 @@ function DescentBall() {
     <group>
       <mesh ref={ballRef}>
         <sphereGeometry args={[0.06, 20, 20]} />
-        <meshStandardMaterial color="#C44536" metalness={0.1} roughness={0.55} />
+        <meshStandardMaterial color={PALETTE_3D.vermilion} metalness={0.1} roughness={0.55} />
       </mesh>
       <primitive
         ref={trailRef}
         object={
           new THREE.Line(
             trailGeometry,
-            new THREE.LineBasicMaterial({ color: 0xc44536, transparent: true, opacity: 0.7 }),
+            new THREE.LineBasicMaterial({
+              color: PALETTE_3D.vermilion,
+              transparent: true,
+              opacity: 0.7,
+            }),
           )
         }
       />

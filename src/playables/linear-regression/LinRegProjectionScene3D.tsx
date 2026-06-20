@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, type ReactElement } from 'react'
 import { Canvas, useFrame, type RootState } from '@react-three/fiber'
 import * as THREE from 'three'
+import { PALETTE_3D } from '../../lib/palette3d'
 
 /**
  * The 3D projection scene for the projection-interpretation act.
@@ -37,13 +38,16 @@ export default function LinRegProjectionScene3D() {
         <Arrow
           from={[0, 0, 0]}
           to={[2.1, 1.6, 0.5]}
-          colour="#C44536"
+          colour={PALETTE_3D.vermilion}
           label="y"
           thick={0.028}
         />
         <Arrow
           from={[0, 0, 0]}
           to={[2.1, 0, 0.5]}
+          // Mid-grey for the projection ŷ — intentionally neutral so the eye reads it as
+          // "the shadow of y on the plane", not as a second accent. Not in PALETTE_3D
+          // because no equivalent neutral mid-grey ships in the theme tokens.
           colour="#6B6B6B"
           label="Xβ̂"
           thick={0.022}
@@ -66,7 +70,7 @@ function ColumnSpacePlane() {
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
         <planeGeometry args={[4, 4]} />
         <meshStandardMaterial
-          color="#C44536"
+          color={PALETTE_3D.vermilion}
           transparent
           opacity={0.06}
           side={THREE.DoubleSide}
@@ -87,8 +91,8 @@ function PlaneGrid() {
     const b = new THREE.Vector3(HALF, 0, i)
     const c = new THREE.Vector3(i, 0, -HALF)
     const d = new THREE.Vector3(i, 0, HALF)
-    lines.push(<Line key={`a-${i}`} a={a} b={b} colour="#C44536" opacity={0.22} />)
-    lines.push(<Line key={`b-${i}`} a={c} b={d} colour="#C44536" opacity={0.22} />)
+    lines.push(<Line key={`a-${i}`} a={a} b={b} colour={PALETTE_3D.vermilion} opacity={0.22} />)
+    lines.push(<Line key={`b-${i}`} a={c} b={d} colour={PALETTE_3D.vermilion} opacity={0.22} />)
   }
   return <group>{lines}</group>
 }
@@ -96,7 +100,7 @@ function PlaneGrid() {
 function Line({
   a,
   b,
-  colour = '#ECE4D2',
+  colour = PALETTE_3D.ink,
   opacity = 1,
 }: {
   a: THREE.Vector3
@@ -186,7 +190,7 @@ function Arrow({
       </mesh>
       <mesh position={geom.basePos}>
         <sphereGeometry args={[0.04, 12, 12]} />
-        <meshStandardMaterial color="#ECE4D2" />
+        <meshStandardMaterial color={PALETTE_3D.ink} />
       </mesh>
     </group>
   )
@@ -223,7 +227,7 @@ function ResidualSegment({
   const meshes: ReactElement[] = dashes.map((pos, i) => (
     <mesh key={i} position={pos} quaternion={quat}>
       <cylinderGeometry args={[0.012, 0.012, dashLen, 8]} />
-      <meshStandardMaterial color="#C44536" transparent opacity={0.85} />
+      <meshStandardMaterial color={PALETTE_3D.vermilion} transparent opacity={0.85} />
     </mesh>
   ))
   return <group>{meshes}</group>
@@ -240,6 +244,8 @@ function RightAngleTick({ position }: { position: [number, number, number] }) {
   const c = new THREE.Vector3(p.x, p.y + e, p.z)
   return (
     <group>
+      {/* Mid-grey to match the projection arrow — they read as the same neutral family.
+          Not in PALETTE_3D for the same reason as the Xβ̂ arrow above. */}
       <Line a={a} b={b} colour="#6B6B6B" opacity={0.85} />
       <Line a={b} b={c} colour="#6B6B6B" opacity={0.85} />
     </group>
