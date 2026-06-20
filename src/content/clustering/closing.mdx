@@ -1,0 +1,21 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="closing" eyebrow="Six · Soft clusters are next">
+
+# Hard, soft, and what comes after
+
+So that's K-means.
+
+You drop `k` guesses on the plane. You repeat: assign every point to its nearest guess; move every guess to the mean of its followers. The loop is guaranteed to stop, the answer it stops at is locally stable, and the answer depends on where you started. With K-means++ and a few restarts you can shake most of the local-minimum problem out. With Voronoi cells you can read the boundaries off the picture. With Euclidean distance you can implement the whole thing in twenty lines of NumPy.
+
+What K-means *cannot* do &mdash; and what the next chapter is about &mdash; is express uncertainty.
+
+Look at the two panels on the left. The left panel is what you've been building this whole chapter: every point is exactly one colour, in exactly one cluster, no ambiguity. *Hard assignment.* It's clean. It's also a lie. Some points are right in the middle of two clusters and the algorithm pretends they aren't. The point closest to the boundary between vermilion and blue gets the same vermilion label as the point dead in the center of the vermilion cluster, even though one is a confident vermilion and the other is a coin flip.
+
+The right panel is the same data with the labels *blended*. Each point's colour is now a probability triple: "65 percent vermilion, 30 percent blue, 5 percent olive." The points in the middle of clusters are saturated. The points on the boundaries are muddy and ambiguous. The picture *tells you which decisions the algorithm was confident about*.
+
+Next chapter: **Gaussian Mixture Models**. The exact same loop &mdash; assign, update, repeat &mdash; but the assignment becomes a probability and the update becomes a weighted mean. K-means turns out to be the hard-assignment limit of GMM when the clusters all have the same shape and shrink to points. EM is Lloyd, with more uncertainty in its eyes.
+
+That's the chapter. Stuart Lloyd would be amused that we still teach his algorithm sixty years later. He died in 2007, the same year K-means++ was published.
+
+</Act>
