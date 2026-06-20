@@ -1,0 +1,27 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="momentum" eyebrow="Three · Rolling through bouncing">
+
+# A stretched canyon
+
+The bowl in the last two acts was perfectly symmetric. Real loss functions are not. Here is a stretched one — $f(x, y) = \tfrac{1}{2}x^2 + 5 y^2$. The $y$ coefficient is ten times the $x$ coefficient, which makes the bowl a *canyon*: shallow along $x$, steep along $y$. The level curves are *ellipses* squashed against the $x$-axis.
+
+Watch what plain gradient descent does on it. The gradient at $(x, y)$ is $(x, 10 y)$. The $y$ component is huge compared to the $x$ component, so the step is dominated by the $y$ correction. The ball lurches *across* the canyon, overshooting the floor, lurches back, overshoots again. Meanwhile its progress along the $x$ direction — the *long axis* of the bowl, where it actually needs to go — is painfully slow.
+
+This is called the *ill-conditioned* case. Formally: the Hessian of $f$ has eigenvalues $1$ and $10$. Their ratio, $10$, is the *condition number*. The larger the condition number, the more violently descent zig-zags. A real neural-network loss landscape can have a Hessian condition number in the millions; the picture you're looking at is a friendly toy.
+
+The fix has been known since the 1960s — Polyak (1964) called it the *heavy-ball method*, and it lives in modern code under the name *momentum*. The idea is to give the ball some *inertia*. Don't just step against the current gradient; remember which direction you were moving, and let that direction carry through to the next step. Algebraically, introduce a velocity:
+
+$$
+\mathbf{v} \;\leftarrow\; \beta\,\mathbf{v} \;-\; \eta\,\nabla f, \qquad \mathbf{x} \;\leftarrow\; \mathbf{x} + \mathbf{v}
+$$
+
+The new parameter $\beta$ (typically between $0.8$ and $0.99$) is the *momentum coefficient*. When $\beta = 0$ this is exactly vanilla gradient descent — the slider in front of you starts there for comparison. As $\beta$ rises, the bouncing across the canyon damps out — opposite-direction velocity contributions cancel — while the *along-canyon* velocity, where each step adds to the last, accumulates and *rolls*.
+
+Slide $\beta$ up to $0.9$. The vivid vermilion trajectory rolls along the canyon floor and finds the bottom in a fraction of the steps. The faded vermilion trajectory — vanilla GD — is still bouncing. The teaching is in the comparison.
+
+(There is a beautiful intuition for why this works, which I find I never stop returning to. Imagine the ball as physical — sitting in an actual bowl, subject to actual gravity, with a small amount of friction. Vanilla gradient descent treats the ball as if it had *no mass*: each step is purely a response to the local slope. Momentum gives the ball *mass*: it now has inertia, and inertia is a kind of memory. It remembers where it was going, and that memory averages over the local gradient noise. The bouncing cancels, the rolling persists. Stephen Boyd's lectures call momentum the single biggest practical win in optimization since the discovery of gradient descent itself.)
+
+Distill's 2017 essay *Why Momentum Really Works* by Gabriel Goh is the canonical interactive on this. It's also the bar we're trying to clear for this act, and we recommend reading it for the deeper analysis. We've left it at intuition here. There's more in the further reading.
+
+</Act>

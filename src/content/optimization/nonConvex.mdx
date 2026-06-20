@@ -1,0 +1,23 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="non-convex" eyebrow="Four · The real world">
+
+# Saddles, basins, and the wrong minimum
+
+The bowls of the last three acts have been *convex* — one minimum, smooth descent, no surprises. Here is a surface that isn't. $f(x, y) = x^4 - 2x^2 + y^2$ — a *double-well* in $x$ with a flat carry-along in $y$. Stand at the heatmap. Two pale spots, one centered at $(-1, 0)$ and one at $(+1, 0)$ — those are local minima, both at $f = -1$. In the middle, at $(0, 0)$, there is a *saddle point*: a place where the gradient is zero but the function is going up in one direction and down in another.
+
+Click anywhere on the heatmap. A descent trajectory runs from your click for sixty steps and lands somewhere. Click on the left half; it lands in the left basin. Click on the right; the right basin. Click near the $y$-axis; the trajectory drifts toward the origin and *gets stuck at the saddle* — because along the $y$-axis the gradient drives $y$ to zero, and once it's there, the gradient component in $x$ is also zero, and the algorithm reports victory at a point that is not a minimum at all. (Mathematically the saddle is *unstable*; a tiny perturbation would push the ball into one basin or the other. But gradient descent with a deterministic update and a starting point exactly on the $y$-axis has nothing to perturb it.)
+
+Click around. Make a tally. Most of your clicks land in one basin or the other, almost evenly. A few stick at the saddle. The lesson, written down by everyone who's ever trained a neural network, is:
+
+*In general, gradient descent finds a minimum. Not the minimum.*
+
+Which of the local minima the algorithm finds depends entirely on where you started. The mathematics doesn't see a difference between $(-1, 0)$ and $(+1, 0)$ — both are perfectly valid stationary points where the gradient vanishes and the second derivative is positive. The algorithm has no notion of *global*. It only sees *local*. If you start on the left, you go left. If you start on the right, you go right. Where you start is everything.
+
+(In practice, training a neural network is doing this in ten million dimensions. The loss surface has a constellation of local minima — billions of them, maybe — most of which are reasonably good. We don't usually find the *best* one. We find *a* good one. There's been a decade of debate in the field about whether the local minima of large neural networks are mostly equivalent (the *flat-minima* hypothesis) or whether some are radically better than others. The current consensus, give or take, is that wide overparameterized networks have *lots* of low-loss basins, most of which generalize about equally well, and the choice between them is more a matter of initialization, random data ordering, and luck than of optimizer cleverness.)
+
+We've been pretending throughout this chapter that gradient descent is the same algorithm in every situation. It mostly is. The wrinkles — *saddle escape*, *initialization schemes*, *learning rate schedules*, *batch noise as regularizer* — are all responses to the picture you're looking at now. Once you accept that the algorithm only sees the local landscape, the rest of practical optimization is engineering around that fact.
+
+Next, the picture in 3D — same surface, rotatable, so the saddle and the two basins are visually apparent.
+
+</Act>
