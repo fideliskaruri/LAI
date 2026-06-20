@@ -43,6 +43,28 @@ export function TopicPage({ topicId: _topicId, topicName, acts, canvas, children
 
   const currentActIndex = Math.max(0, acts.findIndex((a) => a.id === currentActId))
   const currentActNumber = currentActIndex + 1
+  const currentAct = acts[currentActIndex]
+
+  // Fullscreen overlay state.
+  const [fullscreen, setFullscreen] = useState(false)
+  const expandTriggerRef = useRef<HTMLButtonElement | null>(null)
+  const exitButtonRef = useRef<HTMLButtonElement | null>(null)
+
+  useEffect(() => {
+    if (!fullscreen) return
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setFullscreen(false)
+    }
+    window.addEventListener('keydown', handler)
+    exitButtonRef.current?.focus()
+    return () => {
+      window.removeEventListener('keydown', handler)
+      document.body.style.overflow = prevOverflow
+      expandTriggerRef.current?.focus()
+    }
+  }, [fullscreen])
 
   // Overflow popover (PLAN §5.8) — local UI state only. We keep a ref to the
   // `⋯` trigger so HeaderPopover can restore focus to it on close (Escape,
@@ -178,7 +200,21 @@ export function TopicPage({ topicId: _topicId, topicName, acts, canvas, children
 
       <div className="md:grid md:grid-cols-[55fr_45fr] md:gap-0">
         {/* Sticky canvas column */}
-        <div className="md:sticky md:top-0 md:h-[100svh] md:flex md:flex-col md:items-center md:justify-center px-6 md:px-8 py-12 md:py-0">
+        <div className="relative md:sticky md:top-0 md:h-[100svh] md:flex md:flex-col md:items-center md:justify-center px-6 md:px-8 py-12 md:py-0">
+          <button
+            ref={expandTriggerRef}
+            type="button"
+            onClick={() => setFullscreen(true)}
+            aria-label="Expand canvas to fullscreen"
+            className="absolute top-4 right-4 z-10 inline-flex items-center justify-center w-9 h-9 rounded-sm text-dim hover:text-vermilion hover:bg-cream-deep transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion"
+          >
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <polyline points="3 7 3 3 7 3" />
+              <polyline points="15 7 15 3 11 3" />
+              <polyline points="3 11 3 15 7 15" />
+              <polyline points="15 11 15 15 11 15" />
+            </svg>
+          </button>
           <div className="w-full max-w-[640px]">{canvas(currentActId)}</div>
 
           {/* Act position label — above the dots, updates on scroll */}
@@ -201,6 +237,56 @@ export function TopicPage({ topicId: _topicId, topicName, acts, canvas, children
           <div className="max-w-[580px]">{children}</div>
         </main>
       </div>
+
+      {fullscreen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Expanded canvas · ${topicName} · ${currentAct?.label ?? ''}`}
+          className="fixed inset-0 z-50 bg-cream flex flex-col"
+        >
+          <header className="flex items-center justify-between px-6 py-4 border-b border-graph-fade">
+            <div className="font-sans text-[11px] uppercase tracking-[0.22em] text-dim">
+              {topicName} · {currentAct?.label ?? ''}
+            </div>
+            <button
+              ref={exitButtonRef}
+              type="button"
+              onClick={() => setFullscreen(false)}
+              aria-label="Exit fullscreen (Escape)"
+              className="inline-flex items-center gap-2 text-dim hover:text-vermilion focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion rounded-sm px-2 py-1"
+            >
+              <span className="font-sans text-[11px] uppercase tracking-[0.22em]">Esc</span>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <line x1="3" y1="3" x2="13" y2="13" />
+                <line x1="13" y1="3" x2="3" y2="13" />
+              </svg>
+            </button>
+          </header>
+          <div className="flex-1 min-h-0 flex items-center justify-center px-8 py-6 overflow-auto">
+            <div className="w-full max-w-[1200px]">{canvas(currentActId)}</div>
+          </div>
+          <nav aria-label="Acts" className="flex items-center justify-center gap-3 pb-6">
+            {acts.map((a) => {
+              const active = a.id === currentActId
+              return (
+                <button
+                  key={a.id}
+                  type="button"
+                  onClick={() => setCurrentActId(a.id)}
+                  aria-label={a.label}
+                  aria-current={active ? 'true' : undefined}
+                  className={`
+                    w-[9px] h-[9px] rounded-full transition-all duration-150
+                    ${active ? 'bg-vermilion scale-110' : 'bg-fade hover:bg-dim'}
+                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion focus-visible:ring-offset-2 focus-visible:ring-offset-cream
+                  `}
+                />
+              )
+            })}
+          </nav>
+        </div>
+      )}
     </div>
   )
 }
