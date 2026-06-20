@@ -1,0 +1,46 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="integral-defined" eyebrow="Three · The limit, named">
+
+# The integral, defined
+
+We watched the staircase close on $f(x) = x^2$ over $[0, 3]$. As $n$ grows, the Riemann sum
+
+$$
+S_n = \sum_{i=0}^{n-1} f(x_i^*)\, \Delta x
+$$
+
+approaches a single number — $9$ — regardless of where in each strip we sampled. The *limit* of this sum, as $n \to \infty$ (equivalently, $\Delta x \to 0$), is the *definite integral* of $f$ from $0$ to $3$. We write it with Leibniz's long-S:
+
+$$
+\int_0^3 x^2 \, dx = \lim_{n \to \infty} \sum_{i=0}^{n-1} f(x_i^*) \, \Delta x = 9
+$$
+
+That equality is the *definition*. The integral *is* the limit of Riemann sums. Not approximately; not heuristically; *literally*, in the same way the derivative is literally the limit of difference quotients.
+
+The symbols on the page are designed to remind you of the construction. The $\int$ is a tall thin $S$ for "sum." The $f(x)$ is the height of the strip. The $dx$ is the width of the strip — the limit of $\Delta x$ as $\Delta x \to 0$. Strung together they read: *sum of "height times width" of infinitely thin strips, between $a$ and $b$*. The notation carries the picture, just like Leibniz's $dy/dx$ carried the secant-tangent picture in the last chapter. He was very deliberate about this. Notation is a teaching tool.
+
+(I want to stop for a second and call out how *strange* this is, foundationally. We are summing infinitely many quantities, each of which is infinitesimally small. Their product — "infinity times zero" — is famously ill-defined. The integral *is* a meaningful number anyway, because the right way to think about it is not "the sum" but "the limit." The limit dodges the infinite-times-zero question entirely: at every finite $n$, $S_n$ is a perfectly ordinary finite sum of finitely many positive numbers. The limit is just *the number these finite sums approach*. There is no infinity in the computation, only in the description. This is the same dodge calculus uses for derivatives — the limit lets you talk about $0/0$ situations without dividing by zero.)
+
+The general definition is the same shape, just over an arbitrary interval $[a, b]$:
+
+$$
+\int_a^b f(x) \, dx = \lim_{n \to \infty} \sum_{i=0}^{n-1} f(x_i^*) \, \Delta x, \qquad \Delta x = \frac{b - a}{n}
+$$
+
+For this limit to *exist* (i.e., for $f$ to be *Riemann-integrable* on $[a, b]$), the function has to be tame enough that the sums actually converge as the partition gets finer, and that the limit doesn't depend on where you sample inside each strip. Continuous functions are fine. Functions with finitely many jumps are fine. Pathological constructions (the indicator function of the rationals, for instance) are *not* — Riemann integration breaks down for them, and you have to upgrade to Lebesgue's 1902 definition. This is a real chapter in real analysis and not our problem here; for the engineering you and I will do, everything is Riemann-integrable.
+
+Two notational variants you'll encounter and shouldn't be surprised by:
+
+- *Indefinite integral.* If you write $\int f(x)\, dx$ *without* limits on the $S$, you mean an *antiderivative* — any function whose derivative is $f$. There's a family of them, differing by an additive constant. The next act spells out why.
+- *Lower vs. upper limits.* If $b < a$, you flip the sign: $\int_b^a f = -\int_a^b f$. This convention makes a lot of later algebra cleaner, especially for the chain rule of integration we'll see below.
+
+Push the slider on the canvas hard. Watch the numerical value of $S_n$ close in on $9.0000$. Around $n = 100$, the gap is around $5 \times 10^{-4}$, and around $n = 200$ it's down to about $10^{-4}$. The midpoint-rule convergence is $O(1/n^2)$, which is fast but not magical — that's why scientific libraries reach for Simpson's rule when they need more accuracy per evaluation, but for educational purposes the picture on the canvas is enough.
+
+(Footnote about the value $9$. You can compute it analytically once you know the *power rule for integrals*, which falls out of the Fundamental Theorem we'll meet next: $\int x^2 \, dx = x^3 / 3 + C$, and $\int_0^3 x^2 \, dx = 3^3/3 - 0^3/3 = 27/3 - 0 = 9$. Two lines. No Riemann sums. The miracle of the Fundamental Theorem is that *differentiating $x^3/3$ gives you back $x^2$* — and that fact lets you bypass the limit construction entirely for a vast family of functions. It is, by some measure, the single most useful theorem in all of mathematics. The next act explains why.)
+
+Two things to take with you. First: the integral is *the limit of Riemann sums*, full stop. That's the definition. Every other property — linearity, additivity over intervals, the Fundamental Theorem — falls out of it. Second: Leibniz's notation $\int_a^b f(x)\, dx$ encodes the construction directly into the symbol. Read it as "sum heights times widths, over the strips between $a$ and $b$, in the limit." Carry that picture in your head every time you see an integral sign.
+
+Now: the magic step. Why does *differentiating* $x^3/3$ give you back $x^2$? And why is *that* the right way to compute integrals? The fundamental theorem is next.
+
+</Act>

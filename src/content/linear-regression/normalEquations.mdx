@@ -1,0 +1,39 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="normal-equations" eyebrow="Six · The closed form">
+
+# The formula Legendre and Gauss were arguing about
+
+Here it is, in matrix form, on the right pane:
+
+$$
+\boldsymbol{\beta} \;=\; \big(\mathbf{X}^{\mathsf T}\mathbf{X}\big)^{-1}\, \mathbf{X}^{\mathsf T}\, \mathbf{y}
+$$
+
+This is the famous one. Every statistics book in the world has it. It looks intimidating until you take it apart, at which point it becomes one of the more honest formulas in mathematics: it says exactly what it does and doesn't hide anything.
+
+**y** is the vector of weights. We measured twelve people; **y** is a column of twelve numbers. If anyone has a question about what y means, you can point at the right pane and they can see it: just the weight column, with brackets around it.
+
+**X** is the *design matrix*. Each row corresponds to one person; the first column is all ones (so the formula has an intercept to play with), and the second column is that person's height. So **X** is twelve rows by two columns. The two columns are the *features* we're using to predict y. (If we had a second predictor &mdash; say, age &mdash; **X** would have three columns.)
+
+**&beta;** is what we're solving for: the column of two numbers (&beta;<sub>0</sub>, &beta;<sub>1</sub>) that minimises SSE. The formula spits them out directly.
+
+That leaves the middle: **X**<sup>T</sup>**X** is a 2&times;2 matrix you build by multiplying the transpose of **X** by **X** itself; **X**<sup>T</sup>**y** is a 2&times;1 column you build by multiplying the transpose of **X** by **y**. The formula says: invert the first, multiply by the second.
+
+Where does it come from? Take the two partial-derivative-equals-zero equations from the last act, write them out, and observe that they can be packaged compactly as
+
+$$
+\mathbf{X}^{\mathsf T} \mathbf{X} \, \boldsymbol{\beta} \;=\; \mathbf{X}^{\mathsf T} \mathbf{y}
+$$
+
+These are *the normal equations*. They're a linear system: two equations in two unknowns. We solve them by inverting **X**<sup>T</sup>**X** on the left. That's the formula.
+
+The line on the left is the result. With (&beta;<sub>0</sub>, &beta;<sub>1</sub>) computed from the formula, you get one specific line through the scatter &mdash; the *best* one in the squared-error sense. Drag it if you like; it won't move, because there's nothing to drag. The closed-form answer is unique. The bars-and-eye exercise from earlier acts is now a calculation you don't have to do, because Gauss did it for you in 1801 and Legendre published it in 1805.
+
+(A side note on the word "normal." It does *not* mean "average" or "typical." It means "perpendicular." The normal equations get their name because they encode a perpendicularity condition &mdash; the residuals are perpendicular to the columns of **X**. We'll see that picture in the next act, which is where the chapter's punchline lives.)
+
+One practical wrinkle. The formula has (**X**<sup>T</sup>**X**)<sup>&minus;1</sup> in it, which requires that **X**<sup>T</sup>**X** be invertible. For our toy problem that's fine; for real datasets it isn't always. If two of your features are perfectly correlated &mdash; say, you accidentally include both "height in centimetres" and "height in inches" as columns of **X** &mdash; then **X**<sup>T</sup>**X** becomes *singular* (rank-deficient, non-invertible) and the formula falls apart. The Optimization chapter and the SVM chapter both touch on what you do in that case. The standard remedies are *regularization* (add a small &lambda;**I** to **X**<sup>T</sup>**X**, which is *ridge regression*) and *pseudoinversion* (the Moore-Penrose pseudoinverse, which uses the SVD to handle the rank-deficient case gracefully). All of those wait for chapters down the road.
+
+For us, here, with twelve height-weight pairs: the formula works, the line on the left is the answer, and we're in a position to look at *why* the formula is what it is.
+
+</Act>

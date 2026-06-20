@@ -1,0 +1,27 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="pc1-and-pc2" eyebrow="Three · Two perpendicular axes">
+
+# The second axis is free
+
+The left pane has both axes now. PC1, in vermilion, is the one you found a minute ago — the direction of largest variance. PC2, in dim grey, is *perpendicular* to PC1, and it points along the direction of the next-largest variance. In two dimensions there's only one direction left after you've fixed PC1, so PC2 is forced.
+
+The right pane has the two variances as bars. PC1 is tall; PC2 is short. The readout at the bottom turns those numbers into a sentence: *PC1 explains this percent of the total variance, PC2 explains the rest.*
+
+A few things to register.
+
+*One: PC2 is perpendicular to PC1.* Not nearly perpendicular. *Exactly* perpendicular. That's not a quirk of this particular cloud — it's a theorem about symmetric matrices that we proved in the previous chapter. The covariance matrix is symmetric (the off-diagonals are both equal to the average of x times y), so its eigenvectors are mutually perpendicular. PC1 and PC2 are eigenvectors of the covariance. So they're perpendicular. This is the same Cauchy result from 1829 that we used to set up eigenvalues. It's still working.
+
+*Two: the two variances add up to the total variance of the cloud.* If you summed the variance of x with the variance of y, you'd get the same number as PC1's variance plus PC2's. The total spread is conserved; what PCA does is *re-attribute* the spread to a new pair of axes. In Pearson's phrasing, you're not changing the data, you're changing the frame.
+
+*Three: the cloud has a natural fingerprint.* Once you have the two axes and the two variances, you have a remarkably compact summary of the cloud — two unit vectors (four numbers, but really only two angles between them — and the angles are fixed by perpendicularity) plus two scalars. That's it. The shape of the cloud is captured in four numbers.
+
+This last point is the one the right pane is shouting about. PC1 carries something like ninety percent of the variance for this cloud; PC2 carries about ten percent. If you had to summarize each point by a single number — its coordinate along *one* axis — you'd choose its PC1 coordinate, and you'd be capturing nine-tenths of the cloud's geometric content. The PC2 coordinate is a small refinement on top of that.
+
+That tradeoff — drop a coordinate, lose a little — is the seed of every dimensionality-reduction algorithm in the field. We'll spend an act on it in two more screens. But the *fact* you should hold onto right now is the picture: a tilted cloud, two perpendicular vermilion arrows, two bars in a very lopsided ratio. The longer the cloud, the more lopsided the bars; the rounder the cloud, the more equal they get. A perfectly round cloud has bars of identical height — and in that case, PCA has nothing to tell you, because no direction is special.
+
+This is the picture Pearson had in his head when he wrote *On Lines and Planes of Closest Fit*. Hotelling, three decades later, would systematize it for the case of more than two variables. The arithmetic gets bigger but the picture is the same: every cloud has axes, the axes are perpendicular, and the variance attached to each axis tells you how much that axis matters.
+
+Next, we open the hood and look at where these axes actually come from.
+
+</Act>

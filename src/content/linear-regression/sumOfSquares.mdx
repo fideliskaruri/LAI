@@ -1,0 +1,29 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="sum-of-squares" eyebrow="Four · Why squared, not absolute">
+
+# Squares
+
+Look at the right pane. There's a tiny toggle in the top corner: &Sigma;|r| or &Sigma;r². Click between them. With &Sigma;|r| you see the same bars as before. With &Sigma;r², each bar becomes a *square* &mdash; literally a square whose side length equals the residual. The total area of all twelve squares is the quantity we're now trying to make small.
+
+The math, written down:
+
+$$
+\text{SSE} \;=\; \sum_{i=1}^{n} \, \big( y_i - \beta_1 x_i - \beta_0 \big)^{2}
+$$
+
+SSE stands for *sum of squared errors*. (Some books call it RSS, residual sum of squares. Same thing.) Minimising SSE over the choice of (&beta;<sub>0</sub>, &beta;<sub>1</sub>) is what people mean when they say *ordinary least squares*, OLS &mdash; the technique Legendre published in 1805 and Gauss had been using since 1795.
+
+Drag the line again, now with &Sigma;r² selected on the right. You'll feel the difference: large residuals dominate more aggressively. A point that's twice as far from the line as another point contributes *four times* as much to the total, not twice. That's the first reason to use squares: outliers pull harder. Whether that's a virtue or a vice depends on your data. If your outliers are real (a few unusually heavy people who genuinely belong in the dataset), least squares will move the line toward them more than &Sigma;|r| would. If your outliers are errors (someone wrote down their weight wrong by a factor of two), least squares will overreact to them. There's a whole sub-field of statistics called *robust regression* that grew up around this trade-off.
+
+But that's not the real reason squares won.
+
+The real reason squares won is that squaring is *smooth*. The function f(r) = r² has a derivative everywhere: 2r. The function f(r) = |r| does too, *except* exactly at r = 0, where it has a corner. That corner sounds like a minor footnote until you ask the question we're going to ask in the next act: *where does the total reach its minimum?* For a smooth, bowl-shaped function, the minimum is the unique place where the derivative is zero, and you can solve for it with one line of algebra. For a piecewise-linear function with corners, the minimum can sit *at* a corner, where the derivative doesn't exist, and finding it requires fundamentally different machinery (linear programming, or the simplex method, neither of which existed until the 1940s).
+
+Legendre and Gauss did not have linear programming. They had calculus. Squaring made the problem solvable; absolute values would have made it solvable in principle but unsolvable in practice. They went with squaring, and the entire rest of statistical model-fitting inherited the choice.
+
+There's also a *probabilistic* reason that comes from later in the story &mdash; if you assume the noise in your y values is Gaussian, then minimising SSE is exactly equivalent to picking the line of maximum likelihood under that model. Gauss noticed this too, in the *Theoria motus*. It's the kind of beautiful coincidence that, in hindsight, looks inevitable. We'll meet maximum likelihood properly in the Distributions and Logistic regression chapters.
+
+For now: squares are smooth, they have a derivative everywhere, and that's why the next act works.
+
+</Act>

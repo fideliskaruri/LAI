@@ -1,0 +1,37 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="riemann-sums" eyebrow="Two · Bracketing with rectangles">
+
+# The staircase that closes
+
+Here is the move, in modern dress. Take the interval $[0, 3]$ and chop it into $n$ subintervals of equal width $\Delta x = 3 / n$. On each subinterval, stick up a rectangle whose height is $f$ evaluated at *some* point inside it. Add up the rectangle areas. The total is called a *Riemann sum*:
+
+$$
+S_n = \sum_{i=0}^{n-1} f(x_i^*) \cdot \Delta x
+$$
+
+The $x_i^*$ is the sampling point inside the $i$-th subinterval. The choice matters less than you might think. Drag the slider on the canvas to change $n$, and use the tabs to swap between three natural choices for the sampling point:
+
+- **Left endpoint**: $x_i^* = i \cdot \Delta x$. The rectangle sits at the left edge of its strip. For an *increasing* function like $x^2$ over a positive interval, this *undershoots*.
+- **Right endpoint**: $x_i^* = (i+1) \cdot \Delta x$. The rectangle sits at the right edge. For an increasing function, this *overshoots*.
+- **Midpoint**: $x_i^* = (i + \tfrac{1}{2}) \cdot \Delta x$. The rectangle sits in the middle. For nice functions, this is by far the most accurate per-rectangle.
+
+Try it. Start at $n = 4$, left endpoint. The sum is about `5.06` — way under 9. Swap to right endpoint; the sum jumps to about `11.81` — way over. Swap to midpoint; you get `8.91` — already much closer to the truth.
+
+Now push $n$ up to $30$. All three sums close in on the same neighbourhood of 9. At $n = 100$, you have something indistinguishable from 9 to two decimals. *The choice of sampling point stops mattering as the strips get thinner.* This is the key fact: regardless of where in each strip you sample, the limit is the same. That's what makes the limit well-defined.
+
+(The Greeks' staircase argument lives inside this picture, by the way. The left-endpoint sum on an increasing function is an *inscribed* staircase — it stays below the curve. The right-endpoint sum is *circumscribed* — it stays above. The squeeze closes, and the integral sits between. Archimedes was here.)
+
+The act of choosing a single sampling rule and computing $S_n$ — *that's* a Riemann sum. The act of taking the limit as $n \to \infty$ — *that's* the integral. We'll do that limit explicitly in the next act, but you can already see it happening on the canvas: every time you double $n$, the sums get closer.
+
+(I want to mention Bernhard Riemann briefly because the construction is named after him, and the date is later than you'd think. Newton and Leibniz had the integral idea by the 1670s — Leibniz's notebook from October 1675 contains the first integral sign. But the *rigorous definition* of "the limit of these sums exists and is a single number" had to wait. It is Riemann, in his 1854 doctoral thesis at Göttingen, *Über die Darstellbarkeit einer Function durch eine trigonometrische Reihe* — "On the representability of a function by a trigonometric series" — who writes down exactly the construction on the canvas to the left: pick a partition, pick a sample point per subinterval, sum, take the limit. He needed it for a question about Fourier series; the integral is the side door. The dissertation was so groundbreaking that Riemann's adviser, Carl Friedrich Gauss, then in his late seventies and famously hard to impress, said publicly that it was "a creative, active, truly mathematical mind." Coming from Gauss, this is the kind of compliment a grad student dies for.)
+
+The sum has a name, but the *interesting* number is the limit. Watch the readout in the upper-left corner as you push $n$. The "gap" — the distance from $S_n$ to the true value of $9$ — shrinks roughly like $1/n$ for left and right rules, and like $1/n^2$ for the midpoint rule. The midpoint rule is *quadratically* better per doubling of $n$, which is why every numerical-integration library reaches for something midpoint-flavoured before it tries anything fancier. We'll meet a fancier version in Act Five (Simpson's rule, which fits a parabola through every three sample points and integrates *that*).
+
+The convergence is the proof that the integral exists. Once you've seen the three sums close in on the same number, you can stop worrying about whether the integral is well-defined for $x^2$ on $[0, 3]$ and just *name* the limit. The next act names it.
+
+A small comment on what the rectangles *are*, geometrically. Each rectangle has area $f(x_i^*) \cdot \Delta x$ — a *height* (the value of $f$ at the sample) times a *width* (the strip thickness). That product is the area you'd get if $f$ were *constant* across that strip. The integral is what you get when you let $\Delta x \to 0$, so the constant approximation becomes exact. *That* is what the long-S notation is hiding: an infinite sum of infinitesimally thin rectangles. $\int f(x)\, dx$ is exactly the same shape as $\sum f(x_i) \, \Delta x$, just with $\sum \to \int$ and $\Delta x \to dx$. Leibniz designed the symbols deliberately.
+
+Onto the limit, then. We've watched the bracket close. Let's name what's inside.
+
+</Act>

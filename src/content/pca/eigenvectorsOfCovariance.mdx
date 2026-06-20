@@ -1,0 +1,29 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="eigenvectors-of-covariance" eyebrow="Four · The same theorem as last chapter">
+
+# The covariance matrix and its eigenvectors
+
+The right pane has a matrix in it now. Two rows, two columns. The diagonal entries are the variance of x and the variance of y. The off-diagonal entries — and they're equal to each other — are the covariance of x and y, the average product of their deviations from their respective means. This is what's called the *covariance matrix* of the data and conventionally written Σ.
+
+It's symmetric. That's not a stylistic choice. It's structural: the covariance of x with y and the covariance of y with x are the same number, because both are computed from the same sum of products. Real, symmetric, two-by-two. That's the setting of the previous chapter.
+
+We proved there — or, more honestly, Cauchy proved it in 1829 and we played with the picture — that a real symmetric matrix has two real eigenvalues and two mutually perpendicular eigenvectors. The arrows on the left pane are those eigenvectors. The numbers on the right pane are the eigenvalues. *PCA is just the eigendecomposition of the covariance matrix.*
+
+That's the sentence. Once you have it, a lot of things fall into place at once.
+
+The eigenvectors are the principal axes — the directions you found by hand two acts ago. The eigenvalues are the variances along those axes — the heights of the bars you saw in the last act. The rotation that takes the cloud from its original orientation into its "natural" orientation, where the axes line up with PC1 and PC2, is the matrix whose columns are those eigenvectors. The whole story of PCA is the story of computing an eigendecomposition.
+
+Why does the eigendecomposition of Σ specifically give the directions of maximum variance? Here's the half-page version of the argument that Pearson gave in 1901 and that every linear algebra textbook gives now.
+
+The variance of the data projected onto a unit direction u is, by direct calculation, the quadratic form u<sup>⊤</sup>Σu. (Take the projections, square them, average them — that's a sum of u<sup>⊤</sup>x x<sup>⊤</sup>u over the data, which factors into u<sup>⊤</sup>Σu.) You want to maximize this over all unit vectors u. By Lagrange multipliers, the maximum is the largest eigenvalue of Σ, achieved when u is the corresponding eigenvector. The second-largest is achieved when u is the second eigenvector — restricted to the subspace perpendicular to the first one — and again equals an eigenvalue. And so on for d-dimensional data: there are d eigenvalues, d eigenvectors, d principal components, sorted by how much variance they carry.
+
+That's the algebraic engine. The pictures on the left and right are the same theorem in two different presentations.
+
+A sidebar callout at the bottom of the right pane names this explicitly: *Cauchy 1829, applied to data.* That's not a marketing slogan. That is the actual intellectual lineage. Cauchy proved spectral decomposition for matrices arising from the gravitational pull of planets. Pearson, seventy-two years later, took a cousin of the same theorem and applied it to matrices arising from biometric measurements. The matrix is different. The setup is different. The theorem is identical: real symmetric matrices have real eigenvalues and orthogonal eigenvectors.
+
+This is part of why the eigenvalue chapter is the prerequisite for this one. Without it, PCA looks like magic — somehow a particular rotation of the cloud aligns with the data's intrinsic axes. With it, PCA looks like accounting. The covariance is a real symmetric matrix; real symmetric matrices have orthogonal eigenvectors and real eigenvalues; that's where the axes come from.
+
+We have one more thing to do with this picture, which is to use it.
+
+</Act>

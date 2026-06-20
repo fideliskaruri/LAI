@@ -1,0 +1,31 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="calculus-on-loss" eyebrow="Five · The derivative finds the bottom">
+
+# The slope of the loss
+
+The picture on the right has changed shape. The bars are gone. In their place there's a smooth curve &mdash; a *parabola*. The horizontal axis is the line's slope &beta;<sub>1</sub>, running from somewhere slightly negative to about two. The vertical axis is SSE: the sum of squared errors that line would produce, if you used it on our twelve points. (The intercept &beta;<sub>0</sub> is being silently chosen behind the scenes to be the best it can be for each slope &mdash; otherwise the chart would be a surface in two dimensions instead of a curve in one, and I'd lose you.)
+
+Grab the vermilion dot. It's a slider that lives on the parabola. As you drag it left and right, the slope of the fit line on the left changes to match &mdash; left pane and right pane co-move. Try to land the dot at the bottom of the bowl.
+
+When you get there, three things happen at once. The line on the left settles into the best position the eye could find. The vermilion tangent line through the dot &mdash; the thing showing the *slope of the loss curve* &mdash; goes flat. And the readout in the corner switches to "MINIMUM" and reports the optimal &beta;<sub>1</sub>.
+
+The point is the picture, not the readout. *The minimum of SSE is the place where the derivative of SSE with respect to* &beta;<sub>1</sub> *is zero*. That's why the tangent goes flat. That's the *whole computational story* of how to find the best line.
+
+Writing it down. SSE is a function of two variables (&beta;<sub>0</sub>, &beta;<sub>1</sub>). The condition for a minimum &mdash; assuming the function is smooth and bowl-shaped, which it is &mdash; is that both partial derivatives vanish:
+
+$$
+\frac{\partial \, \text{SSE}}{\partial \beta_0} \;=\; 0
+\quad\text{and}\quad
+\frac{\partial \, \text{SSE}}{\partial \beta_1} \;=\; 0
+$$
+
+Two equations, two unknowns. You learned how to do this in calculus class &mdash; differentiate, set to zero, solve. The fact that the equations are *linear* in (&beta;<sub>0</sub>, &beta;<sub>1</sub>) &mdash; which they are, because differentiating a quadratic gives you a linear expression &mdash; means we can solve them with linear algebra. They have a unique solution. We can write it down in closed form.
+
+I want to be clear about what we're *not* doing here. We are not iteratively climbing down the loss surface, step by step, like a tiny ball rolling toward the bottom. That picture &mdash; *gradient descent* &mdash; is the picture that will run the rest of machine learning. But it's a picture we need when we *can't* write down the minimum in closed form. For linear regression, we don't need it; we have calculus and one piece of linear algebra and we're done.
+
+Optimization &mdash; the next chapter &mdash; is what we do when this trick breaks. The loss isn't a parabola, or there are millions of parameters and inverting a millions-by-millions matrix is infeasible, or both. For now, we have the easy case. The parabola has a unique bottom, we find it by setting the derivative to zero, and that gives us our regression formula. The next act writes down what the formula actually is.
+
+(One thing the chart hides: the parabola is the *projection* of a bowl-shaped surface in two dimensions onto one. The full picture is a bowl over the (&beta;<sub>0</sub>, &beta;<sub>1</sub>) plane. There's a single point at the bottom; that's the OLS estimate. The parabola you're sliding along is a slice through that bowl at the best-for-this-slope intercept. The full bowl, with two slopes' worth of degrees of freedom, is what we're solving for symbolically next.)
+
+</Act>

@@ -1,0 +1,29 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="find-the-axis" eyebrow="Two · Hunt the long direction by hand">
+
+# Where does the variance lie?
+
+On the left, the same cloud, with a candidate line through the origin. The line has a handle you can drag. As you rotate it, the line picks a direction in the plane. Every point in the cloud has a *projection* onto that line — the foot of the perpendicular from the point down to the line — and the small dashes on the line mark where those projections fall.
+
+On the right, a vertical bar. The bar grows and shrinks as you rotate. What it's plotting is the *variance of the projections*: how spread out the dashes are along the line.
+
+Try a few directions.
+
+Aim the line horizontal. The projections are just the x-coordinates of the points. The bar reads about as much variance as x has all on its own — a moderate amount, because x has some spread but the cloud isn't pointing along the x-axis.
+
+Aim it vertical. Now the projections are the y-coordinates. About the same height of bar, for the same reason.
+
+Now aim it at forty-five degrees, along the long axis of the cloud. The dashes stretch along the line, far apart, because that's the direction the cloud actually runs. The bar shoots up to its maximum. When it locks in to the very top, a vermilion halo lights up and the readout calls it: *PC1 found*. You have, by hand, found the *first principal component*.
+
+That's the whole game.
+
+The first principal component is the direction in which the projected data has the largest variance. Equivalently — and this is Pearson's observation from 1901 — it's the direction that minimizes the squared perpendicular distance from the points to the line. The two phrasings are the same because of a Pythagorean accounting: total spread = variance along the line + perpendicular distance squared, and total spread is a fixed property of the cloud, so maximizing the first term minimizes the second.
+
+(There's a small subtlety about the line passing through the origin, which is what we're doing here. In general PCA centres the data first — subtracts the mean of x from every x, the mean of y from every y — so the origin sits at the centre of mass of the cloud. With centred data the principal axes pass through the origin by construction. Our cloud is already centred, so the origin is already where it should be.)
+
+There's something physical about doing this with your hand that I want to flag. The variance bar is a single scalar. It depends on a single angle. You're climbing a one-dimensional landscape, looking for the peak, and there is exactly one. If you swing the line all the way around three hundred and sixty degrees you'll pass through the same maximum twice (the line at θ and at θ+180° are the same line, after all), but you won't find a second hill of equal height — only the smaller hill of the perpendicular direction. That's the principle the algebra in two acts will turn into a closed-form solution. By hand it feels like an optimization. Mechanically it's an eigenvalue problem. Same problem.
+
+The next act gives you the second axis automatically. The act after that explains why it falls out of the covariance matrix the way it does.
+
+</Act>

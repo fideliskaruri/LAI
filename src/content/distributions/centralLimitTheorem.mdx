@@ -1,0 +1,51 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="central-limit-theorem" eyebrow="Five · Why bell curves are everywhere">
+
+# Average anything, often enough
+
+Here is a fact that, the first time you encounter it, you don't quite believe.
+
+Take *any* probability distribution you like. A uniform distribution on $[0, 1]$. An exponential distribution with rate one. A wildly bimodal distribution that's half a spike at $0.2$ and half a spike at $0.8$. A skewed Beta distribution piled up near zero. Whatever shape you want, as bizarre as you want, with one mild condition that we'll discuss in a moment.
+
+Now repeat the following procedure: draw $n$ independent samples from your chosen distribution, compute their *mean*, and write down that one number. Do this many times. You'll get a long list of numbers — each one the sample-mean from a fresh batch of $n$ draws.
+
+Make a histogram of that list.
+
+Regardless of the shape you started with, the histogram of sample means will be *approximately Gaussian*. As $n$ grows, the approximation gets exact. The mean of the Gaussian is the mean of the original distribution; the standard deviation of the Gaussian is the original distribution's standard deviation divided by $\sqrt{n}$.
+
+That's the *central limit theorem*. CLT. It is the most surprising theorem in probability theory.
+
+Try it on the canvas. Pick the underlying shape — uniform, exponential, bimodal, skewed — and the canvas tells you what it looks like in the left panel. Each "draw" pulls $30$ samples from that shape and adds their mean to the right panel's histogram. The vermilion bell on the right panel is the *predicted* Gaussian: mean $\mu$ (whatever the underlying mean is), standard deviation $\sigma / \sqrt{30}$. After a few hundred draws, the right-panel histogram will hug the vermilion curve.
+
+Try the bimodal underlying. The left panel has two peaks separated by a valley. The right panel is unimodal and bell-shaped. The two peaks of the underlying *do not* show up in the histogram of means, because *the mean of a sample of $30$ from a bimodal distribution is almost never at one of the peaks* — it's almost always somewhere between them. The averaging operation crushes the two peaks together.
+
+Try the exponential underlying. The left panel is heavily right-skewed; you'd swear no bell could come out of it. The right panel is symmetric. The skew vanished. The averaging operation washed it out.
+
+This is what makes the CLT shocking: it doesn't matter what you put in. *The output shape is the same.* Sums and averages converge to a Gaussian regardless of the shape of the things you summed. The result is the closest thing in mathematics to alchemy.
+
+The formal statement, due in modern form to Pierre-Simon Laplace ($1810$), Aleksandr Lyapunov ($1901$), and Jarl Lindeberg ($1922$), is:
+
+Let $X_1, X_2, \ldots, X_n$ be independent samples from a distribution with mean $\mu$ and *finite* variance $\sigma^2$. Let $\bar{X}_n = \frac{1}{n}(X_1 + \cdots + X_n)$ be the sample mean. Then as $n \to \infty$,
+
+$$
+\frac{\bar{X}_n - \mu}{\sigma / \sqrt{n}} \;\xrightarrow{\;d\;}\; \mathcal{N}(0, 1).
+$$
+
+The standardised sample-mean converges *in distribution* to a standard normal. The only condition is *finite variance*. There are distributions with infinite variance — the Cauchy is the famous example — for which the CLT fails: averaging Cauchys gives you another Cauchy, not a Gaussian. But for any distribution with a well-defined and finite spread, the theorem holds.
+
+There's a story here that pays its way many times over.
+
+A great deal of what *looks* normally distributed in nature is normally distributed because it is *itself* a sum of many smaller random things. Adult human height: a sum of many genetic and environmental factors. Daily blood pressure: a sum of many homeostatic perturbations. Stock returns over a year: an aggregation of many smaller daily fluctuations. Measurement errors in an experiment: an aggregation of many small instrumental noises. *None of these underlying components needs to be normally distributed.* The Gaussian shape emerges from the act of summing, exactly as the CLT predicts.
+
+This is why Gauss was right to assume normally-distributed observational errors when he was finding Ceres in $1801$. The errors in observing a tiny moving asteroid through the atmosphere are themselves aggregations: atmospheric turbulence plus instrumental jitter plus reading-the-vernier-scale plus the observer's eyes plus the cold making his hands shake. Each component small, each component random; by the CLT, their sum should be Gaussian. Gauss didn't know the theorem in this generality — that would come later, with Laplace — but he had the right intuition. The bell curve was the natural shape for noise.
+
+It is also why, in machine learning, the *residuals* of a well-specified model are usually approximately Gaussian. If the model captures the systematic part of the relationship, what's left is a sum of many small unmodelled effects, and the CLT does the rest. We'll use this every time we set up a linear regression in the next chapter.
+
+Two cautions. The first: "converges in distribution" is *not* the same as "is identical to." For small $n$, the sample-mean distribution can be visibly non-Gaussian — especially when the underlying is heavily skewed or has a fat tail. The CLT is an *asymptotic* statement; in practice, $n$ in the dozens is often enough for the approximation to be excellent, but you should check. The second caution: the *finite-variance* condition is not optional. There are real-world data — stock-market crashes, internet traffic spikes, neural activity bursts — that behave more like fat-tailed Pareto distributions than like Gaussians, and applying CLT-style reasoning to them can be dangerous. When normality fails, it tends to fail at the tails, exactly where you most need it.
+
+But within its domain of validity — which is most of nature — the central limit theorem is why the Gaussian is the *default* distribution of applied science. Anything you average enough times eventually gets there. The bell curve isn't everywhere because nature is generous; it's everywhere because the *act of averaging* generates it.
+
+Next we close the chapter and start using the curves.
+
+</Act>

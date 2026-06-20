@@ -1,0 +1,21 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="the-cloud" eyebrow="One · A correlated swarm">
+
+# Two measurements, not quite independent
+
+On the left, a hundred and eighty points sampled from a tilted Gaussian. On the right, the first sixteen of them written out as numbers, the way a computer would actually receive them: a column of x's and a column of y's, nothing more.
+
+The first thing to notice about the picture is that it is *not* a round cloud. It's stretched. The points run from lower-left to upper-right along a diagonal, with a thinner spread perpendicular to that. If you had to describe the cloud to someone over the phone, you'd reach for the word *correlated*. When x is large, y tends to be large. When x is small, y tends to be small. That's a statement about the *joint* behaviour of the two coordinates that you can't read off either coordinate alone.
+
+The number system that captures this is the *covariance*. We met it briefly in the chapter on expectation. Recall: the variance of a single variable is the average squared distance from its mean. The covariance of *two* variables is the average product of their distances from their means. If x and y tend to be above their means together and below them together, the covariance is positive; if they tend to swing in opposite directions, it's negative; if they're independent, the average product cancels out and the covariance is zero.
+
+For this cloud, the covariance is unambiguously positive. You can see it without computing anything — the swarm tilts up to the right. We're going to compute it explicitly in a few acts, but first we have a more naive question to ask.
+
+Here's the right way to feel the shape of what's coming. Picture yourself shrinking down inside the cloud, standing at the centre of mass, and slowly turning. Some directions you can see *a lot* of points stretching away from you — the cloud is long in those directions. Other directions, the points are right up against your face — the cloud is short in those directions. The cloud has a *shape*, and the shape has *axes*, and PCA is going to be the question of how to find those axes from the numbers alone, without your eye.
+
+The list on the right is what the computer has. Just numbers. No tilted axis, no diagonal, no Gestalt grouping. From those numbers, somehow, we have to recover the picture on the left. That's the work.
+
+(A small thing to note. Pearson sometimes had data with thirty or forty variables — body measurements, shell measurements, weather measurements. The picture on the left, two coordinates in a plane, is the case where we can still see by eye what the answer ought to be. The whole reason PCA matters is that the same algebra survives unchanged in thirty dimensions, where the eye gives up. Two dimensions is where we earn the trick. Higher dimensions is where we cash it in.)
+
+</Act>

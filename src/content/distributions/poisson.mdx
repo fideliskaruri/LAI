@@ -1,0 +1,43 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="poisson" eyebrow="Four · Rare events">
+
+# What arrives, on its own schedule
+
+Server requests, radioactive decays, customers walking into a shop, mutations in a stretch of DNA, lightning strikes in a county, typos in a manuscript, false-positive alarms on a smoke detector. All these things share a shape, and that shape was named in $1837$, in a Paris monograph on the application of mathematics to civil and criminal law, by Siméon-Denis Poisson.
+
+Here's the situation Poisson had in mind. Some kind of event can happen at any moment, but on any given attempt it's *rare*. We don't know exactly when each event will happen, only that on average there are $\lambda$ of them per unit time (or per unit space, or per unit gene length — the units don't matter). What is the distribution of the *number* of events you'll see in one unit?
+
+The answer is the *Poisson distribution*:
+
+$$
+P(K = k) = \frac{\lambda^k\, e^{-\lambda}}{k!}, \qquad k = 0, 1, 2, \ldots
+$$
+
+Drag the slider for $\lambda$ on the right. Three regimes are worth watching.
+
+At small $\lambda$ — say $\lambda = 0.5$ — most of the probability lives at $k = 0$. You usually see *no* events in a unit. Occasionally one. Rarely two. The distribution is *heavily right-skewed*.
+
+At moderate $\lambda$ — say $\lambda = 4$ — the distribution has a recognisable peak near $k = 4$, but it's still asymmetric: a long tail to the right (more rare events than expected) but no possible mass to the left of zero. You can't have $-1$ events.
+
+At large $\lambda$ — say $\lambda = 20$ — the histogram looks like a Gaussian centred at $\lambda$ with standard deviation $\sqrt{\lambda}$, and that's not a coincidence. The Poisson is the *rare-event limit of the binomial*: if you flip $n$ coins where each has probability $p = \lambda / n$ of heads, and you let $n \to \infty$ with $\lambda$ held fixed, the binomial PMF converges to the Poisson PMF. So when $\lambda$ itself is large, the Poisson has already had a chance to become approximately Gaussian — for the same reason the binomial does.
+
+Two remarkable identities make the Poisson easy to live with. Its mean is $\lambda$, and *its variance is also $\lambda$*:
+
+$$
+E[K] = \lambda, \qquad \mathrm{Var}[K] = \lambda.
+$$
+
+Mean equals variance. The standard deviation is $\sqrt{\lambda}$. This is unusual: most distributions have two independent parameters governing centre and spread. The Poisson has just one. If the mean number of events you expect doubles, the standard deviation only grows by $\sqrt{2}$. Concretely: a server that handles an average of $100$ requests per second will, in any given second, handle something like $100 \pm 10$ — the standard deviation is $\sqrt{100} = 10$. Plan capacity accordingly.
+
+This *fixed relationship* between mean and variance is also a *test*: if you suspect your data is Poisson, you can sanity-check by computing both the empirical mean and empirical variance and seeing whether they're close. If the variance is much larger than the mean (a phenomenon called *over-dispersion*), then events aren't really independent — there's some clustering or burstiness — and a Poisson is the wrong model. Network packet arrivals often violate Poisson in this way: arrivals come in bursts because retries pile up, so the variance is far larger than the mean.
+
+Three properties make the Poisson a tool, not just a histogram. First, *sums of independent Poissons are Poisson*: if $K_1 \sim \mathrm{Poisson}(\lambda_1)$ and $K_2 \sim \mathrm{Poisson}(\lambda_2)$ are independent, then $K_1 + K_2 \sim \mathrm{Poisson}(\lambda_1 + \lambda_2)$. So if requests to your server arrive at rate $\lambda$ per second, requests in a five-second window are $\mathrm{Poisson}(5\lambda)$. Counts compose. Second, the *time between successive events* in a Poisson process is *exponentially distributed* with rate $\lambda$ — that is, $P(\text{wait} > t) = e^{-\lambda t}$, and the average wait is $1/\lambda$. Counts and waits are two sides of the same coin. Third, in any short interval $[t, t + \Delta t]$, the probability of *exactly one* event is approximately $\lambda \Delta t$ and the probability of *two or more* is $O(\Delta t^2)$ — vanishingly small. This last property — at most one event in a tiny interval — is the *defining axiom* of a Poisson process.
+
+Poisson's original $1837$ monograph was titled *Recherches sur la probabilité des jugements en matière criminelle et en matière civile*, and his motivating problem was the rate at which juries convicted the innocent. He calculated the probability that a wrongful conviction would happen in a year of trials, given an estimated rate per trial. That's the Poisson, doing the same job a server-capacity planner does today: turning a rate into a distribution over counts.
+
+In machine learning, the Poisson shows up wherever something is counted: word-counts in a document, citations per paper, defects per silicon wafer, neural spikes per millisecond, items in a shopping cart. Whenever a model's output is a non-negative integer and there isn't an obvious cap, the Poisson is usually the first distribution to reach for.
+
+We've now seen two beautiful continuous-or-discrete distributions: the normal and the Poisson. The remaining act of the chapter answers the question both of them implicitly raise. *Why do these particular shapes keep showing up?*
+
+</Act>

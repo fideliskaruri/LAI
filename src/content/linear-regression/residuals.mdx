@@ -1,0 +1,29 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="residuals" eyebrow="Three · The gaps get a name">
+
+# Residuals
+
+The right panel just woke up. For every data point, it now draws a small vertical bar &mdash; from the point itself down (or up) to wherever the line says it should be. Those bars are called *residuals*, and they're the only thing this chapter is really about.
+
+A residual is a single number per point: the actual value minus the predicted value. If the data point sits above the line, the residual is positive; the bar is vermilion. If it sits below, the residual is negative; the bar is ink. The running readout in the top corner adds up the absolute values of all twelve residuals.
+
+Try this: drag the line. Watch the bars resize live. Find the position where the *total* &Sigma;|r| readout is as small as you can make it. Then drag past it &mdash; the total starts climbing again. You've just done minimisation by hand. The fact that there exists a "lowest" position means there's something we could solve for.
+
+There are two things to register here.
+
+First, residuals are *vertical*. They're not the perpendicular distance from each point to the line; they're the gap in the y-direction. This is a choice. The reason for the choice is that in our setup, x is the input (heights, which we just observe) and y is the output (weights, which we're predicting). If we get the prediction wrong, the wrongness is in y. Asking "how much did our weight prediction miss by?" makes physical sense. Asking "how far is the point from the line measured along the line's perpendicular?" makes geometric sense but not predictive sense. We're predicting weight, so we measure error in weight.
+
+Second, the readout adds up the *absolute values* of the residuals. We don't want positive residuals on one side to cancel negative residuals on the other; that would let us call a terrible line "perfect" just because its errors averaged out. Absolute values make every miss count as a positive number. The total is
+
+$$
+\sum_{i=1}^{n} \, |\, y_i - (\beta_1 x_i + \beta_0)\,|
+$$
+
+This sum is called the *L¹* error, or sometimes the *mean absolute error* (after dividing by n, which doesn't change which line wins). The line that minimises it is called the *L¹* fit. It's a perfectly legitimate way to define "best."
+
+It's just not the way Gauss did it. In the next act you'll see why.
+
+(While you're here, notice that the bars don't all have the same colour. Vermilion for above-the-line, ink for below. That's mostly so you can see at a glance which way the line is biased, but it's also a foreshadowing. The fact that residuals carry sign &mdash; that they're positive *or* negative &mdash; is going to matter the moment we start squaring them. Squaring kills the sign. That's not an accident; it's the whole reason we square.)
+
+</Act>

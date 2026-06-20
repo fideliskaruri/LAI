@@ -1,0 +1,25 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="cold-open" eyebrow="Zero · Legendre vs Gauss · 1805–1809">
+
+# The asteroid that disappeared, the formula that found it
+
+On the first day of the nineteenth century, a Sicilian monk named Giuseppe Piazzi was logging stars at his observatory in Palermo and noticed one that hadn't been logged before. He watched it for forty-one nights. On the forty-second night it slipped behind the sun, and that was that. Forty-one nights wasn't enough for the orbital mechanics anyone had: the standard methods needed long arcs. The asteroid, which Piazzi had named *Ceres* after the Sicilian goddess of grain, was lost.
+
+There was an enormous fuss. Olbers, Bode, Burckhardt, Lalande — half the astronomers in Europe spent the next eleven months trying to find Ceres again, each with their own predicted re-emergence point, and none of them agreed. The disagreement was bad enough that some astronomers were beginning to doubt Piazzi had seen a planet at all.
+
+Carl Friedrich Gauss was 24 years old in 1801, two years out of his doctorate, working in his attic. He took Piazzi's forty-one observations and, in a few weeks of frantic computation, fit an ellipse to them. He published the predicted re-emergence point in the *Monatliche Correspondenz*. On 7 December 1801, the astronomer Franz Xaver von Zach pointed a telescope where Gauss said to point it. Ceres was within half a degree.
+
+The technique Gauss used — fitting a curve by minimising the sum of squared errors between the curve and the observations — is the subject of this chapter. It's called *least squares*, and it's the simplest, oldest, most generally useful statistical method ever invented. The whole later edifice of regression, of model fitting, of *training* a neural network, sits on top of it.
+
+What Gauss didn't do, in 1801, was publish the method itself. He just used it, won the asteroid race, and kept the technique in his notebook. Four years later, in Paris, **Adrien-Marie Legendre** — sixty years old, looking at a similar curve-fitting problem for comets — published the same method in an appendix to his 1805 book *Nouvelles méthodes pour la détermination des orbites des comètes*. He called it *la méthode des moindres carrés*, the method of least squares, and gave a clean derivation.
+
+In 1809, Gauss published it too, in his enormous *Theoria motus corporum coelestium*. He worked through Ceres as the showcase example. And in a footnote he wrote that he had been using least squares since 1795 &mdash; ten years before Legendre's book. Legendre was livid. There followed twenty years of polite-but-sharp correspondence in which neither man would concede anything to the other. By the time both had died, the question of who'd thought of it first was settled by a kind of historical compromise: Legendre got the credit for publication, Gauss got the credit for the deeper theory and the Ceres triumph, and both names show up at the head of the modern technique.
+
+(If you're wondering whether Gauss was lying about 1795 — almost no one thinks so. His notebooks from the 1790s have the technique in them. He just didn't think it was worth publishing. Gauss had several whole branches of mathematics he didn't think were worth publishing.)
+
+On the left I've drawn a sketch of the orbit Gauss fit through the observations. The four dots near the bottom of the arc are roughly where the data was; the ringed dot at the top is where Gauss said to look. On the right is the actual title page of Legendre's 1805 book, where the method first appears in print.
+
+We're going to spend the next ten acts unpacking what that method actually does, what it costs, what it gives you, and why the picture it draws &mdash; perpendicular projection onto a subspace &mdash; will come back in every later chapter where things start to *learn*.
+
+</Act>

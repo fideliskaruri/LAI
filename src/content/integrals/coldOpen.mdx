@@ -1,0 +1,37 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="cold-open" eyebrow="Zero · Syracuse · Archimedes · c. 250 BCE">
+
+# The squaring of the parabola
+
+It's the third century BCE in Syracuse, a Greek colony on the east coast of Sicily, and Archimedes is sitting with a problem that nobody before him has solved. He has a parabolic segment — the region bounded by a parabola and a straight line cutting across it — and he wants to know its area. Not "roughly." Exactly.
+
+Two thousand years before Newton or Leibniz, with no calculus, no decimal notation, no algebra in the modern sense, he gets it. He proves that the area of the segment is exactly $\tfrac{4}{3}$ the area of the inscribed triangle. He writes it up in a treatise called *On the Quadrature of the Parabola* — what the Greeks called *tetragōnismos*, the squaring, by which they meant: producing a rectangle of equal area, with ruler and compass. The act of pinning down a curved region with a straight one.
+
+The method he uses is called the *method of exhaustion*, and the canvas to the left is its picture.
+
+Slot a few thin rectangles *inscribed* below the curve — short ones, never poking above it. Their total area is a lower bound on the true area of the segment. Slot a few thin rectangles *circumscribed* above the curve — tall ones, always covering it. Their total area is an upper bound. The true area is trapped between the two staircases. So far, no trick.
+
+The trick is the next move. Take twice as many rectangles, each half as wide. The inscribed total goes up. The circumscribed total goes down. The two bounds close in toward something — and Archimedes proves, with a careful double-reductio argument, that anything strictly less than $\tfrac{4}{3}$ of the inscribed triangle is *exceeded* by some inscribed staircase if you make $n$ big enough, and anything strictly greater is *undercut* by some circumscribed staircase. By elimination, the answer must be exactly $\tfrac{4}{3}$.
+
+That's the whole calculus, in one paragraph, written down in Doric Greek twenty centuries before Cambridge had a maths tripos.
+
+(There's a beautiful detail in the proof. Archimedes uses an *infinite geometric series* to compute the limit of his staircases — he writes down something equivalent to
+
+$$
+1 + \tfrac{1}{4} + \tfrac{1}{16} + \tfrac{1}{64} + \cdots = \tfrac{4}{3}
+$$
+
+— and sums it. The Greeks were so squeamish about completed infinities that he won't *say* the series sums to $\tfrac{4}{3}$; instead he proves by exhaustion that the answer cannot be anything else. The series itself doesn't get formally welcomed into mathematics until the seventeenth century. Archimedes was using it twenty centuries early and hiding the body.)
+
+The reason we're starting the chapter here, not in 1666 or 1684, is that the *idea* is older than calculus. Bracket a thing between approximations you can compute. Tighten the bracket. The thing inside is the answer. Newton and Leibniz did not invent that move. They invented the *machinery* — the difference quotient that turns the bracket into a limit, the symbolic notation that lets you crank out answers without going back to the geometry — and they generalised it to any function you can write down. But the idea, the move, the *picture*, is Archimedean.
+
+This chapter is the other half of the calculus. In the last chapter we asked: *given a function, what is its slope at a point?* This chapter asks: *given a function, what is the total accumulation under it across an interval?* They sound unrelated. They turn out to be inverse operations — the result is called the *Fundamental Theorem of Calculus*, and we'll prove it in Act Four. But the question we have to answer first is the one Archimedes set up. *What is the area under a curve?*
+
+A small note on what we're going to do. We'll set up the question on a clean example in the next act — $f(x) = x^2$ on $[0, 3]$, the same parabola we used in the last chapter. We'll bracket it with rectangles, watch the bounds close, and name the limit. We'll meet Riemann in the 1850s, who put the whole thing on a rigorous footing in his doctoral dissertation. We'll meet the Fundamental Theorem and see why it is one of the most surprising results in mathematics — *taking the slope* and *taking the total* are inverses. Then we'll do a real-world numerical case where there is *no* clean answer, and you have to compute with Simpson's rule.
+
+By the end you'll have the Leibniz long-S, $\int$, in your hands. It's a stylised letter S that started life in Leibniz's notebooks around 1675, for *summa*, the Latin for *sum*. Every elongated S you've ever seen in a calculus textbook traces back to him. Every probability density you'll meet in the next chapter integrates to one because of an integral. Every loss function gets minimised against an integral. Every expected value is an integral. The chapter is the gate to all of it.
+
+Onward, then. To the bracket, and the limit.
+
+</Act>

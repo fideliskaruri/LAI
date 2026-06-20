@@ -1,0 +1,45 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="normal" eyebrow="Three · Gauss's curve, fully">
+
+# Mean centres it, σ widens it
+
+We've earned the right to give the bell curve a formula.
+
+A random variable $X$ is *normally distributed* — or *Gaussian*, or *normal* — with mean $\mu$ and variance $\sigma^2$ if its probability density function is
+
+$$
+f(x) = \frac{1}{\sigma \sqrt{2\pi}} \exp\!\left(-\frac{(x - \mu)^2}{2\sigma^2}\right).
+$$
+
+We write $X \sim \mathcal{N}(\mu, \sigma^2)$. The whole shape is controlled by two numbers: $\mu$, the centre, and $\sigma$, the width. On the canvas, the two sliders correspond to exactly those two parameters. Slide $\mu$ and the bell glides left and right without changing shape. Stretch $\sigma$ and the bell widens and flattens — keeping the total area underneath it equal to $1$, because it has to.
+
+That last constraint is worth dwelling on for a moment. The factor $\frac{1}{\sigma \sqrt{2\pi}}$ out front isn't decorative. It's exactly what's required to make $\int_{-\infty}^{\infty} f(x)\, dx = 1$. Without it, the bell would have whatever area it pleased, and we couldn't read it as a probability density. The integral $\int_{-\infty}^{\infty} e^{-x^2/2}\, dx = \sqrt{2\pi}$ — sometimes called the *Gaussian integral* — is a fact about pure mathematics with no obvious reason to be true, and the cleanest proof of it uses a clever change to polar coordinates that you'll see in any analysis textbook. The $\sqrt{2\pi}$ in the normal density is an artefact of that integral.
+
+So the formula has two pieces and you should learn to read them separately. The exponent $-(x - \mu)^2 / (2\sigma^2)$ is a *squared distance from the mean*, scaled by $\sigma^2$. It tells you how *rapidly* the density falls off as you move away from $\mu$. Small $\sigma$ → exponential falls off fast → narrow, peaked bell. Large $\sigma$ → falls off slowly → wide, flat bell. The constant $\frac{1}{\sigma \sqrt{2\pi}}$ adjusts the *height* so the total area stays $1$ no matter what $\sigma$ is. Tall and narrow, or short and wide. Same area.
+
+The vermilion bands on the canvas are the famous $68$–$95$–$99$ rule. For *any* normal distribution, regardless of $\mu$ and $\sigma$:
+
+$$
+P(\mu - \sigma \le X \le \mu + \sigma) \approx 0.6827,
+$$
+
+$$
+P(\mu - 2\sigma \le X \le \mu + 2\sigma) \approx 0.9545,
+$$
+
+$$
+P(\mu - 3\sigma \le X \le \mu + 3\sigma) \approx 0.9973.
+$$
+
+About two-thirds of the probability mass is within one standard deviation of the mean. About ninety-five percent within two. About ninety-nine point seven within three. These three numbers are the most useful folklore in applied statistics: once you know $\mu$ and $\sigma$ for a normally-distributed quantity, you know — to within rounding — how surprised to be by any value you might see.
+
+Why does this distribution show up *everywhere*? There's a deep reason, which we'll prove in two acts — the central limit theorem — and there's a shallow practical reason, which is that the normal is the *easiest* continuous distribution to compute with. Its sum of independent normals is normal. Its conditionals are normal. Its marginals are normal. Its product with itself, after a small transformation, is normal. It is closed under almost every operation you'd care to perform, which means once you've assumed something is normal you can keep computing with it indefinitely without changing distribution. This makes the normal the lingua franca of statistical modelling — not because everything *is* normal, but because everything that *can be made* normal is much easier to work with than everything that can't.
+
+A note on the second parameter. The notation $\mathcal{N}(\mu, \sigma^2)$ uses $\sigma^2$ (the variance) as the second parameter, not $\sigma$ (the standard deviation). Different books are inconsistent about this. We'll always be explicit. When in doubt, ask "is this in squared units or original units?" — if squared, it's variance; if original, it's standard deviation. The density formula above takes $\sigma$ (original units). The notation $\mathcal{N}(\mu, \sigma^2)$ takes the variance. Annoying but standard.
+
+You can hold a Gaussian in your head as one object once you have the two numbers. That's the chapter's first piece of real *fluency*: read $\mathcal{N}(0, 1)$ and *see* a unit bell centred at zero with most of its mass between $-2$ and $+2$. Read $\mathcal{N}(170, 49)$ — a model of adult human height in centimetres, say — and *see* a bell centred at $170\,\text{cm}$ with $\sigma = 7\,\text{cm}$, so most adults are within a window of $156\,\text{cm}$ to $184\,\text{cm}$. Read $\mathcal{N}(0, 0.01)$ and see a tight spike at zero. The two numbers do all the work.
+
+Next we'll look at a different shape — one that's everywhere in computing infrastructure and biology — and then close with the theorem that explains why $\mathcal{N}$ is so unreasonably universal.
+
+</Act>

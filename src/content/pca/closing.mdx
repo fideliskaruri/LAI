@@ -1,0 +1,23 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="closing" eyebrow="Six · Why this idea is everywhere">
+
+# A nineteenth-century picture that quietly runs modern machine learning
+
+On the left, a small synthetic embedding — four clusters of points in two dimensions, with one cluster lit in vermilion as a forward link to the next chapter. On the right, an index card of three places PCA reappears under different names. Take them together and you have the reason this chapter sits where it does in the sequence.
+
+The clearest way to see how big PCA's footprint is, is to walk through a single biology example and a single language example.
+
+*Biology.* A modern gene-expression study might measure twenty thousand genes for each of a few hundred patients. Every patient is a point in twenty-thousand-dimensional space — and you cannot draw twenty thousand dimensions. The first move, before any clustering or classification or visualization, is almost always to run PCA on the patient matrix and keep the first two or three components. What comes out is a low-dimensional scatter that, often, separates patients into recognizable disease subtypes. The directions of PC1 and PC2 — read as patterns over the twenty thousand genes — turn out to be biologically meaningful: a set of co-expressed genes that turn on together in inflamed tissue, for instance, or a transcriptional program that distinguishes one tumour grade from another. The technique was applied to gene expression in the late 1990s and is now everywhere in single-cell biology.
+
+*Language.* Modern language models — the ones underwriting most of the AI conversation of the last few years — represent each word, or each fragment of a word, as a vector in a space of three hundred to several thousand dimensions. You can't look at a three-hundred-dimensional space. So when people want to visualize what a language model has learned, they almost always run a dimensionality-reduction technique (PCA, or its non-linear cousins t-SNE and UMAP) to flatten those vectors into the plane. The first principal component of word embeddings, famously, tends to capture something like word *frequency*; the second, something like *concreteness*. The cloud has axes, and the axes mean something. The same trick Pearson applied to crab carapaces a hundred and twenty-three years ago, applied to embedding vectors trained on the internet.
+
+Those are two examples. The right pane lists a third — *preprocessing*, the routine use of PCA as a first step in any pipeline where you have too many features for a downstream model to handle well. There are hundreds more. Image compression. Quantitative finance. Hyperspectral remote sensing. Climate science. Every field that has a *data matrix* — a table where rows are things and columns are measurements about those things — has a PCA story.
+
+There's a deeper reason this one idea has such reach, which is worth naming directly. The covariance matrix is one of the smallest descriptions of a dataset that captures *how features vary together*. A lot of modern machine learning, including the attention mechanism inside language models, can be read as a slightly more elaborate version of *figure out which directions in the data matter*. PCA is the linear version of that question. Embeddings are a learned, non-linear version of the same question. Attention is a position-dependent version. The intellectual lineage runs straight from Pearson's swarms of points to GPT.
+
+Strictly: we haven't shown you the *non-linear* version, or what to do when your data lives on a curved manifold instead of a flat one. Those refinements — kernel PCA, isomap, t-SNE, UMAP, autoencoders — are all later moves on the same chessboard. The board, the pieces, the opening move: Pearson, 1901.
+
+Next, we leave the geometry of *axes* and turn to the geometry of *groups*. Clustering takes the same kind of data you've been staring at and asks a different question: not *what direction do the points lie along*, but *which points belong together*. It's the next earned chapter.
+
+</Act>

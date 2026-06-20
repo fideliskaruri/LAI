@@ -1,0 +1,45 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="binomial" eyebrow="One · Coin flips">
+
+# The discrete bell
+
+Before there were continuous distributions there were discrete ones, and before there were complicated discrete distributions there was the simplest one of all: count the heads in $n$ flips of a coin.
+
+Let $K$ be the number of heads in $n$ independent flips of a coin that lands heads with probability $p$. The probability that exactly $k$ of those flips come up heads is
+
+$$
+P(K = k) = \binom{n}{k}\, p^{k} (1-p)^{n-k}, \qquad k = 0, 1, \ldots, n.
+$$
+
+This is the *binomial distribution*, written $\mathrm{Binomial}(n, p)$, and the formula has a clean derivation. Each specific sequence with $k$ heads and $n-k$ tails has probability $p^k (1-p)^{n-k}$. There are $\binom{n}{k}$ such sequences. Multiply.
+
+Drag the two sliders on the right. $n$ controls how many flips; $p$ controls the bias of the coin. The bar at $k$ is the probability of seeing exactly that many heads. Three things are worth watching as you play.
+
+First, the *mean*. The expected number of heads is
+
+$$
+E[K] = np,
+$$
+
+which lands the dotted vermilion line on the histogram exactly where you'd guess: at $p$ times $n$. This isn't a deep fact — it's just linearity of expectation from the last chapter, applied to the sum $K = X_1 + X_2 + \cdots + X_n$ where each $X_i$ is $1$ for heads and $0$ for tails. Each $X_i$ has expected value $p$. Sum of $n$ of them is $np$. Done.
+
+Second, the *spread*. The variance of $K$ is
+
+$$
+\mathrm{Var}[K] = np(1-p),
+$$
+
+which says something nice: a coin with $p = 0.5$ is the *noisiest* possible — its variance is maximised. A heavily biased coin ($p$ near $0$ or $1$) is much more predictable, because the answer is almost always "almost no heads" or "almost all heads." The variance formula bottoms out at zero at both ends. (Try it: drag $p$ to $0$ or to $1$ and the histogram collapses to a single bar. Zero variance, zero surprise.)
+
+Third — and this is the act that points to everything that comes after — the *shape*. At small $n$ the histogram looks like a discrete sequence of bars. At $n = 5$ you can practically count them. But as $n$ grows, even keeping $p$ fixed, the histogram smooths out into a recognisable shape: a discrete bell, peaked near $np$, with most of its mass within a few $\sqrt{np(1-p)}$ of the mean.
+
+That shape is not an accident. It is the discrete shadow of the Gaussian, and you are about to watch it become continuous.
+
+A historical aside, because it sets up the next act. Jakob Bernoulli's *Ars Conjectandi*, the same posthumous $1713$ book that gave us the law of large numbers, also worked out the binomial distribution in detail and computed its first few moments. He was the first person to take seriously the question: given that I know the rules of a chance event, what is the *distribution* of the number of times it happens in many independent trials? That question — at the time radical, because it asked about an entire shape rather than a single probability — is the start of distribution theory. The binomial is patient zero.
+
+A practical aside, because you'll meet it again in machine learning. Every time you have a classifier that outputs *yes/no* on each of $n$ examples, the *count* of "yes" predictions is binomial with some $p$ that depends on the model and the data. The confidence interval for accuracy on a test set is a binomial calculation. The variance $np(1-p)$ is why you need a few hundred examples in a test set before "$87\%$ accuracy" is a meaningful number rather than noise. The binomial is what's quietly counting underneath.
+
+In the next act, we let $n$ run.
+
+</Act>

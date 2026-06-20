@@ -7,6 +7,7 @@ import { Probability } from './routes/topics/Probability'
 import { Expectation } from './routes/topics/Expectation'
 import { Matrices } from './routes/topics/Matrices'
 import { Eigenvalues } from './routes/topics/Eigenvalues'
+import { Pca } from './routes/topics/Pca'
 import { Clustering } from './routes/topics/Clustering'
 import { Recall } from './routes/Recall'
 import { TestMDX } from './routes/__test/TestMDX'
@@ -25,6 +26,7 @@ export default function App() {
         <Route path="/expectation" element={<Expectation />} />
         <Route path="/matrices" element={<Matrices />} />
         <Route path="/eigenvalues" element={<Eigenvalues />} />
+        <Route path="/pca" element={<Pca />} />
         <Route path="/clustering" element={<Clustering />} />
         <Route path="/recall" element={<Recall />} />
         <Route path="/__test-mdx" element={<TestMDX />} />

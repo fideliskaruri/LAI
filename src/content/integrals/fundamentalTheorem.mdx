@@ -1,0 +1,61 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="fundamental-theorem" eyebrow="Four · Newton–Leibniz · the miracle">
+
+# The two halves of the calculus are inverses
+
+Here is the most surprising theorem in the subject. *Differentiation and integration are inverse operations.* If you take the slope of a function and then take the total accumulation of the slope, you get back the original function. And vice versa.
+
+Stated cleanly, in the form Newton and Leibniz both arrived at independently — Newton by 1666, Leibniz by 1675, neither knowing what the other was doing — the *Fundamental Theorem of Calculus* says:
+
+$$
+\int_a^x f(t) \, dt = F(x) - F(a)
+$$
+
+where $F$ is *any* antiderivative of $f$: any function whose derivative is $f$. For our parabola, $f(t) = t^2$, an antiderivative is $F(t) = t^3 / 3$, because $\tfrac{d}{dt}(t^3/3) = t^2$. So
+
+$$
+\int_0^3 t^2 \, dt = F(3) - F(0) = \tfrac{27}{3} - 0 = 9
+$$
+
+Two lines. No Riemann sums. No limits. Just an antiderivative evaluated at the endpoints.
+
+The canvas to the left makes the equality concrete. Top panel: the parabola, with the area-up-to-$x$ shaded vermilion. Drag the handle along the $x$-axis. Watch the shaded area grow. Bottom panel: the antiderivative $F(x) = x^3/3$, with a moving point at $(x, F(x))$, and a vermilion arrow showing the *rise* from $F(0) = 0$ to $F(x)$. *The shaded area on the top is numerically equal to the vermilion rise on the bottom, at every $x$*. That equality is the Fundamental Theorem, drawn.
+
+Why is this true? Think about it this way. The area-up-to-$x$ is itself a function of $x$ — call it $A(x)$. As $x$ increases by a tiny amount $h$, the area gains a thin vertical strip of width $h$ and height roughly $f(x)$. So
+
+$$
+A(x + h) - A(x) \approx f(x) \cdot h
+$$
+
+Divide both sides by $h$ and take the limit:
+
+$$
+A'(x) = \lim_{h \to 0} \frac{A(x+h) - A(x)}{h} = f(x)
+$$
+
+That's the *first half* of the Fundamental Theorem: *the area function's derivative is the original function*. The area function is an antiderivative of $f$. From this, the *second half* follows immediately: if $A(x) = F(x) - F(a)$ for some specific antiderivative $F$, then $\int_a^b f = A(b) = F(b) - F(a)$, which is what we wanted to show.
+
+(I find this argument absolutely beautiful. It uses *nothing but* the geometric definition of the integral — area-up-to-$x$ — and the algebraic definition of the derivative — limit of difference quotients. The proof writes itself in three lines once you see that the new area added by nudging $x$ is approximately a rectangle of width $h$ and height $f(x)$. The "approximately" becomes exact in the limit. *That* is the engine of calculus.)
+
+The theorem is "fundamental" because it unifies two questions that, on the surface, have nothing to do with each other. *What is the slope at this point?* and *What is the total under the curve?* are different questions, and yet they are linked by an exact algebraic relationship: each one undoes the other.
+
+(Historically, the theorem is sometimes called the *Newton-Leibniz formula*. Both of them stated it independently. Newton's version, buried in his unpublished 1666 *De Analysi*, said that the area function's slope was the original function. Leibniz's version, in his 1675 notebooks, gave the formula $\int_a^b f = F(b) - F(a)$. Neither published it cleanly; both used it constantly. Bishop Berkeley, the philosopher, took both of them apart in 1734 for waving their hands at infinitesimals — "the ghosts of departed quantities" — but the result was so practically useful that nobody could ignore it. The rigorous formulation we use today is Cauchy's, from his 1823 lecture notes at the École Polytechnique.)
+
+The practical consequence is enormous. *To compute an integral, you don't have to sum rectangles. You just have to find an antiderivative.* For polynomials, this is mechanical — the power rule for derivatives reverses cleanly:
+
+$$
+\int x^n \, dx = \frac{x^{n+1}}{n+1} + C \qquad (n \neq -1)
+$$
+
+The $+ C$ is the *constant of integration* — antiderivatives are only determined up to an additive constant, because the derivative of a constant is zero. When you evaluate at the endpoints of a definite integral, the constant cancels, so it doesn't affect the numerical answer.
+
+(For $n = -1$, $\int x^{-1} \, dx = \ln|x| + C$, the natural logarithm. The fact that the integral of $1/x$ is the log is one of the strangest accidents of calculus, and one of the reasons $e$ shows up everywhere. We'll meet that story in *Optimization*.)
+
+The catch — and we will spend the entire next act on this catch — is that *not every function has a closed-form antiderivative*. Differentiation is mechanical: given any function written in elementary terms, you can mechanically compute its derivative. Integration is *not* — for many functions, no expression in elementary terms exists for the antiderivative, even though the antiderivative exists. The bell curve is the canonical example. We'll see it.
+
+But for everything polynomial, everything trigonometric, everything exponential, and most reasonable combinations thereof — the Fundamental Theorem turns integration into a hunt for the antiderivative. And once you find it, the integral is just a subtraction.
+
+Onward, to the catch.
+
+</Act>

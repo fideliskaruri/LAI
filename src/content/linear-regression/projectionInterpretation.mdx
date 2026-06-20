@@ -1,0 +1,37 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="projection-interpretation" eyebrow="Seven · Geometry">
+
+# Least squares is a perpendicular drop
+
+Everything we've done so far has been algebra: take derivatives, set them to zero, solve. The result is correct. The result is also blind. Why does the answer look the way it does? Why is (**X**<sup>T</sup>**X**)<sup>&minus;1</sup>**X**<sup>T</sup>**y** the *right* combination? The picture on the left is the answer.
+
+It's a 3D scene. (If your browser is being a brat about it, you can read the description in the screen-reader narrative; the picture is also restated symbolically on the right.)
+
+The faint vermilion plane is the *column space* of **X** &mdash; written col(**X**). It's the set of every possible vector you could form by multiplying **X** by some choice of **&beta;**. In our case **X** has two columns &mdash; the ones-column and the height-column &mdash; and they're independent, so col(**X**) is a *2-dimensional plane* sitting inside a much larger ambient space. (The ambient space is 12-dimensional, because we have twelve data points; I've drawn it as 3D so you can see the picture, but you should imagine the plane is two-dimensional inside an enormous ambient.)
+
+The vermilion arrow labelled **y** is the response vector &mdash; the twelve weights, stacked up into a single twelve-dimensional vector. It does *not* lie in col(**X**). If it did, there would be some choice of **&beta;** for which **X&beta;** = **y** exactly, and the residuals would all be zero. They're not. The data is noisy. **y** sticks up above the plane.
+
+The grey arrow on the plane, labelled **X**&beta;&#770;, is the *closest point in the plane to* **y**. Closest in the sense of Euclidean distance: drop a perpendicular from the tip of **y** straight down to the plane, and where it lands is **X**&beta;&#770;. The dashed segment between the two tips is the residual vector **r**. It's perpendicular to the plane &mdash; the little square symbol at the foot of the drop is the right-angle mark.
+
+That's the entire content of least squares, geometrically. Out of every possible prediction **X&beta;**, the one we want is the one closest to the data &mdash; and the closest one is the one whose error is perpendicular to the space of possible predictions.
+
+Why does this picture force the formula? Watch.
+
+"Perpendicular to col(**X**)" means perpendicular to every column of **X**. Which means **X**<sup>T</sup>**r** = **0** (each row of **X**<sup>T</sup> is a column of **X**, so multiplying it by **r** zeros out one dot product at a time). Substitute **r** = **y** &minus; **X&beta;**:
+
+$$
+\mathbf{X}^{\mathsf T}\,(\mathbf{y} - \mathbf{X}\boldsymbol{\beta}) \;=\; \mathbf{0}
+\quad\Longrightarrow\quad
+\mathbf{X}^{\mathsf T}\mathbf{X}\,\boldsymbol{\beta} \;=\; \mathbf{X}^{\mathsf T}\mathbf{y}.
+$$
+
+That's the normal equations from the last act, rederived in two lines of geometry. The (**X**<sup>T</sup>**X**)<sup>&minus;1</sup>**X**<sup>T</sup> in the closed form *is the projection operator*: the matrix that takes any vector in the ambient space and drops it perpendicularly onto col(**X**).
+
+I want you to register how much this picture compresses. The calculus of the last two acts &mdash; differentiate SSE, set to zero, solve linear system &mdash; is one thing. The geometry &mdash; "draw a perpendicular from the data to the model space" &mdash; is another. They agree because they're describing the same operation in two different languages.
+
+This is, by the way, the picture that *most* of statistics is built around. PCA in the next chapter is going to do the same projection but with the goal of *picking* the plane to project onto, not picking the closest point in a fixed plane. SVMs find a *different* plane &mdash; one that separates two clouds of points rather than passing through them. Even the attention mechanism in transformers, twelve chapters from now, is described &mdash; if you squint &mdash; as a kind of projection. The picture you're rotating in your head right now is one of the most reusable pictures in the entire platform.
+
+(Why does this picture *only* make sense once you can rotate it? Because the perpendicularity is the load-bearing fact, and perpendicularity in 3D is a thing your eye doesn't see in a frozen 2D rendering. Hand it to a static figure in a textbook and the perpendicular looks like a coincidence of viewing angle. Hand it to a slowly orbiting camera and the perpendicular *stays perpendicular* through the rotation, which is when you believe it.)
+
+</Act>

@@ -1,0 +1,27 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="reconstruction-with-k" eyebrow="Five · Drop an axis, keep almost everything">
+
+# Project down. Reconstruct back. See what was lost.
+
+The left pane has a slider with two positions: k = 1 and k = 2. The right pane has the *reconstructed cloud* — what the data looks like after you project it onto k principal components and then back into the original two-dimensional plane.
+
+When k = 2, you keep both axes. The reconstruction is the original cloud, because you've kept everything. The right pane is identical to the left.
+
+Now slide to k = 1.
+
+On the left, every point gets a small vermilion friend on the PC1 line — its projection. On the right, the *whole cloud* has collapsed onto the PC1 line. There is no PC2 component left. Each point has become its PC1 coordinate, multiplied by the PC1 unit vector to put it back in the plane. That's a one-dimensional dataset, drawn in a two-dimensional picture so you can compare it to the original.
+
+The readout in the right pane gives two numbers. The first is the *variance retained*: about ninety percent for this cloud. The second is the *reconstruction loss*: the average squared distance from the original points to their reconstructions. Those two numbers add up to a hundred percent of the original variance. The slogan: variance kept + variance lost = total variance.
+
+That's the whole logic of dimensionality reduction in one picture.
+
+You started with two numbers per point. You're now describing each point with one number — its PC1 coordinate. You've halved the *storage* and lost about ten percent of the *information*. For some applications that's a great deal; for others it's a disaster; for most it's a knob you tune. The general rule, set up by Pearson in 1901 and made operational by Hotelling in 1933, is that you sort the principal components by their variance, you keep the top k, and you discard the rest.
+
+The arithmetic stays the same in higher dimensions. In a hundred-dimensional dataset — pixel values of a small image, gene expression levels, embedding coordinates — the covariance matrix is a hundred-by-hundred symmetric thing with a hundred eigenvalues. You might find that the first ten of those eigenvalues account for ninety-five percent of the total variance. Keep those ten, throw away the other ninety, and you've compressed a hundred-dimensional dataset into a ten-dimensional one with five percent average distortion. That's what every implementation of PCA in every scientific library is computing, on every kind of data, every day.
+
+The picture on the right is the *reconstruction*. The compression itself — the k-dimensional summary of each point — lives implicitly in the projection step. When people say "PCA embedding" or "PCA scores" they mean those k coordinates. When people say "reconstruction from PCA" they mean the round trip you see in the right pane.
+
+A small thing worth being explicit about. We have shown reconstruction for k = 1 because that's the dramatic case — squashing a two-dimensional cloud onto a one-dimensional line. For k = 2 in a two-dimensional problem there's nothing to compress; you keep everything. The interesting business happens when *the number of original dimensions is larger than k*. PCA is a tool for that regime. The two-dimensional case is the demonstration; the hundred-dimensional case is the use.
+
+</Act>

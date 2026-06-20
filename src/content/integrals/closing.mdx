@@ -1,0 +1,41 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="closing" eyebrow="Six · The thread forward">
+
+# Where the integral meets the rest
+
+We met Archimedes squaring a parabolic segment in Syracuse, twenty-three centuries ago, and we left him with a rigorous answer to a question nobody else had solved. We met Riemann at Göttingen in 1854, putting the method of exhaustion onto algebraic ground with a sum and a limit. We met Newton and Leibniz around 1670, separately, both noticing the impossible coincidence that *taking the slope* and *taking the total* are inverse operations. We met Thomas Simpson, a weaver in Leicestershire, with the rule that fits a parabola through three samples and is fast enough to underwrite every numerical library on Earth.
+
+The vermilion long-S you have in your hands now — $\int$ — shows up in every later chapter.
+
+In *Probability* (the very next chapter), the integral *is* the definition. A continuous probability density $p(x)$ assigns probabilities to intervals via
+
+$$
+\Pr(a \le X \le b) = \int_a^b p(x) \, dx
+$$
+
+The total area under a density is exactly $1$ — that's what *being* a density means. The bell curve we just integrated numerically becomes the standard normal density when divided by $\sqrt{2\pi}$. The integral is *not* an afterthought in probability; it is the way the subject is defined.
+
+In *Expectation* (chapter after that), the expected value of a continuous random variable is itself an integral:
+
+$$
+\mathbb{E}[X] = \int x \, p(x) \, dx
+$$
+
+Read out loud: "integrate $x$ weighted by its probability density." It is the continuous analogue of $\sum x_i p_i$ — what you'd compute for a die-roll — and the long-S has replaced the sum because the values run continuously. Every notion of mean, variance, moment, and entropy in the next two chapters is some integral against some density.
+
+In *Optimization* (where this chapter forks one way), the role flips: instead of summing values against weights, you sum *losses* across a dataset. When the dataset is finite, the total loss is a discrete sum. When the dataset is conceptually infinite — drawn from a distribution — the total loss is an *expected loss*, which is itself an integral. Training a model is, mechanically, descending the gradient of an integral.
+
+In *Backpropagation* (chapter 18), you'll see why integration matters even when the loss is a finite sum: the chain rule of derivatives, threaded through layers, is what makes the gradient computation work. Integration is the inverse — when you accumulate small parameter updates over an entire training run, you are effectively integrating a continuous-time gradient-flow equation. The training trajectory of a neural network is a discrete approximation to an integral.
+
+In *Variational Inference* and *Generative Models* (later in the platform), the integral becomes the central object you can't compute exactly and have to approximate brutally — the *evidence* in Bayes's rule is an integral over an entire model's parameter space, often intractable, often handled by Monte Carlo. Whole research subfields exist because that integral is hard and the answers it would give are valuable. The reason a $300$-billion-parameter language model needs special inference tricks is that the integrals it implies have no closed form.
+
+(I want to flag a small intellectual habit before we move on. Whenever you see an *expected value*, a *probability*, a *total loss*, an *evidence*, or an *entropy*, the first thing to do is reach for the integral notation. Often the integral has no closed form. That is *fine*. The notation organises your thinking and tells you what to numerically approximate. The integrand is the moving part; the integral is the bookkeeping.)
+
+The grace note for this chapter is the same one I tried to leave at the end of Derivatives. *The mathematics underneath modern AI is mostly two ideas chained together: take a derivative; integrate things weighted by probability.* The chain rule and the long-S, in different combinations, are doing the heavy lifting in every model on every benchmark. The hardware is what is new. The math is old. Archimedes is in there, somewhere — bracketing an answer between two staircases that close.
+
+Onward, then. *Optimization* is next: a loss function, a gradient, and the algorithm that takes us down it. The integral that defines the loss, the derivative that picks the direction. The two halves of the calculus, side by side, doing the actual work.
+
+A small confession before I sign off. The first time I sat through an integrals chapter as a student, I was bored. The teacher kept solving toy examples by finding antiderivatives, and I couldn't see what the fuss was about. *Take an antiderivative and subtract* didn't feel like a revelation. It took me years to notice that the Fundamental Theorem is one of the most extraordinary statements anyone has ever made in mathematics — that the answer to "what's the area under this curve" is connected, algebraically, to the answer to "what's the slope at this point." The connection is *not obvious*. It is, in fact, a miracle. The notation is so good — $\int_a^b f(x) \, dx = F(b) - F(a)$ — that the miracle hides inside the symbols. Don't let it.
+
+</Act>

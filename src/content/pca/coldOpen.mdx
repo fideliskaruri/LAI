@@ -1,0 +1,23 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="cold-open" eyebrow="Zero · Pearson · London · 1901">
+
+# A statistician's question about a swarm of points
+
+Karl Pearson was forty-four years old in 1901, recently installed in the Gresham Chair of Geometry at University College London and running, with Francis Galton's money, a small biometric laboratory. He spent the year measuring things. Skull widths. Forearm lengths. Lengths of crab carapaces. The Edwardian middle class indulged him: he wanted to know whether human beings, like the planets, moved in regular patterns when you looked at enough of them.
+
+The data piled up in his ledgers as pairs and triples and quadruples of numbers. A skull was a length, a breadth, a height. A crab was eight measurements taken at sea on a particular afternoon. After enough afternoons you had a *swarm of points*, as Pearson called it, and the question that wouldn't leave him alone was: through a swarm, where does the *line* go?
+
+By line he didn't quite mean what a least-squares textbook would teach a hundred years later. The standard regression line in 1901 was already a known object — Galton had used it for years. It minimized the vertical distance from each point to the line, on the assumption that *x* was the thing you measured and *y* was the thing you wanted to predict. But Pearson wasn't predicting anything. He was looking at *symmetric* clouds, where x and y were just two measurements off the same crab, and asking what *direction* the swarm pointed in. The Galtonian line gave him a different answer if he swapped which axis he called x and which he called y. That bothered him.
+
+So he wrote down a different criterion. Find the line that minimizes the *perpendicular* distance from each point to the line. That's symmetric in x and y. That's a property of the swarm itself, not of which variable you chose to be the input.
+
+The paper appeared in the *Philosophical Magazine* in November of 1901, with a title that has aged like good wine: *On Lines and Planes of Closest Fit to Systems of Points in Space*. It's twelve pages long. It introduces almost no new notation. It does not contain the phrase *principal component* — Harold Hotelling would coin that thirty years later, in 1933, when he rediscovered the technique from the statistical side and gave it its modern name. But the picture on the title page on the right is where PCA begins.
+
+What Pearson noticed, sitting with his swarms, was that *finding the line of closest fit* and *finding the direction along which the swarm is most spread out* are the same problem. Minimize perpendicular distance to a line; equivalently, maximize the variance of the projections of the points onto that line. It's the same line. He proved it in three paragraphs.
+
+That equivalence is the door we're going to walk through. On one side of the door is geometry — *find a line through a cloud*. On the other side is algebra — *find an eigenvector of a 2 by 2 matrix*. The connecting hallway is exactly two of the ideas we've already met: variance from the chapter on expectation, and eigenvectors from the chapter we just finished.
+
+We earned this chapter. Let's spend it.
+
+</Act>

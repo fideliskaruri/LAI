@@ -1,0 +1,31 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="numerical" eyebrow="Five · When there is no closed form">
+
+# The bell curve, and how the computer takes it on
+
+Here is a function you've definitely met somewhere: $f(x) = e^{-x^2}$. It is the un-normalised bell curve. It is the heart of the normal distribution, which is the centrepiece of the next chapter on Probability. It is the kernel of half of statistics. It is, in many respects, the most important function in applied mathematics.
+
+It has no elementary antiderivative.
+
+I want to sit with that. The function is *beautiful*. It is *everywhere*. It is *smooth* and *positive* and decays gracefully at both ends. There is *nothing* pathological about it. And yet — there is provably no expression in elementary terms (no polynomials, no exponentials, no trig functions, no algebraic combinations of those) that, when you differentiate it, gives you back $e^{-x^2}$. This was proved by Joseph Liouville in 1835. The integral *exists* — it is a perfectly definite number for any interval — but there is no formula for it.
+
+So how do we compute $\int_{-2}^{2} e^{-x^2}\, dx$?
+
+The answer is *numerically*. Go back to the Riemann sum picture. The integral is the limit of $\sum f(x_i^*) \, \Delta x$ as the strips get thin. For any finite $n$, that sum is a *number*; it's an approximation. If $n$ is big enough, the approximation is as accurate as you need. The whole game of *numerical integration* is to find sums that converge to the true integral fast — fewer function evaluations, lower error.
+
+The canvas to the left shows one of the classics: *Simpson's rule*. Instead of approximating $f$ as a constant on each strip (Riemann rectangles), Simpson approximates $f$ as a *parabola* through three sample points: two endpoints and a midpoint. You integrate the parabola exactly — that's a closed form — and add up across the strips. Simpson's rule converges as $O(1/n^4)$. Quadrupling $n$ cuts the error by a factor of *two hundred and fifty-six*. That is absurdly fast compared to the $O(1/n)$ of left-endpoint rectangles.
+
+Click the $n = 4, 16, 64$ buttons in the toolbar. At $n = 4$, Simpson's rule already gives the bell-curve integral to four decimal places. At $n = 64$, you're past any precision you could reliably distinguish from the floating-point representation. *The whole numerical zoo lives in here* — `scipy.integrate.quad`, `numpy.trapz`, `torch.cumulative_trapezoid` — they are all variations on the same theme: sample, fit, sum. The differences are in *how cleverly* they choose where to sample (adaptive quadrature finds places the function is changing fastest and packs samples there) and *what shape* they fit (parabolas, cubics, exponentials).
+
+(The name "Simpson's rule" is for the English mathematician Thomas Simpson, who published it in his 1743 textbook *A New Treatise of Fluxions*. He didn't invent it — Kepler had a version of it in 1615 for computing the volume of wine barrels, and Cavalieri had it in 1639 — but Simpson's textbook was widely read and the name stuck. He was, by trade, a weaver and itinerant mathematics teacher in Leicestershire, which I find delightful. Some of the most important results in numerical analysis come from people who had no university position and no patronage; they wrote textbooks for self-study and signed the rules with their own names.)
+
+The bell curve integral, $\int_{-\infty}^{\infty} e^{-x^2} \, dx$, turns out to equal $\sqrt{\pi}$. The square root of pi! Out of nothing! The proof goes through a 2D trick — square the integral, switch to polar coordinates, the Jacobian collapses, and the radial integral is elementary. Gauss is credited with the trick, around 1809, though it's been independently rediscovered many times. You don't need to follow it now; just hold onto the fact. The bell curve's integral is a transcendental constant, and the way you compute *its* value at any specific interval is by Simpson's rule or one of its modern cousins. Even when the answer is a famous constant like $\sqrt{\pi}$, the path to a number on a computer screen runs through numerical integration.
+
+(There's an extra piece of beauty I can't resist. The fact that the integral of $e^{-x^2}$ from $-\infty$ to $\infty$ is $\sqrt{\pi}$ is what makes the normal distribution *normal*. The density of a normal random variable has to integrate to $1$, so you divide $e^{-x^2}$ by its total integral. The normalisation constant for the standard normal is $1/\sqrt{2\pi}$ — the $\sqrt{\pi}$ is the bell curve's integral; the $\sqrt{2}$ is the variance adjustment. Every time you see that $1/\sqrt{2\pi}$ in a stats textbook, you're seeing Gauss's polar-coordinates trick from 1809 baked into a constant. Onward, you can probably tell, sets up Probability.)
+
+The takeaway: the integral as a *concept* — the limit of Riemann sums — is well-defined for any reasonable function. The integral as a *computation* sometimes goes through an antiderivative (the Fundamental Theorem) and sometimes goes through a numerical method (Simpson, trapezoid, adaptive quadrature). Both routes converge to the same number. When you can find the antiderivative, the closed form is faster and more beautiful. When you can't, the computer does it numerically, and modern numerical integration is good enough that the difference is invisible in practice.
+
+What machine learning needs, mostly, is the numerical route. Expected values, marginalisations, evidence computations in Bayesian inference, partition functions in physics-inspired models — all of these are integrals that don't have closed forms, and all of them get computed by some flavour of numerical method. Monte Carlo sampling, which we'll meet in Probability, is itself a kind of randomised numerical integration. The whole subject downstream sits on Simpson's heirs.
+
+</Act>

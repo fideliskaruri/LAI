@@ -1,0 +1,29 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="closing" eyebrow="Six · A thread forward">
+
+# The language a model thinks in
+
+Here is where the ninth chapter has taken us.
+
+We started on the last night of $1801$, in a small observatory east of Gotha, where Franz Xaver von Zach pointed his telescope at a patch of sky no-one else was watching and found a lost asteroid where Gauss said it would be. The trick that found it was a new way of weighing observational error against truth — minimise the sum of *squared* deviations — and Gauss's reason for picking *squares* was that he believed errors were distributed as a bell. He back-derived the bell from the requirement that his method work. Within a generation, that bell became the most important shape in applied mathematics.
+
+We met the binomial, $\mathrm{Binomial}(n, p)$, the chapter's discrete starting point. We watched it sharpen — as $n$ ran — into a continuous Gaussian centred at $np$ with variance $np(1-p)$, the *de Moivre–Laplace limit*. We met the normal distribution proper, $\mathcal{N}(\mu, \sigma^2)$, with its two parameters and its $68$–$95$–$99$ rule. We met the Poisson, with mean and variance both equal to $\lambda$, the shape that governs anything counted in time or space. And we proved (or at least felt) the *central limit theorem*: average enough independent samples from any finite-variance distribution, and the histogram of sample means becomes Gaussian. That theorem is the deep reason the bell curve is universal.
+
+Now look at the picture on the right.
+
+Three small Gaussians, side by side. Each one labelled with a place where it shows up in machine learning. The first is a *loss curve*: when we train a model, the residuals — the gaps between what the model predicts and what actually happens — are typically modelled as Gaussian noise around the model's predictions. The negative log of a Gaussian density is, up to constants, the squared error: $-\log f(x) \propto (x - \mu)^2$. Which is to say: *minimising squared error is the same as maximising the likelihood under a Gaussian noise model.* That's why "loss equals squared error" is the default — not because squared error is morally privileged, but because Gauss's assumption about the shape of error is the default. We'll meet this directly in the next chapter.
+
+The second panel is a *model output*. Many modern models — especially in regression and density-estimation tasks — don't output a single number. They output a *distribution*, often a Gaussian, parametrised by a predicted mean $\mu$ and a predicted variance $\sigma^2$. The model is telling you: "my best guess is $\mu$, and my uncertainty about that guess is $\sigma$." That two-number output is much richer than a single point estimate. It's how a model communicates confidence.
+
+The third panel is *attention weights*. In transformers — the architecture behind every modern large language model — the attention mechanism's softmax can be read as a distribution over which input positions to look at. It isn't strictly Gaussian, but it lives in the same family: a soft, smoothly-peaked distribution that concentrates probability where the model thinks there's signal and spreads it where there's noise. The mathematics of how that distribution is computed, sharpened, and trained directly inherits the techniques you've just learned.
+
+What you should take away.
+
+A distribution is no longer an abstract object. It's a *shape with two summary numbers* — centre and spread — that tells you what to expect and how surprised to be. The normal is the lingua franca because of the CLT; the binomial because it's the simplest discrete count; the Poisson because rare events happen on every server, in every cell, every minute of every day. Mean and variance — $\mu$ and $\sigma^2$ — are the spine.
+
+You're now ready for *linear regression*, the workhorse of statistical modelling and the first place we'll actually use a Gaussian to do something practical. We'll fit a line to data by minimising squared error, and you'll see that this is exactly what Gauss did with Ceres: weighing many small observations against an unknown ground truth and picking the answer that minimises the bell-curve-weighted error. The technique is two centuries old. It is the foundation of everything modern.
+
+See you in chapter ten.
+
+</Act>

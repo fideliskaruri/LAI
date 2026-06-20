@@ -1,0 +1,23 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="data" eyebrow="One · The fit problem">
+
+# Twelve people, two measurements, one question
+
+Here is the setup the rest of the chapter lives inside.
+
+I measured twelve people. For each one I wrote down two numbers: their height and their weight. The numbers are real-ish — taller people do tend to weigh more, the slope is roughly what you'd expect, the noise looks like noise. (They're synthetic in the sense that I generated them on a Tuesday afternoon. They're real in the sense that the pattern is the same one you'd see if I'd actually gone and stood in a doorway with a measuring tape.)
+
+On the left, those twelve people show up as twelve dots. Height runs along the bottom, weight up the side. The cloud is loosely linear; you can almost feel the line through it without me drawing one.
+
+I haven't drawn a line yet. The faint dashed thing across the middle is just the average weight &mdash; everyone's weight added up and divided by twelve. It's a placeholder. It doesn't know anything about height.
+
+On the right is an empty frame. Later acts are going to use it to show how far each point is from whatever line we eventually pick &mdash; the *gaps* between data and model. For now it's deliberately bare, so you register the structure: left pane is the data and the model; right pane is the gaps.
+
+The whole chapter is about the same question stated several different ways. Stated the most casual way: *what's the best line through these dots?* Stated more carefully: *given that I want to use someone's height to predict their weight, which prediction rule is best?* Stated more carefully still: *for what definition of "best"?*
+
+That last one is where it gets interesting, because the answer is not obvious. There are at least three different things "best fit" could mean &mdash; minimise the worst error, minimise the sum of absolute errors, minimise the sum of squared errors &mdash; and only one of them has the closed-form solution that Gauss and Legendre were fighting about. We're going to walk into that distinction the slow way, by trying bad lines first and letting the prose catch what your eye is doing.
+
+The next act gives you a line you can drag.
+
+</Act>

@@ -1,0 +1,33 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="cold-open" eyebrow="Zero · Gauss and the lost asteroid">
+
+# A small dot of light
+
+On the night of $31$ December $1801$, Franz Xaver von Zach climbed the steps of his observatory at Seeberg, just east of Gotha, and pointed his telescope at a patch of sky no-one in particular had been watching. It was the first clear night in weeks. Outside the dome was nothing but winter. Inside, von Zach was hoping for the return of an asteroid that had been missing for nearly a year. The slip of paper next to him was a table of predicted positions, sent from Brunswick. The author was a twenty-four-year-old mathematician named Carl Friedrich Gauss.
+
+Almost exactly twelve months earlier — New Year's Eve $1800$, a few hours into $1801$ — a Sicilian priest named Giuseppe Piazzi had spotted a faint new point in the constellation Taurus. He watched it for forty-one nights. It moved. It wasn't a star. He called it *Ceres*, after the patron goddess of Sicily, and announced he'd discovered the missing planet between Mars and Jupiter that astronomers had been searching for since Bode. Then in February the asteroid slipped behind the sun and was lost.
+
+A lost planet is a humiliating thing. For most of $1801$ Europe's astronomers tried to recover it. The problem was that Piazzi had only forty-one nights of observation, spanning a few degrees of sky — not enough to fit a Keplerian orbit using the methods they had. The orbits they computed gave them a sky-search area the size of a small province. They pointed their telescopes; they saw nothing.
+
+Gauss, working alone in Brunswick that summer and autumn, invented his way out of the problem. He treated each of Piazzi's forty-one observations as a noisy measurement of a true orbit, and asked: of all the elliptical orbits I could draw, which one minimises the *sum of squared errors* between predicted and observed positions? That question — what we now call *least squares* — gave him a single best-fit orbit. From it he extrapolated where Ceres would re-emerge from behind the sun, sent the prediction to von Zach in early December, and waited.
+
+On the last night of $1801$, exactly one year after Piazzi had first seen it, von Zach turned his telescope onto Gauss's predicted spot. And there it was. A small dot of light, almost exactly where the mathematics said it would be.
+
+I want you to feel why this is the first scene of a chapter about distributions.
+
+The least-squares method works because Gauss made a specific assumption about what observational errors look like. He assumed each measurement had a small random error, and he assumed those errors were *distributed* in a particular shape — the shape we now call the *Gaussian* or *normal* distribution, though Gauss himself, characteristically, treated it as obvious enough not to bother naming. Years later he wrote down the formula
+
+$$
+f(x) = \frac{1}{\sigma \sqrt{2\pi}} \exp\!\left(-\frac{(x - \mu)^2}{2\sigma^2}\right)
+$$
+
+and proved that *if* errors are normally distributed, *then* the best estimate of an unknown quantity is the one that minimises the sum of squared deviations. Which is to say: half a century before anyone gave the curve a proper home in statistics, Gauss had already used it to find a planet. He back-derived the bell curve from astronomy. The shape was a consequence of needing to recover Ceres.
+
+The reason the bell curve is everywhere — the reason it shows up in observational errors, in heights, in stock returns, in the noise on a microphone, in the residuals of the next chapter's regressions — is partly because nature has a lot of structure that produces it, and partly because Gauss and his successors gave us such a powerful set of tools for working with anything that *can be made* to look like it. The mathematics rewards you for noticing the shape. You then go and find it everywhere.
+
+This chapter is about *distributions*: the shapes that turn the discrete histograms of chapter eight into the continuous curves you'll see whenever a model talks about uncertainty. We'll meet four of them properly — the binomial, the normal, the Poisson, and the empirical distribution of sample means — and we'll prove the most beautiful theorem in probability along the way: the *central limit theorem*, which explains why averaging anything produces a Gaussian, regardless of what you were averaging in the first place.
+
+Then we'll be ready for linear regression, where the residuals are normally distributed, the loss is a sum of squares, and the entire machinery is the descendant of what Gauss did during the autumn of $1801$, alone at a desk in Brunswick, hunting an asteroid.
+
+</Act>

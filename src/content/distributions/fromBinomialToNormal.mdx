@@ -1,0 +1,33 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="from-binomial-to-normal" eyebrow="Two · The continuous limit">
+
+# When the bars sharpen onto a curve
+
+Keep the coin fair, $p = 0.5$, and watch what happens as $n$ runs.
+
+At $n = 4$ the histogram has five fat bars: probabilities $1/16, 4/16, 6/16, 4/16, 1/16$ for $k = 0, 1, 2, 3, 4$ heads. At $n = 16$ the bars are narrower and there are more of them, and the centre — around $k = 8$ — has gotten much taller relative to the edges. By $n = 100$ the bars are so narrow they look like the silhouette of a continuous curve. By $n = 400$ — if your eyes are honest about it — you can barely tell where the bars end and the *vermilion bell on the canvas* begins.
+
+That bell isn't a guess. It's a specific Gaussian: mean $\mu = np$ and variance $\sigma^2 = np(1-p)$. The same two numbers that controlled the binomial's centre and spread now control the centre and spread of its continuous limit.
+
+This is the *de Moivre–Laplace theorem*, named for the two people who proved it. Abraham de Moivre, a French Huguenot who'd fled to London after the revocation of the Edict of Nantes, was the first. In $1733$ he was computing binomial probabilities by hand — useful for the gambling problems that paid his bills — and he noticed that for large $n$ the answer was very nearly
+
+$$
+\binom{n}{k} \left(\tfrac{1}{2}\right)^n \;\approx\; \frac{1}{\sqrt{2\pi \cdot n / 4}} \exp\!\left(-\frac{(k - n/2)^2}{2 \cdot n/4}\right).
+$$
+
+That right-hand side — though de Moivre didn't yet call it that — *is* the normal density, evaluated at $k$, with $\mu = n/2$ and $\sigma^2 = n/4$. He had stumbled across the Gaussian seventy years before Gauss made it famous, and he published the proof in a pamphlet that almost no-one read. Pierre-Simon Laplace, in his $1812$ *Théorie analytique des probabilités*, generalised it: not just $p = 1/2$, not just coins, *any* $p \in (0, 1)$ and any $n$ large enough, the binomial approaches a Gaussian centred at $np$ with variance $np(1-p)$. Modern proof: Stirling's formula on the binomial coefficient. The algebra is unfriendly. The result is one of the most useful in applied mathematics.
+
+What does it *mean*, though? The bars on the canvas are heights of probabilities at integer values of $k$. The bell is a continuous *density* $f(x)$ defined for every real $x$. They don't live in the same world. So how can one be the limit of the other?
+
+Here's the honest version. The binomial PMF $P(K = k)$ is a probability — a unitless number between $0$ and $1$. The Gaussian PDF $f(x)$ is a density — it has units of *per unit $x$*. To compare them at the same scale, you treat each bar as a thin rectangle of width $1$ (one whole unit of $k$), so its area equals its height, equals the probability. The bell curve, by contrast, gives probabilities through *areas under itself*, so the area of any narrow vertical strip of width $1$ approximates the probability that a random sample from the continuous distribution lands in that strip. As $n \to \infty$, the strip-areas under the Gaussian match the bar-areas of the binomial, term for term, with vanishing error.
+
+The discrete becomes continuous by *exchange of currency*. The binomial pays in probability-per-integer; the Gaussian pays in probability-per-unit-$x$; in the limit, the exchange rate is one.
+
+There is a beautiful subtlety in this convergence that's worth flagging: the binomial-to-Gaussian fit is good in the *bulk* — the middle of the distribution — but breaks down in the *tails*. Out at $k = n$ or $k = 0$, where the binomial's actual probabilities are astronomically small, the Gaussian approximation can be off by orders of magnitude. The Gaussian's tails decay like $e^{-x^2}$; the binomial's decay differently, more sharply. For rare-event probabilities, you want a different limit — which is the Poisson, two acts from now.
+
+But for ordinary "how many heads, give or take" questions, the Gaussian is essentially exact, and it lets you replace gnarly factorial arithmetic with a smooth function you can integrate, differentiate, parametrise, and stick in the middle of a likelihood. That's why the Gaussian wins, in practice. It's *workable*.
+
+Next act, we put the bell curve under a proper microscope.
+
+</Act>

@@ -1,0 +1,25 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="draggable-line" eyebrow="Two · A line you can move">
+
+# Just push a line through it
+
+Grab either endpoint of the line on the left and drag it up or down. The line tilts. If you'd rather, hit Tab until one endpoint is highlighted and use the arrow keys; Shift + arrow steps in bigger jumps.
+
+What I'd like you to do is play around with bad fits first. Drag the left end way up so the line goes downhill instead of uphill &mdash; obviously wrong. Drag both ends to the same height so the line is flat and the slope is zero &mdash; obviously also wrong, but in a more interesting way: this is the "ignore the height information entirely" fit, which is exactly what the dashed mean line from the last act was.
+
+Now find a line that *looks* good. Drag the endpoints around until the line is roughly going through the middle of the cloud. The eye is surprisingly accurate at this; humans do it well. The fact that you can do it at all already tells you something important: there's something every halfway-decent line is doing right that the obviously-wrong lines aren't. The next act gives that something a name.
+
+(Strictly, I should warn you that "the line goes through the middle of the cloud" is not the only natural reading of "fit." You could equally well try to draw a line such that the *vertical* gaps to the points are small, or the *perpendicular* gaps, or some other thing. The picture we're going to develop &mdash; ordinary least squares &mdash; uses vertical gaps, because the convention is "x is given, y is predicted, the error is the prediction error in y." If you ever switch to a setting where both axes are noisy &mdash; for instance, you measured both height and weight with comparable error &mdash; you'd use a different fit. That's called *total least squares* and it's outside this chapter.)
+
+I'm going to keep using "the line" loosely from here on, but what we're really fitting is a *function* &mdash; a rule that says "give me a height, I'll give you a weight." For a straight line, that function is
+
+$$
+\hat{y} = \beta_1 \, x + \beta_0
+$$
+
+where x is the height, &beta;<sub>1</sub> is the slope (kilograms per centimetre), and &beta;<sub>0</sub> is the intercept (what the rule predicts at height zero, which is admittedly a silly height for a person). Choosing a line is choosing the pair of numbers (&beta;<sub>0</sub>, &beta;<sub>1</sub>). Dragging the endpoints is choosing them by hand.
+
+The next act is going to draw the gaps explicitly. Once you can see the gaps, the question "what does 'best fit' actually mean?" stops being vague.
+
+</Act>

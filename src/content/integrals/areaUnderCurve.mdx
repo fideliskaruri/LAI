@@ -1,0 +1,41 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="area-under-curve" eyebrow="One · The question, sharper">
+
+# A curve, an interval, a number
+
+To the left is the simplest possible version of the problem. The curve is $f(x) = x^2$, which we already met in the Functions and Derivatives chapters. The interval is $[0, 3]$. The region we are after is everything between the curve and the $x$-axis, from $x = 0$ to $x = 3$ — drawn in vermilion. It is bounded on the left by the $y$-axis, on the right by a vertical line at $x = 3$, on the bottom by the $x$-axis, and on the top by the parabola itself.
+
+What's the area?
+
+I don't want you to compute it yet. Just look at it. *That* is the thing this chapter is going to teach you to name.
+
+There is no obvious formula. The region isn't a rectangle. It isn't a triangle. It isn't a circle. It isn't anything you have a formula for in your back pocket. It is a *region under a curve*, and until calculus arrives, the only way to find its area is what Archimedes did — bracket it between staircases and let them squeeze together.
+
+(I find it useful to *guess* the area first, every time I do an integral problem, before I compute it. The biggest bounding rectangle is `3 × 9 = 27`. The triangle that would fit roughly underneath the curve is `(1/2) × 3 × 9 = 13.5`. The actual region is *less* than the triangle, because the curve sags toward the $x$-axis on the left. Maybe `8` or `9`? File that guess away. We'll find out for sure in two acts.)
+
+This is what the integral is *for*. Not philosophically. Mechanically. Calculus offers a way to ask: *for any curve $f(x)$, and any interval $[a, b]$, what's the area between the curve and the $x$-axis?* It is a question with infinitely many instances — a different curve every time — and one general answer that handles them all.
+
+The notation for the answer, when it exists, was invented by Leibniz around 1675 in a notebook page he never sent for publication. It looks like this:
+
+$$
+\int_a^b f(x)\, dx
+$$
+
+Read out loud: "the integral of $f$ of $x$, with respect to $x$, from $a$ to $b$." The elongated $S$ is the integral sign — a stylised letter S, for *summa*, the Latin word for *sum*. It is the most elegant character anyone has ever introduced into mathematics, in my view. It carries the geometry inside its shape.
+
+The $a$ and the $b$ on the bottom and top are the *limits of integration*. They tell you which interval to take the area over. The $f(x)$ is the function whose area you want. The $dx$ at the end is the *differential* — it tells you that the variable of integration is $x$, and it carries the geometric meaning of "an infinitesimally narrow strip of width $dx$." We'll see why $dx$ matters in two acts; for now treat it as punctuation that says *this is an integral with respect to $x$*.
+
+For our specific picture on the left, the question we're answering is
+
+$$
+\int_0^3 x^2\, dx = \;?
+$$
+
+That's it. That's the question. The answer, which we'll arrive at in three different ways before the chapter ends, turns out to be exactly $9$. Tuck that away for now. Don't trust me yet.
+
+A note on sign before we move on. The integral, as we'll define it, gives back a *signed* area: regions above the $x$-axis count positively, regions below the $x$-axis count negatively. For our picture, the parabola is above the axis the whole way, so the answer is straightforwardly positive. If you took $\int_{-1}^{1} x\, dx$ instead, you'd get *zero* — the left half (negative) cancels the right half (positive). The integral is bookkeeping with a sign, not just an area count. (When we get to probabilities in the next chapter, the integrand is always non-negative, so this distinction goes away. When we get to optimization in the chapter after, it returns with a vengeance.)
+
+The next act sets up the bracket. We'll bracket the area between two staircases, just as Archimedes did, and watch the bounds close in. The thing that the bounds close in on — when they meet — is the integral. The squeeze is *the definition*.
+
+</Act>
