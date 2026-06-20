@@ -17,36 +17,42 @@ interface Toy {
   count: number
 }
 
-const acts: SplitActDef<Toy, Toy>[] = [
+const acts: SplitActDef[] = [
   {
     id: 'independent',
     label: 'Independent',
     syncMode: 'independent',
-    initialLeft: { count: 0 },
-    initialRight: { count: 0 },
+    initialLeft: { count: 0 } as Toy,
+    initialRight: { count: 0 } as Toy,
   },
   {
     id: 'left-drives-right',
     label: 'Left drives right',
     syncMode: 'left-drives-right',
-    initialLeft: { count: 0 },
-    initialRight: { count: 0 },
-    deriveRight: (l) => ({ count: l.count * l.count }),
+    initialLeft: { count: 0 } as Toy,
+    initialRight: { count: 0 } as Toy,
+    deriveRight: (l) => {
+      const t = l as Toy
+      return { count: t.count * t.count } as Toy
+    },
   },
   {
     id: 'right-drives-left',
     label: 'Right drives left',
     syncMode: 'right-drives-left',
-    initialLeft: { count: 0 },
-    initialRight: { count: 0 },
-    deriveLeft: (r) => ({ count: -r.count }),
+    initialLeft: { count: 0 } as Toy,
+    initialRight: { count: 0 } as Toy,
+    deriveLeft: (r) => {
+      const t = r as Toy
+      return { count: -t.count } as Toy
+    },
   },
   {
     id: 'co-mutating',
     label: 'Co-mutating',
     syncMode: 'co-mutating',
-    initialLeft: { count: 0 },
-    initialRight: { count: 0 },
+    initialLeft: { count: 0 } as Toy,
+    initialRight: { count: 0 } as Toy,
   },
 ]
 

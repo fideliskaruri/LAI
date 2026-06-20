@@ -144,10 +144,9 @@ export function StevinWreath() {
           fontFamily="Inter, sans-serif"
           fontSize="11"
           letterSpacing="0.22em"
-          textTransform="uppercase"
           fill="var(--color-dim)"
         >
-          drag any bead
+          DRAG ANY BEAD
         </text>
       </svg>
       <figcaption className="font-serif italic text-[13px] text-dim text-center mt-2">

@@ -118,7 +118,7 @@ export function Constellation() {
         </text>
 
         {/* Part labels (subtle) */}
-        <text x="60" y="780" fontFamily="Inter, sans-serif" fontSize="10" letterSpacing="0.22em" fill="var(--color-fade)" textTransform="uppercase">
+        <text x="60" y="780" fontFamily="Inter, sans-serif" fontSize="10" letterSpacing="0.22em" fill="var(--color-fade)">
           PART I · FOUNDATIONS
         </text>
         <text x="540" y="780" fontFamily="Inter, sans-serif" fontSize="10" letterSpacing="0.22em" fill="var(--color-fade)">
