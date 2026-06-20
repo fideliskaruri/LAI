@@ -45,7 +45,7 @@ export const topics: Topic[] = [
   { id: 'language-models', number: 23, name: 'Language models', x: 1070, y: 130, status: 'coming-soon', part: 'III', prereqs: ['transformers', 'probability'] },
 
   // Part IV — Frontier (top-right)
-  { id: 'rlhf', number: 24, name: 'RLHF', x: 1180, y: 180, status: 'coming-soon', part: 'IV', prereqs: ['language-models', 'optimization', 'probability'] },
+  { id: 'rlhf', number: 24, name: 'RLHF', x: 1180, y: 180, status: 'available', part: 'IV', prereqs: ['language-models', 'optimization', 'probability'] },
   { id: 'diffusion', number: 25, name: 'Diffusion', x: 1150, y: 360, status: 'available', part: 'IV', prereqs: ['probability', 'distributions', 'optimization'] },
-  { id: 'agents', number: 26, name: 'Agents', x: 1180, y: 80, status: 'coming-soon', part: 'IV', prereqs: ['language-models'] },
+  { id: 'agents', number: 26, name: 'Agents', x: 1180, y: 80, status: 'available', part: 'IV', prereqs: ['language-models'] },
 ]

@@ -23,6 +23,8 @@ import { Diffusion } from './routes/topics/Diffusion'
 import { Svm } from './routes/topics/Svm'
 import { Convolutions } from './routes/topics/Convolutions'
 import { Transformers } from './routes/topics/Transformers'
+import { Agents } from './routes/topics/Agents'
+import { Rlhf } from './routes/topics/Rlhf'
 import { Recall } from './routes/Recall'
 import { TestMDX } from './routes/__test/TestMDX'
 import { SplitCanvasTest } from './routes/__test/SplitCanvasTest'
@@ -55,7 +57,9 @@ export default function App() {
         <Route path="/diffusion" element={<Diffusion />} />
         <Route path="/svm" element={<Svm />} />
         <Route path="/transformers" element={<Transformers />} />
+        <Route path="/rlhf" element={<Rlhf />} />
         <Route path="/convolutions" element={<Convolutions />} />
+        <Route path="/agents" element={<Agents />} />
         <Route path="/recall" element={<Recall />} />
         <Route path="/__test-mdx" element={<TestMDX />} />
         <Route path="/__split-canvas-test" element={<SplitCanvasTest />} />
