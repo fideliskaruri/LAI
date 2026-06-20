@@ -19,6 +19,16 @@
   --font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
   --font-sans: "Inter", -apple-system, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* PLAN §11.2: 900px is the desktop ↔ mobile split */
+  --breakpoint-md: 900px;
+  /* Split-canvas wider side-by-side at 1280px+ */
+  --breakpoint-lg: 1280px;
+}
+
+html, body {
+  /* PLAN §11.2: vertical scroll wins everywhere; handles set their own touch-action */
+  touch-action: pan-y;
 }
 
 html {
