@@ -38,7 +38,7 @@ export const topics: Topic[] = [
 
   // Part III — Neural Networks (middle-right cluster)
   { id: 'backprop', number: 18, name: 'MLP / Backprop', x: 850, y: 470, status: 'available', part: 'III', prereqs: ['perceptron', 'derivatives', 'matrices', 'optimization'] },
-  { id: 'convolutions', number: 19, name: 'Convolutions', x: 930, y: 540, status: 'coming-soon', part: 'III', prereqs: ['backprop'] },
+  { id: 'convolutions', number: 19, name: 'Convolutions', x: 930, y: 540, status: 'available', part: 'III', prereqs: ['backprop'] },
   { id: 'embeddings', number: 20, name: 'Word embeddings', x: 880, y: 350, status: 'available', part: 'III', prereqs: ['vectors', 'linear-regression', 'probability'] },
   { id: 'attention', number: 21, name: 'Attention', x: 970, y: 280, status: 'available', part: 'III', prereqs: ['vectors', 'distributions'] },
   { id: 'transformers', number: 22, name: 'Transformers', x: 1010, y: 200, status: 'coming-soon', part: 'III', prereqs: ['attention', 'backprop', 'embeddings'] },

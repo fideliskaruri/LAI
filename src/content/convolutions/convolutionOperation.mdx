@@ -1,0 +1,27 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="convolution-operation" eyebrow="Three · Multiply, sum, slide">
+
+# The convolution, in three small verbs
+
+Drag the kernel on the left. As you drag, *one* cell of the grid on the right lights up &mdash; the cell whose row and column match the kernel's current top-left corner. That cell is the convolution's output at this position. As the kernel slides across the image, the bright cell on the right traces the same path, and each cell of the output grid records what the kernel "saw" at that position. The whole grid on the right is what we call a **feature map**: one number per location, summarising whether the kernel's pattern fired strongly here, weakly, or not at all.
+
+The arithmetic in the bottom strip of the left pane is the whole operation, written out:
+
+$$
+\text{out}_{i,j} \;=\; \sum_{u=0}^{2}\sum_{v=0}^{2} K_{u,v}\,\cdot\,I_{i+u,\,j+v}.
+$$
+
+In words: at output position *(i, j)*, look at the 3×3 patch of the image whose top-left corner is *(i, j)*; multiply each kernel weight by the pixel underneath it, cell by cell; add up the nine products. Write the resulting number into the output grid at *(i, j)*. Then slide one cell to the right, and do the same nine multiplications and additions for the *next* position. And then the next. And the next. After you finish the rightmost position in a row, drop down to the next row and start again. When you've covered every legal position, the output grid is full. That entire procedure &mdash; *multiply, sum, slide* &mdash; is called a **convolution**.
+
+A small bookkeeping note. The output grid on the right is *smaller* than the image on the left. The image is 12×12; the kernel is 3×3; the output is 10×10. This is the so-called **valid** convolution &mdash; we only place the kernel at positions where it fits *entirely inside* the image. The two rightmost columns and the two bottom-most rows are sacrificed on the altar of geometry. In practical CNNs you can recover those positions by **padding** the image with zeros around its border, which gives you a same-size output and is the convention in most modern frameworks. Whether you pad or not is a small implementation detail; what matters is the arithmetic of one output position, which is identical either way.
+
+Drag the kernel slowly along the *vertical* stroke of the digit &mdash; the long ink mark running top-to-bottom in the centre of the *3*. The output cells light up. Not the brightest of bright, but visible warmth. Now drag the kernel across an *empty* region in a corner of the image, where there's no ink at all. The output cells stay pale or even tinge to the cool side, since the small intensities don't generate much positive sum. Drag across the *edge between ink and paper*: especially a sharp left-to-right transition. The output cells go *vermilion-bright* &mdash; the kernel is yelling, "I see a vertical edge here." That's what the Sobel kernel was designed to detect, and you can watch the detection happen one position at a time.
+
+This is the single most important picture in computer vision. Hold it in your head as a piece of furniture you'll keep referring to. On one side you have an image &mdash; a grid of intensities, with patterns in it. On the other side you have a kernel &mdash; a small bank of weights. The convolution is the operation that takes both and produces a third grid &mdash; the feature map &mdash; whose cells say, *at each location, how strongly does this kernel's pattern appear?* Every layer of every convolutional network you will ever see, from LeNet in 1989 to ResNet-152 in 2015, applies this exact operation. They differ in the *size* of the image, in the *number* of kernels per layer, in *how many layers* are stacked, in *what nonlinearity* is applied after the sum, and in a thousand small refinements. But the core arithmetic at any one position is *multiply nine numbers, add them, write the result to one cell.* The verbs do not change.
+
+The cost in numbers is worth a moment's attention. The 3×3 kernel has nine weights and one bias, for ten parameters. If you used an MLP layer to do the same job &mdash; that is, to turn a 12×12 image into a 10×10 feature map &mdash; the MLP would need *100 × 144 = 14,400* parameters, with no built-in awareness of geometry. The convolution does the same job with *10*. That's a thousand-fold reduction in parameters by *one architectural decision*: weight sharing across positions. The reduction is what makes convolutional networks trainable on the data and compute of 1989, and on the data and compute of 2012, and at every point in between.
+
+In the next act we toggle between four different kernels &mdash; vertical edges, horizontal edges, blur, sharpen &mdash; and watch how each one's output picks out a different aspect of the same image. And then we acknowledge the punchline: in a learned CNN, *nobody chooses* what those weights are. The data does.
+
+</Act>

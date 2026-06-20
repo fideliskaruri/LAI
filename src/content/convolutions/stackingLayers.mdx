@@ -1,0 +1,19 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="stacking-layers" eyebrow="Six · Deep stacks">
+
+# What happens when you do this twice
+
+The left pane shows the architecture **LeCun published in 1998** — the network they called **LeNet-5**. Read it left to right. An input image. A convolution layer that produces *six* feature maps, each from its own learned kernel. A pool layer that halves the spatial size of each map. A *second* convolution layer that produces *sixteen* deeper feature maps, this time by combining the six pooled maps from below. A *second* pool layer that halves again. A fully connected layer that flattens everything into a list of numbers and steers them, by an ordinary MLP head, into ten output scores — one per digit class. The whole thing has fewer than sixty thousand learnable parameters. It was trained on MNIST on a workstation in 1998 and got under 1% error.
+
+The cartoon is unflattering — six blocks in a row — but the architecture's depth is the point. The right pane is the reason that depth matters: it asks *what does a single activation deep in the network actually see?*
+
+A neuron in conv1 has a 5×5 kernel applied to the raw input. Its **receptive field** is exactly 5×5 input pixels. A neuron in conv2, after one round of 2×2 pooling, has a 5×5 kernel applied to the pooled output. Each pooled cell was the max of a 2×2 patch of conv1, and each conv1 cell sat over its own 5×5 input patch. Walk the arithmetic backward: a conv2 neuron sees a region of roughly *14×14* input pixels. After the *second* pool and a final FC layer, a single output neuron has been fed by signals drawn from *the entire image*. The receptive field has grown from a thumbnail to the whole picture.
+
+But the growth in *spatial reach* is only half the story. The other half is the growth in *semantic content*. The conv1 kernels, when you visualise them after training, almost always look like little **edge detectors at various orientations** — vertical bars, horizontal bars, diagonals. Different angles, similar character. The conv2 kernels, when visualised, look like nothing so concrete; if you instead show them the input patches that *maximise* their output, those patches look like **corners, junctions, short curves** — little compositions of conv1 edges. And the FC layer's units respond, on average, to **whole-digit configurations** — "*the upper loop of a 3*", "*the diagonal of a 7*", "*the round body of an 8*".
+
+The naming, then, is honest. The shallow layers detect **features**. The middle layers detect **motifs**. The deeper layers detect **parts**. The fully connected head detects **objects**. The hierarchy was not designed by anyone. Nobody told the network "*conv1 must be edges*". The network discovered the hierarchy because the data forced it: edges are the *most reused, most reliable* signal across all ten digits, so the network's gradient pressure builds an edge detector in conv1 of its own accord. Motifs are the next most reused, so conv2 builds those. Parts and objects emerge in the deeper layers because nothing else fits the gradient.
+
+This is the deep idea of computer vision. *Depth buys hierarchy.* One convolution sees pixels; ten convolutions stacked see a world. AlexNet in 2012 had eight layers; VGG in 2014 had nineteen; ResNet in 2015 had a hundred and fifty-two. The receptive fields grew. The hierarchies got richer. The classifications got better. The one architectural primitive — convolve, then pool, then convolve again — was the same in every one.
+
+</Act>

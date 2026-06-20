@@ -1,0 +1,27 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="the-kernel" eyebrow="Two · A small detector">
+
+# Nine numbers, looking at nine pixels
+
+A **kernel** is a small grid of weights. The one in the right pane is 3×3, so it is exactly nine numbers. That's it. The whole kernel.
+
+Drag the vermilion box on the left. As you drag, the kernel moves across the image. It is always looking at a *3×3 patch* of pixels &mdash; a tiny window onto a tiny piece of the picture. On the right we draw two things side by side: the kernel's nine weights (the same nine no matter where you drag), and the nine intensities of the patch currently sitting underneath it (these change every time the kernel moves). The arrangement is deliberate: the kernel's top-left cell is aligned with the patch's top-left cell. They are about to do business with each other, cell against cell.
+
+The particular kernel shown here is a famous one. It is called a **Sobel filter for vertical edges**, and it was published by Irwin Sobel in 1968, two decades before any of this was attached to a learning algorithm. Look at its nine numbers:
+
+$$
+K \;=\; \begin{pmatrix} -1 & 0 & +1 \\ -2 & 0 & +2 \\ -1 & 0 & +1 \end{pmatrix}.
+$$
+
+The left column is negative, the right column is positive, and the middle column is zero. The middle row is weighted twice as heavily as the others. Hold that pattern in your head and ask: *what happens if I lay this on a patch that has dark on the left and bright on the right?* The negative weights multiply small (dark) numbers, contributing little. The positive weights multiply large (bright) numbers, contributing a lot. The sum is **positive**. Now ask: *what happens on a patch that is bright on the left and dark on the right?* The signs reverse: positive weights × small numbers, negative weights × large numbers. The sum is **negative**. And what happens on a patch that is uniformly bright or uniformly dark, with no left-to-right contrast at all? The positives and negatives cancel. The sum is **zero**.
+
+That's it. That's the whole content of the kernel. A 3×3 vertical-edge detector is a *recipe for asking, at every point in the image, "is there a bright-on-the-right-dark-on-the-left edge here?"*, and the answer is a single signed number per location. The kernel doesn't care where in the image the edge is; the same nine weights will fire on a vertical edge in the upper-left and in the lower-right and in the middle, identically. This is the property called **translation equivariance**, and it is the great architectural prior of the convolution: *whatever the kernel knows how to detect, it knows how to detect everywhere at once.*
+
+Compare this against the MLP from last chapter. In the MLP, every hidden neuron had its own private bank of 144 weights. To learn to detect the same vertical edge in two different locations in the image, the MLP would need to learn the same nine numbers twice, in two different rows of its weight matrix &mdash; once for each location. That's wasteful in parameter count and worse: each version has to be learned from its own pool of training examples, so the data efficiency is bad. The convolution fixes both. There is one bank of nine numbers, shared across all locations. The training signal at any location updates the same nine numbers. The same nine numbers detect the same pattern wherever it appears. This is **weight sharing**, and it is the central architectural move of the chapter.
+
+You may have noticed that we are talking about kernel weights that are *fixed*. In Sobel's 1968 paper, of course, they were fixed by Sobel. He designed them by inspection. They are pretty &mdash; the numbers have an obvious structure, the symmetry is satisfying. For decades, the entire field of image processing worked this way: humans designed kernels for edges, kernels for blur, kernels for sharpening, kernels for embossing, kernels for one task after another. LeCun's contribution, in 1989, was to stop hand-designing the weights and instead *let the training data choose them*. In a convolutional neural network, the nine numbers of each 3×3 kernel are initialised randomly and then nudged by gradient descent until they minimise the loss on the training set. After training, the early-layer kernels typically *resemble* something like Sobel's edge detectors &mdash; not by anyone's design, but because edge detection turns out to be useful for telling 3s from 8s. The hand-designed kernel from 1968 and the learned kernel from 1989 are formally identical objects. Only their origin story differs.
+
+The right pane shows the kernel and the patch side by side. The next act answers the question we have left hanging: *what, exactly, do we do with those eighteen numbers to produce one output?*
+
+</Act>

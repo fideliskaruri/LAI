@@ -1,0 +1,19 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="pixels-and-images" eyebrow="One · What a computer sees">
+
+# Pictures are tables
+
+On the left is what we mean when we say *picture*: a small drawing of a digit *3*, sketched onto a 12×12 grid of squares. Some of the squares are dark, some are pale, most are blank. The shape of the curl is recognisable. Click any square or use the arrow keys to move the vermilion cursor around; the cursor lands on one specific square, which lights up. To the right is the *same picture*, redrawn as a grid of numbers. The square the cursor sits on, on the left, is the cell that lights up on the right. Look at it twice. The left and the right are the same object.
+
+That equivalence is the entire foundation of computer vision. To a computer there is no other thing called "an image". There is *only the table of numbers*. The strokes of ink in the left picture, the loops of the *3* &mdash; they don't exist as strokes, as ink, as loops. They exist as a 12×12 grid where some cells contain large numbers (close to 1, where the ink is heavy) and other cells contain small numbers (close to 0, where there is no ink). The shape of the *3* lives in the *spatial pattern* of the large numbers. If you re-sort the rows of the table, the *3* vanishes &mdash; not as data, but as a *3*. The arrangement matters.
+
+What a real photograph looks like is roughly the same idea, with two refinements. First, real images aren't 12×12; a phone photograph is more like 4000×3000, which is twelve *million* pixels per picture. Second, real images aren't grayscale; each pixel is usually three numbers, the intensities of red, green, and blue, so a colour photograph is a 4000×3000×3 *tensor* &mdash; thirty-six million numbers per photograph. The MNIST digits LeCun trained on were 28×28 grayscale, which is 784 numbers per example, and that was already considered high-dimensional in 1989. Our 12×12 sample is small enough to fit in this canvas and large enough to read as a digit. The principle scales identically.
+
+We can now name the first technical problem of computer vision precisely. *Given a grid of numbers like the one on the right, how does a network decide whether it's a 3 or an 8?* The MLP from the last chapter gives you an answer: flatten the grid into a vector of 144 numbers, hand it to a stack of fully-connected layers, train end to end. And in fact that works passably well for tiny inputs like MNIST. But as we will see in the next act, it's the *wrong* answer architecturally, because it throws away the one thing the picture is telling us, which is that the pixels lie in a *grid* and that the grid has *geometry*. A pixel and its neighbour are likely part of the same stroke. The MLP doesn't know this. We are going to fix that.
+
+Try a few specific moves. Run the cursor along the dark vertical stroke down the centre of the *3*. The numbers stay high. Run it along the empty rows above or below the digit; the numbers stay near 0. Run it along the boundary between ink and paper; you'll see the numbers shift from large to small over the course of two or three cells. That smooth transition &mdash; bright next to dark, ink next to paper &mdash; *is* what we mean by an *edge*. Edges are the most local fact a picture can tell us, and they will be the first thing our convolution learns to detect.
+
+One picture is one table. A convolution will turn that table into another table. And another. And another. Each one a little smaller, a little more abstract, until what comes out the end is a single number per class &mdash; *0.91 that this is a 3, 0.04 that it's an 8, 0.01 that it's a 5*, and so on. We have one act of orientation and seven acts to walk to that ending. The next act introduces the *kernel*, which is where the looking actually happens.
+
+</Act>
