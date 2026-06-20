@@ -23,6 +23,7 @@ import { Diffusion } from './routes/topics/Diffusion'
 import { Svm } from './routes/topics/Svm'
 import { Convolutions } from './routes/topics/Convolutions'
 import { Transformers } from './routes/topics/Transformers'
+import { LanguageModels } from './routes/topics/LanguageModels'
 import { Agents } from './routes/topics/Agents'
 import { Rlhf } from './routes/topics/Rlhf'
 import { Recall } from './routes/Recall'
@@ -57,6 +58,7 @@ export default function App() {
         <Route path="/diffusion" element={<Diffusion />} />
         <Route path="/svm" element={<Svm />} />
         <Route path="/transformers" element={<Transformers />} />
+        <Route path="/language-models" element={<LanguageModels />} />
         <Route path="/rlhf" element={<Rlhf />} />
         <Route path="/convolutions" element={<Convolutions />} />
         <Route path="/agents" element={<Agents />} />
