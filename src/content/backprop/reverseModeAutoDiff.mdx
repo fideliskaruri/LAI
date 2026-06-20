@@ -1,0 +1,29 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="reverse-mode-autodiff" eyebrow="Five · Why backward · Linnainmaa · 1970">
+
+# One loss, many parameters
+
+Mathematically, the chain rule doesn't care which direction you apply it. You can chain *forward* through the network (start at a weight and compute its effect on the loss, factor by factor, left to right) or *backward* (start at the loss and compute its sensitivity to each weight, factor by factor, right to left). Same multiplications, same answer. The trees of intermediate results look different but the final gradient is identical.
+
+Computationally, the two directions could not be more different. *Backward* is the right way around for neural networks, and the reason is a counting argument so clean it's almost insulting.
+
+Look at the right pane. Our little 2-3-1 network has thirteen trainable parameters &mdash; six entries in *W*, three in **b**, three in *V*, one *c*. The loss is *one* number. We want all thirteen gradients.
+
+**Forward mode.** If we chain forward, we have to pick one parameter at a time and propagate its sensitivity *outward* through the network. The intermediate state we carry forward, at each node, is a vector of derivatives with respect to *that* parameter. Each forward pass produces ONE gradient. Thirteen parameters: thirteen forward passes. Cost: roughly thirteen times the cost of one forward pass.
+
+**Reverse mode.** If we chain backward, we start at the loss with the seed (*y* − *t*) and propagate it *inward*. The intermediate state we carry backward, at each node, is the gradient of the loss with respect to *that* node. One backward pass through the network produces *all thirteen gradients at once*, because every parameter's gradient is the gradient at its downstream node times its own local derivative &mdash; and we have all the downstream gradients sitting right there. Cost: roughly one forward pass plus one backward pass. Total: about twice the cost of one forward pass.
+
+For a network with *N* parameters and *one* output (the loss), reverse mode is *N*/2 times faster than forward mode. Press *step* a few times on the left pane and watch the backward wavefront roll right-to-left across the network. At step 1 we have the seed at the output. At step 2 we've pushed it through the output sigmoid and into the *V* edges, getting four gradients (three *V*ᵢ and the bias *c*). At step 3 we've crossed *V* and have gradients on each hidden activation *h*. At step 4 we've pushed through each hidden sigmoid and computed the gradients on *W* (six numbers) and **b** (three more). One pass. Thirteen gradients.
+
+Now scale that up. A modern transformer has hundreds of billions of parameters. Imagine doing one forward pass per parameter to compute its gradient. At a microsecond per parameter, a hundred billion of them is a hundred thousand seconds &mdash; about a day &mdash; *for a single gradient step*. With reverse mode, the same computation is one forward and one backward pass &mdash; a few seconds at most. The factor of *N*/2 is the difference between *intractable* and *the multibillion-dollar industry*.
+
+This is the algorithmic insight Seppo Linnainmaa wrote down in his 1970 master's thesis at the University of Helsinki: *automatic differentiation in reverse mode is asymptotically cheaper than in forward mode whenever the output dimension is much smaller than the input dimension*. Loss functions, by construction, are scalar-valued &mdash; *one* number. Neural networks have many parameters. So loss functions are the textbook case for reverse mode. Linnainmaa wrote in Finnish and was largely unread outside Helsinki for two decades. Paul Werbos rediscovered the same algorithm in 1974 (this time for neural networks specifically) and was politely ignored. Rumelhart, Hinton, and Williams put it in *Nature* in 1986 and were not.
+
+The lesson Linnainmaa's argument teaches generalises far beyond neural networks. Whenever you have a scalar output and many inputs, *differentiate backwards*. This is the principle behind every modern deep-learning framework: PyTorch, TensorFlow, JAX. They are all, at heart, reverse-mode automatic differentiation engines. You write down a forward computation; they build a graph of intermediate values; they push the gradient backward through that graph using the chain rule. The activation functions can change. The architecture can change. The fundamental algorithm is Linnainmaa's. The trick that made it inevitable.
+
+There is one last computational note worth registering. Reverse mode requires that we *remember* the forward-pass intermediate values &mdash; the *z*'s and *h*'s &mdash; so they're available to multiply against the backward gradients on the return trip. In a small network this is free; in a transformer with billions of activations, it's the main memory cost of training. The technique that lets you trade compute for memory &mdash; *gradient checkpointing* &mdash; is exactly the choice of which intermediates to store and which to recompute. But that's a story for later. For now: forward, store, backward, multiply.
+
+You have the algorithm. Time to run it.
+
+</Act>

@@ -1,0 +1,43 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="hidden-layers" eyebrow="One · What sits between input and output">
+
+# Stacking the perceptron
+
+On the left is the smallest neural network worth drawing. Two inputs, *x*₁ and *x*₂. Three hidden neurons, *h*₁, *h*₂, *h*₃. One output, *y*. Eleven edges, each with a weight; six neurons, each with a bias. Thirteen numbers in all. That's the entire model. Once we've fixed the thirteen numbers, the network is a function: feed it two numbers, get one back.
+
+The structural change from the previous chapter is exactly one thing &mdash; the *hidden layer*. The perceptron had inputs feeding directly into a single output neuron. This network has inputs feeding into three intermediate neurons first; only after those three "hidden" units have done their work does anything reach the output. The hidden neurons aren't observed in the data &mdash; the training data only tells us about *x* and *y*, not about *h* &mdash; which is exactly the difficulty that froze the field in 1969 and the breakthrough that thawed it in 1986. We'll get to the thaw in three acts. For now, let's just notice what each neuron does.
+
+Each neuron, hidden or output, does the same two-step calculation the perceptron did, with one small modification:
+
+$$
+h_i \;=\; \sigma\!\bigl(w_{i,1}\,x_1 \,+\, w_{i,2}\,x_2 \,+\, b_i\bigr),
+\qquad
+y \;=\; \sigma\!\bigl(v_1\,h_1 \,+\, v_2\,h_2 \,+\, v_3\,h_3 \,+\, c\bigr).
+$$
+
+Each line is a weighted sum followed by a squash. The modification &mdash; the small but decisive change from the perceptron &mdash; is that the squash isn't the hard step function any more. It's the smooth sigmoid
+
+$$
+\sigma(z) \;=\; \frac{1}{1 + e^{-z}}
+$$
+
+we met in the logistic-regression chapter. Same S-shape, smooth as glass. Why smooth instead of hard? Because in three acts' time we will need to differentiate it. The hard step has a derivative of zero everywhere it's defined and undefined at the cliff &mdash; no information for the backward pass. The sigmoid has gradients everywhere. That tiny replacement &mdash; substituting the smooth squash for the hard one &mdash; is what lets the whole chain rule trick work.
+
+In vector form &mdash; which will be how we actually compute it &mdash; the two lines collapse to two matrix-vector products:
+
+$$
+\mathbf{h} \;=\; \sigma(W \mathbf{x} + \mathbf{b}),
+\qquad
+y \;=\; \sigma(V \mathbf{h} + c).
+$$
+
+with *W* a 3×2 weight matrix, **b** ∈ ℝ³, *V* a 1×3 weight vector, *c* a scalar. The whole network in two lines. The right pane writes them out so you can stare at them.
+
+So what does the hidden layer *do*? It transforms the input. The input lives in two-dimensional (*x*₁, *x*₂) space, where you saw in the perceptron chapter that XOR is unsolvable by any straight cut. The hidden layer maps that input into a *new* three-dimensional space (*h*₁, *h*₂, *h*₃). In the new space, the geometry can be different. Each hidden neuron carves the input plane into two half-planes by its own internal linear decision, then squashes the result into [0, 1]. Three such half-planes &mdash; thoughtfully chosen &mdash; transform the input plane into a new representation in which the output neuron's job is *easy*. That's the whole point: the hidden layer rearranges the data until a single straight cut suffices, and the output neuron makes that cut.
+
+This is the conceptual move that broke the back of the AI winter. The perceptron's failure on XOR was the failure of a *single* linear classifier. With one extra layer in between, the network can solve XOR because it gets to *first* nonlinearly reshape the input before classifying. The Universal Approximation Theorem (Cybenko 1989, Hornik 1991) later proved that one hidden layer with enough neurons can approximate *any* continuous function on a bounded input. Three hidden neurons aren't enough for "any continuous function", but they are enough for XOR &mdash; as we will witness, training, in act 7.
+
+We have the architecture. We have the equations. The next act lights up the numbers and watches them flow.
+
+</Act>

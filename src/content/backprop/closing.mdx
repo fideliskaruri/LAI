@@ -1,0 +1,37 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="closing" eyebrow="Eight · The next forty years">
+
+# The math is the same
+
+You can read the lineage on the left like a textbook table of contents for the next chapters of this book.
+
+*1986. MLP / backprop.* The chapter you just finished. A small stack of perceptron-shaped neurons, trained by reverse-mode automatic differentiation of the loss. Three pages in *Nature*. The thing that ended the winter and made every subsequent advance possible.
+
+*1989. Convolutions.* Yann LeCun, then at Bell Labs, asks: *what if the network knows it's looking at an image?* The hidden layers should respect the fact that pixels nearby in space are related. Instead of letting every hidden unit have its own arbitrary weights, *share* the weights across spatial positions &mdash; one bank of weights, applied to every patch of the image, sliding across the grid. This is a *convolution*, and it dramatically reduces the number of parameters while also making the network translation-invariant by construction. The training algorithm is the same backprop you just learned. Only the *wiring* changed.
+
+*2017. Attention.* Vaswani and seven co-authors, at Google Brain, propose that the network should be able to look at any part of its input and route information from there to any other part, with weights that the network learns dynamically per query. This is *attention*. It allows long-range dependencies in language (and elsewhere) that the convolutional and recurrent architectures of the previous decade struggled with. Again, the training algorithm is the same backprop. Only the wiring changed.
+
+*Today. Transformers.* Stacks of attention layers, hundreds of them, trained on roughly the entire internet, with backpropagation, on tens of thousands of GPUs. The compute budget is staggering. The numbers are absurd. The algorithm at the core of the training loop, however, is the four-step recipe from this chapter: *forward pass, loss, backward pass, gradient step*. Run it for a hundred million parameter updates and you have GPT-4. The recipe doesn't change.
+
+That's the throughline. The math is the same. The architectures are decorations on a single algorithmic theme.
+
+A few specific things that *did* change, lest the lineage feel too tidy.
+
+*Activations.* The sigmoid of 1986 had a flaw the field discovered painfully in the 1990s: in deep networks its gradient *vanishes* as you push backward through many layers (because σ′ is small everywhere except a narrow region near zero, and the chain rule multiplies many σ′ together). The cure was to replace σ with the **ReLU** (Glorot, 2010): *ReLU(z) = max(0, z)*. Linear in the positive half-plane, zero in the negative; its derivative is 1 or 0. Deep networks suddenly trained. Sigmoid still appears at the output for classification &mdash; you need the [0, 1] squash for probabilities &mdash; but the hidden layers are almost universally ReLU or one of its smooth cousins (GELU, SiLU).
+
+*Optimisers.* Plain SGD &mdash; the *θ ← θ − η∇L* update we used in the last act &mdash; turns out to be a serviceable but unimpressive optimiser for the highly non-convex loss landscapes of deep networks. The big practical wins of the 2010s were better gradient-step rules: momentum, RMSProp, and especially **Adam** (Kingma & Ba 2014), which uses per-parameter adaptive learning rates and has remained the default for most of deep learning.
+
+*Initialisation.* What value should the weights start at? Random isn't sufficient; the variance has to be calibrated to the layer width or the forward pass blows up or collapses. **Xavier initialisation** (Glorot 2010) and its variants give the recipe. Without it, deep networks don't train. With it, they do.
+
+*Normalisation.* Once you have a hundred layers, the activations at deeper layers drift to extreme values over training. **Batch normalisation** (Ioffe & Szegedy 2015) and the family of layer-norm variants that followed (layer norm, group norm, RMS norm) keep the activations stable as the network grows deep. Every modern architecture uses some form of normalisation.
+
+*Regularisation.* Networks with millions of parameters memorise the training data. **Dropout** (Srivastava et al. 2014) randomly silences neurons during training; **weight decay** penalises large weights; **data augmentation** synthetically expands the training set. Each is a way of saying: *don't trust any individual neuron too much.*
+
+None of these supersedes the 1986 paper. They are *refinements*. The four-step recipe survives every one of them. The seed gradient is still (*y* − *t*); the backward pass is still a reverse-mode walk through the chain rule; the update is still some flavour of (negative-)gradient step. The recipe doesn't change; the kitchen gets bigger.
+
+The next chapter, **convolutions**, picks the first of these forty years and walks through it in full: how the simple choice of *weight-sharing across positions* turns the MLP from a pattern matcher into a vision system. After that, eventually, the chapter on attention, the chapter on transformers, the chapter on language models. But you have the engine now &mdash; the small four-step loop, with its smooth activations and its backward sweep of gradients &mdash; and every subsequent chapter is a story about what to *put inside* the engine, not how to *build* it.
+
+Take a breath. You've just walked through the algorithm that ended an AI winter and started the one we're living in. There's a lot more architecture ahead, but the heart of every neural network you will ever train is the four steps and the chain rule. Three pages in *Nature*. Forty years of consequences. One small machine, learning.
+
+</Act>

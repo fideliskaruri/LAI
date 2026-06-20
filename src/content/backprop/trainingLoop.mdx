@@ -1,0 +1,37 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="training-loop" eyebrow="Six · Putting it together">
+
+# Forward, loss, backward, step. Repeat.
+
+We have all four ingredients. The forward pass turns inputs into a prediction. The loss measures the gap between prediction and target. The backward pass &mdash; one reverse-mode walk through the chain rule &mdash; computes the gradient of the loss with respect to every weight in the network. The fourth and final ingredient is the *update*: a small step against the gradient, repeated until convergence. We met this in the optimization chapter as **gradient descent**:
+
+$$
+\theta \;\leftarrow\; \theta \;-\; \eta\,\nabla_\theta L,
+$$
+
+where θ stands for any parameter (any *W*, *b*, *V*, or *c*) and η is the *learning rate*. Move each weight a small distance against its gradient. The gradient is the direction in which the loss *increases* fastest, so the negative gradient is the direction in which it decreases fastest, and we step that way.
+
+Put the four steps together and you get the *training loop*:
+
+> *Forward pass.* Compute the predictions for each training example.
+> *Loss.* Compute the loss between predictions and targets.
+> *Backward pass.* Run the chain rule backward to compute the gradient.
+> *Update.* Subtract η × gradient from every parameter.
+> *Repeat.*
+
+That's all there is. The 1986 paper described exactly this loop, and it is the loop that trains every modern neural network. The variations &mdash; momentum, Adam, RMSProp, weight decay, learning-rate schedules &mdash; all sit inside the update step, refining how to combine the gradient with the past history of gradients. The core four-step rhythm is the same.
+
+For our demonstration we train on the data that broke the perceptron: **XOR**. Four examples. (0, 0) → 0. (0, 1) → 1. (1, 0) → 1. (1, 1) → 0. The same four corners of the unit square that Minsky and Papert used to argue, in 1969, that neural networks were a dead end. We argued in the previous chapter that no single perceptron can separate these four points, because no straight line can put the two positive corners on one side of itself and the two negative corners on the other. The hidden layer's job &mdash; the whole reason for being &mdash; is to render the problem linearly separable after one layer of transformation. The output layer then makes the final cut.
+
+Press **play** on the left pane and watch the training loop run. On each tick, the engine takes a few gradient steps; the loss curve on the right grows downward; the decision surface on the left &mdash; the region where the network predicts 1 (vermilion) vs. 0 (ink) &mdash; deforms continuously. Early on the surface is roughly linear, because the network's randomly-initialised weights happen to produce a roughly linear initial classifier. Then a *fold* appears: the boundary curves, the curve sharpens, and within a few hundred epochs the four corners are cleanly on the correct sides &mdash; positive in the (0, 1) and (1, 0) corners, negative in the (0, 0) and (1, 1) corners.
+
+This is the moment. *This is what didn't exist in 1969.* The four-step loop, run for a few hundred iterations on a tiny network, solves the exact problem the field had pronounced dead. The math is from Leibniz (chain rule) and Cauchy (gradient descent). The algorithmic combination is from Linnainmaa and Werbos. The cultural triumph is the 1986 paper, which made the whole thing famous overnight.
+
+On the right pane you can see the four per-example predictions update in real time. Watch them: 0.5, 0.5, 0.5, 0.5 at the start (sigmoid of small initial weights). Then they begin to differentiate. The (0,0) and (1,1) examples drift toward 0; the (0,1) and (1,0) examples drift toward 1. Halfway through training there's a hesitation &mdash; the network has found one valley of the loss landscape but is fighting its way out of it. By the end all four examples are within a few percent of their targets and the loss curve has flattened near zero.
+
+A few diagnostic things to try. Press **reset** to randomise the initial weights and re-train; you'll see that *most* random initialisations converge, but not all of them &mdash; sometimes the network gets stuck in a saddle and the loss plateaus at a non-zero value. (This is the "local minimum problem" that worried researchers in the 1990s. It turns out, empirically, to be a much smaller problem in practice than the theory feared.) Try **step** to advance one gradient update at a time and watch how each individual update shifts the boundary &mdash; usually a tiny rotation or shift, occasionally a more dramatic curvature change.
+
+The boundary the perceptron could never draw, drawn in real time. The AI winter ended in October 1986; the demonstration on the left is the same demonstration, sixty years later, in your browser. Three pages. Two layers. Four examples. One algorithm.
+
+</Act>

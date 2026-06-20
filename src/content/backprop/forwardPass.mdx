@@ -1,0 +1,29 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="forward-pass" eyebrow="Two · Computing the prediction">
+
+# Numbers cascade
+
+Drag the two sliders on the left. Each one is one of the network's inputs &mdash; *x*₁ on the top track, *x*₂ on the bottom. As you drag, every number downstream of those two inputs updates: the three hidden pre-activations *z*ₕ above the hidden neurons; the three hidden activations *h* below them; the output pre-activation *z*ₒ above the output neuron; the output *y* on the output side. Six numbers move when you move one slider, and the right pane writes out the arithmetic that connects them.
+
+This is the *forward pass*. It's the thing the network does when you ask it to make a prediction. Pick an input. Feed it through. Read off the output. That's it. The "depth" of a deep network is just how many of these little weighted-sum-and-squash operations are chained in sequence between input and output. Two layers, as we have here, is the shallowest interesting case; modern language models can have a hundred or more.
+
+Look at one hidden neuron, say *h*₁, while you drag. The pre-activation is
+
+$$
+z_{h,1} \;=\; W_{1,1}\,x_1 \,+\, W_{1,2}\,x_2 \,+\, b_1.
+$$
+
+It's a *linear* function of the inputs &mdash; a dot product plus a constant &mdash; exactly the same shape as the perceptron's pre-activation in the last chapter. The hidden neuron has, in effect, drawn its own *internal* decision boundary in input space, the line where *z*ₕ,₁ = 0. On one side of that line *z*ₕ,₁ is positive; on the other, negative. The sigmoid then squashes that signed distance into [0, 1]: positive *z* maps to near 1, negative *z* maps to near 0, and *z* near 0 maps to near ½. So *h*₁ is a *soft indicator* of which side of an internal half-plane the input lies on. The other two hidden neurons do the same with their own half-planes.
+
+The output then takes a weighted sum of these three soft indicators, plus a bias, and squashes that sum. The output is asking the question: *given how strongly each hidden feature has fired, do those firings, weighted by V, add up to enough evidence for class 1?* It's the perceptron's question one layer up &mdash; but on a different feature space, one the network has *constructed* for itself.
+
+Try a few specific inputs. Set both sliders to zero: the input is at the origin. The hidden activations will be near ½ for any hidden neuron whose bias *b* is near zero (since *Wx* = 0). Pull *x*₁ all the way positive: each hidden activation drifts to whatever extreme its weight on *x*₁ would predict &mdash; near 1 if *W*₁ is positive, near 0 if negative. Pull both inputs to opposing extremes &mdash; the kind of corner where XOR lives &mdash; and watch the three hidden activations split. *That's the hidden layer doing its job*: turning a single input point into a three-number representation, and the output is downstream.
+
+The pre-activations are the perceptron-style linear part; the activations are the smooth nonlinearity. *Linear, smooth-nonlinear, linear, smooth-nonlinear* &mdash; that's the rhythm of every modern neural network. Two repeats here. Many hundreds of repeats in GPT-4. The pattern is identical.
+
+The right pane spells out the same arithmetic in equations, with live numbers. It's worth comparing the two views side by side once or twice. The network diagram shows you *where* the signals travel; the equation panel shows you *what* arithmetic each neuron is doing. Both are the same forward pass, drawn two different ways.
+
+Once you've got a feel for the prediction step, the next question is the obvious one: *how wrong is it?* That's the loss, and it's the topic of the next act.
+
+</Act>

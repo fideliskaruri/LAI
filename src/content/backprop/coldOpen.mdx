@@ -1,0 +1,23 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="cold-open" eyebrow="Zero · Rumelhart · Hinton · Williams · Nature · 1986">
+
+# The paper that ended the winter
+
+On 9 October 1986 the journal *Nature*, vol. 323, ran a three-page letter by three authors at three institutions: **David Rumelhart** of the Institute for Cognitive Science at the University of California, San Diego; **Geoffrey Hinton**, then of the Department of Computer Science at Carnegie Mellon; and **Ronald Williams**, formerly of the MIT AI Laboratory and at UCSD with Rumelhart. The title was *Learning representations by back-propagating errors*. The abstract was one sentence. The paper described how to take a stack of artificial neurons &mdash; a multi-layer perceptron, of the sort Minsky and Papert had declared untrainable seventeen years earlier &mdash; and adjust every one of its weights by pushing the prediction error backwards through the network using the chain rule from calculus.
+
+It was the paper that ended the AI winter.
+
+The previous chapter walked the perceptron up to its failure mode and stopped just short of the fix. Rosenblatt's beautiful learning rule worked for a *single* neuron. As soon as you stacked two neurons end to end, the rule broke: nobody knew what target value to use for the hidden layer, because the data only told you what the *output* should be. Without a target there is no error; without an error there is nothing to update. So the field, having decided in 1969 that the single neuron was a dead end and that the multi-layer version was untrainable, mostly walked away. Funding evaporated. Researchers retrained as logicians or roboticists. A generation of graduate students went into other fields. The neural-network winter lasted from the late sixties to the mid-eighties.
+
+The fix had actually been on the shelf the whole time. The relevant mathematics &mdash; how to push a derivative through a composition of functions &mdash; was published in 1676 by Leibniz, and is now taught in the first month of any calculus course. Specific algorithmic versions of *backpropagation* were written down by Henry Kelley in 1960 (for optimal control), Seppo Linnainmaa in a 1970 master's thesis in Finnish (for general reverse-mode automatic differentiation), and Paul Werbos in his 1974 Harvard PhD thesis (for neural networks, by name, in essentially the form we use today). Each of them was ignored. Each, in retrospect, had everything you need.
+
+What the Rumelhart-Hinton-Williams paper did was, simply, make the idea unignorable. Three of the most charismatic minds in the field, at three of its most influential institutions, in three pages, in *Nature*. They didn't just describe the algorithm &mdash; they demonstrated it, on small but striking problems including the very XOR pattern that had killed the field. People read it. People reimplemented it. By the end of 1987 there were a thousand groups around the world training neural networks again.
+
+The world we live in &mdash; large language models, self-driving cars, AlphaFold, the GPU industry, the trillion-dollar valuations &mdash; descends in an essentially unbroken line from that letter to *Nature*. Every modern neural network is trained by some descendant of the algorithm those three authors wrote down. The architectures have grown. The training tricks have multiplied. But the basic four-step recipe &mdash; *forward pass, loss, backward pass, gradient step* &mdash; is the recipe in the 1986 paper. Three pages.
+
+This chapter is the technical content of that letter. We will build the smallest interesting neural network &mdash; two inputs, three hidden units, one output &mdash; from scratch. We will walk the forward pass with live numbers. We will write down the loss. We will derive the backward pass step by step using the chain rule. We will watch it train, on XOR, in real time. And at the end we will look at what the hidden layer has learned &mdash; the deep, original idea Rumelhart called *representation learning*, which is what every modern deep network is fundamentally about.
+
+The perceptron is the atom. Backpropagation is the bond. Everything that follows in modern AI is the chemistry.
+
+</Act>

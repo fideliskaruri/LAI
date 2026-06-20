@@ -1,0 +1,65 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="chain-rule-backward" eyebrow="Four · Leibniz · 1676">
+
+# Backprop is just the chain rule
+
+Open a calculus textbook to its third chapter and you will find a small rule. If *y* depends on *u*, and *u* depends on *x*, then
+
+$$
+\frac{dy}{dx} \;=\; \frac{dy}{du}\,\cdot\,\frac{du}{dx}.
+$$
+
+This is the *chain rule*. Leibniz wrote it down in his unpublished notebooks in 1676. It is taught in the first month of every undergraduate calculus course. It says that to differentiate a composition of functions, you differentiate each piece in isolation and multiply.
+
+**Backpropagation is the chain rule applied to a neural network.** That's it. That's the whole punchline. The rest of this act is just spelling out the consequence.
+
+Look at the chain on the left pane. Six nodes from input to loss:
+
+$$
+\mathbf{x} \;\to\; \mathbf{z}_h \;\to\; \mathbf{h} \;\to\; z_o \;\to\; y \;\to\; L.
+$$
+
+Each arrow is a function. Under each arrow we've labelled the *local* derivative of the output of that piece with respect to its input &mdash; ∂*z*ₕ/∂**x** = *W*, ∂**h**/∂*z*ₕ = σ′(*z*ₕ), and so on. These are the small pieces. To get the *global* derivative ∂*L*/∂*W*, you multiply *every* local derivative along the chain from *L* back to *W*. Five arrows from *L* to *W*. Five local derivatives. One product.
+
+Let's actually do it. We'll do the easy case first: the gradient of the loss with respect to *V*, the output-layer weights.
+
+**Output layer.** *V* sits between *h* and *z*ₒ. The chain from *L* back to *V* has only two arrows:
+
+$$
+\frac{\partial L}{\partial V} \;=\; \frac{\partial L}{\partial y} \,\cdot\, \frac{\partial y}{\partial V}.
+$$
+
+The first factor is the seed from the previous act: ∂*L*/∂*y* = *y* − *t*. The second factor needs unpacking. *y* = σ(*Vh* + *c*), so by another chain rule step (the sigmoid times the inner derivative *h*):
+
+$$
+\frac{\partial y}{\partial V} \;=\; \sigma'(z_o)\,\cdot\,\mathbf{h}^\top, \qquad \sigma'(z) \;=\; \sigma(z)(1 - \sigma(z)) \;=\; y(1 - y).
+$$
+
+Combining:
+
+$$
+\frac{\partial L}{\partial V} \;=\; \underbrace{(y - t)\,y\,(1 - y)}_{\text{a scalar}}\,\cdot\,\mathbf{h}^\top.
+$$
+
+A single scalar times a row of hidden activations. That's three numbers &mdash; one gradient per *V* weight &mdash; and they're all proportional to *h*, the hidden activations from the forward pass. If a particular *h*ᵢ was big, its weight *V*ᵢ gets a big gradient; if *h*ᵢ was zero, *V*ᵢ gets none. That makes intuitive sense: a hidden unit that didn't fire didn't contribute to the prediction, so it doesn't deserve any blame for the error.
+
+**Hidden layer.** Now the longer chain. *W* sits between **x** and *z*ₕ &mdash; one extra layer further from the loss. So the chain has more arrows:
+
+$$
+\frac{\partial L}{\partial W} \;=\; \frac{\partial L}{\partial y}\,\cdot\,\frac{\partial y}{\partial z_o}\,\cdot\,\frac{\partial z_o}{\partial \mathbf{h}}\,\cdot\,\frac{\partial \mathbf{h}}{\partial \mathbf{z}_h}\,\cdot\,\frac{\partial \mathbf{z}_h}{\partial W}.
+$$
+
+Five factors. The first two compose into (y − t) · σ′(zₒ) &mdash; the same prefix we used for *V*. The third factor is just *V* (since *z*ₒ = *V***h** + *c*). The fourth factor is σ′(*z*ₕ) &mdash; element-wise, since each hidden unit's sigmoid is independent. The fifth factor is **x**. Putting it together &mdash; and writing the per-hidden-unit version so the matrix shapes stay sane:
+
+$$
+\frac{\partial L}{\partial W_{i,j}} \;=\; \underbrace{(y - t)\,y\,(1 - y)\,V_i\,h_i(1 - h_i)}_{\text{a scalar, one per hidden unit }i}\,\cdot\,x_j.
+$$
+
+Two big things to notice. First, the formula for *W* contains the formula for *V* as a substring. The two boldfaced underbraces share the prefix (*y* − *t*) · *y*(1 − *y*) &mdash; the gradient on *z*ₒ. The *V* formula multiplies that prefix by *h*; the *W* formula multiplies it by *V* and σ′ and *x*. So if we *save* the prefix once during the output-layer computation, we can *reuse* it for the hidden layer. That's the algorithmic essence of backpropagation: *each layer's gradient is the previous layer's prefix times its own local derivative*. You walk backward through the network and at each step multiply by one more factor.
+
+Second &mdash; and this is the part Leibniz didn't have to think about &mdash; the structure of the chain rule for a *network* of compositions is different from the textbook chain rule for a *sequence*. In a network, each variable can affect the loss through multiple paths. If a hidden activation *h*ᵢ feeds into the output through weight *V*ᵢ, but also into some other downstream computation (in a bigger network with multiple outputs, say), the gradient ∂*L*/∂*h*ᵢ is a *sum* over all those paths. That's the only generalisation needed: the chain rule for a graph is the chain rule for a chain, summed over paths. In our 2-3-1 network there's only one path from each *h*ᵢ to *L*, so the sum has one term and the formula collapses.
+
+The whole algorithm is now spec-complete. We could code it up right now. But there is one more thing to notice before we do, and it's an algorithmic point that turns out to be the deepest one in the chapter: *why backward* rather than *forward*? Why push the chain rule from *L* back to *W*, instead of starting at *W* and chaining forward to *L*? That's the next act &mdash; the reason backprop is fast.
+
+</Act>

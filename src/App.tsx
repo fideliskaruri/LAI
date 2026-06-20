@@ -13,6 +13,7 @@ import { LinearRegression } from './routes/topics/LinearRegression'
 import { Optimization } from './routes/topics/Optimization'
 import { LogisticRegression } from './routes/topics/LogisticRegression'
 import { Perceptron } from './routes/topics/Perceptron'
+import { Backprop } from './routes/topics/Backprop'
 import { Pca } from './routes/topics/Pca'
 import { Clustering } from './routes/topics/Clustering'
 import { Gmm } from './routes/topics/Gmm'
@@ -43,6 +44,7 @@ export default function App() {
         <Route path="/optimization" element={<Optimization />} />
         <Route path="/logistic-regression" element={<LogisticRegression />} />
         <Route path="/perceptron" element={<Perceptron />} />
+        <Route path="/backprop" element={<Backprop />} />
         <Route path="/pca" element={<Pca />} />
         <Route path="/clustering" element={<Clustering />} />
         <Route path="/gmm" element={<Gmm />} />

@@ -1,0 +1,27 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="representation-learning" eyebrow="Seven · What the hidden layer learned">
+
+# Representation is the whole game
+
+We've trained the network. The four XOR examples are predicted correctly. The loss is near zero. The boundary curves through the input plane the way the perceptron's straight line never could. *What did the hidden layer actually learn?*
+
+On the left pane, three heatmaps. Each one shows the activation of one hidden neuron &mdash; *h*₁, *h*₂, *h*₃ &mdash; as you sweep the input (*x*₁, *x*₂) across the plane. Dark vermilion means that hidden neuron is firing strongly (close to 1); pale means it's firing weakly (close to 0). The four XOR examples are overlaid as dots &mdash; vermilion for the positive examples (which should be classified as 1), ink for the negative ones (which should be 0).
+
+Look at what each hidden neuron settled into. Each one has carved a roughly *half-plane* shape into input space &mdash; the same shape a single perceptron can produce. *h*₁ is firing strongly in one half, weakly in the other; *h*₂ in a different half; *h*₃ in yet another. The orientations and offsets of the three half-planes are different, and the network *chose them* during training. Nobody told the network what features to detect. Nobody said "the hidden units should each be a half-plane oriented this way and that way." Gradient descent, applied to the four XOR examples, *discovered* this set of three half-planes. Each one is a *feature* the network learned because the data demanded it.
+
+This is the original meaning of **representation learning**. The phrase is in the *title* of the 1986 *Nature* paper &mdash; *Learning representations by back-propagating errors* &mdash; and it is the conceptual idea that, more than any specific algorithm, drives modern deep learning. The hidden layers of a neural network are not just middlemen that pass signals from input to output. They are *internal representations* that the network *invents* in order to make its job easier. The features at each layer are emergent: they are whatever shape minimises the training loss.
+
+Now go to the right pane. We've taken those same three hidden activations and replotted the four XOR examples in *hidden space*. (Hidden space is three-dimensional; we project to (*h*₁, *h*₂) for drawability, and the small text under each point shows you the values.) Watch where the four examples land. Compare to where they live in input space &mdash; an X pattern with positives and negatives diagonally opposite.
+
+In *hidden space*, the four points are no longer in an X. They've been pulled into a *line*. The two positive examples sit in one corner of (*h*₁, *h*₂); the two negative examples sit in the opposite corner. A single straight cut &mdash; the output neuron's perceptron-style boundary &mdash; cleanly separates them. The boundary is shown faintly: where the output's pre-activation crosses zero. The hidden layer has *folded* input space until the geometry of the problem becomes trivially linear, and the output layer makes the trivial cut.
+
+That, in eight sentences, is the entire theory of deep learning. The architecture builds a *representation* in which the original problem becomes simple. Convolutional networks learn representations in which the same image is robust to small translations. Word embeddings learn representations in which words with similar meanings are nearby. Transformers learn representations in which information from anywhere in the input can be relevantly combined at any output position. The vocabulary and the wiring change with each architecture, but the principle is unchanged from Rumelhart, Hinton, and Williams in 1986: *the hidden layers are not infrastructure; they are the point*.
+
+A specific implication worth noting: the representation a network learns depends on the *data* and the *loss*. Train this same architecture on a different task &mdash; say, regress the input's distance from the origin &mdash; and the hidden units would settle into entirely different half-planes. The features are not fixed; they are *task-shaped*. This is why a pretrained representation that worked for one problem (ImageNet classification) can often be useful for a related problem (medical-image diagnosis): the features that turned out to be useful for the first task happen to also be useful for the second.
+
+It's also why the explicit "representation learning" framing has become so productive. If the *point* of training a network is to learn a useful representation &mdash; not just to minimise a specific loss &mdash; then we can ask: *what loss makes the representation maximally useful for downstream tasks we haven't picked yet?* That question turns out to be exactly the question modern self-supervised learning is built around. Word2vec, BERT, contrastive learning, GPT &mdash; all of them are sophisticated answers to it. But the kernel of the idea is the three little heatmaps on the left pane: the hidden layer is a feature detector that the network chose, and that choice is what makes everything work.
+
+The network you trained on the previous act knows how to solve XOR. More importantly, it *built* the right vocabulary for solving XOR &mdash; and it built it without being told what the vocabulary should be. *That* is the moment from which modern AI unfolds.
+
+</Act>

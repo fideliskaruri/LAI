@@ -1,0 +1,31 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="loss" eyebrow="Three · How wrong is it?">
+
+# A gap, squared
+
+The network's prediction is *y* &mdash; a number in [0, 1]. The truth, for any one labelled training example, is a *target* value we'll call *t*, also in [0, 1]. (For binary classification *t* is exactly 0 or 1; for regression *t* can be any real number in range.) We need a single number that says: *how wrong was that prediction?* Small when the prediction is close to the truth; bigger when it's far. Easy to differentiate, ideally, because in two acts we'll want to take its derivative.
+
+The classical answer &mdash; the one Gauss invented for least-squares in 1795 and the one the 1986 paper uses &mdash; is the **mean squared error**, or here for a single example just the squared error:
+
+$$
+L \;=\; \tfrac{1}{2}\,(y - t)^2.
+$$
+
+The factor of ½ is cosmetic &mdash; it makes the derivative tidier, no leading 2 &mdash; and you can leave it out if you prefer. The shape is what matters. The loss is the *square* of the gap between prediction and truth. If the prediction is perfect (*y* = *t*), the loss is zero. If the prediction is off by 0.1, the loss is 0.005. Off by 0.5, the loss is 0.125. The loss grows quadratically with the gap, so being twice as wrong is four times as bad.
+
+On the left, the prediction *y* is fixed at the value our network produced in the previous act (for the default inputs *x*₁ = 0.6, *x*₂ = −0.4). The slider sets the *target* *t* from 0 to 1. As you drag, the vermilion bar in the middle shows the loss growing or shrinking. On the right pane the same relationship is drawn as a curve: with *y* held fixed, *L* is a parabola in *t* whose minimum sits exactly at *t* = *y*. Drag the slider; the dot rides the parabola; the height drops to zero at the bottom of the bowl.
+
+Now the move that makes backpropagation possible. We don't just want a *number* for the loss &mdash; we want its *derivative*. Specifically we want to know: *if I nudged y up by a tiny amount, would the loss go up or down, and by how much?* That number is the derivative of *L* with respect to *y*, and for our squared-error loss it's stunningly easy:
+
+$$
+\frac{\partial L}{\partial y} \;=\; y - t.
+$$
+
+That's it. The gradient of the loss with respect to the output is just the signed gap between the prediction and the truth. If we over-predicted (*y* > *t*), the gradient is positive: nudging *y* up would make things worse, so we want to nudge it *down*. If we under-predicted (*y* < *t*), the gradient is negative: nudging *y* up would help. If we're perfect (*y* = *t*), the gradient is zero: nothing to fix. The gradient tells us in *which direction* and *with what urgency* to move the output.
+
+The signed gap *y* − *t* is the *seed* of the backward pass. It's what gets pushed back through the network in the next two acts. Every gradient on every weight in every layer of the network &mdash; *W*, *b*, *V*, *c* &mdash; is some product of derivatives starting from this one number. That's why the choice of loss matters: it determines what the seed is. For MSE, the seed is *y* − *t*. For cross-entropy &mdash; the loss we used in logistic regression &mdash; the seed for the *pre-sigmoid* activation is also *y* − *t* (an algebraic coincidence that makes cross-entropy + sigmoid even prettier than MSE + sigmoid). Either way, one easy number, sitting at the output, is the start of everything.
+
+A nice intuition for this: imagine you've built a complicated machine that turns inputs into outputs, and somewhere downstream of the output someone has hung a *scoreboard* showing how wrong the output is. If you want to know how to adjust the *inside* of the machine to make tomorrow's score better, the very first thing you need to know is how the score depends on the *output*. The rest is just bookkeeping &mdash; *propagating* that one piece of information backward through the gears. The chain rule, which we visit next, is the bookkeeping.
+
+</Act>
