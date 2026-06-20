@@ -1,0 +1,4 @@
+# Cloudflare Pages edge redirects
+# Generated at build from src/data/redirects.ts (build script — Phase 8)
+# SPA fallback: every unmatched route serves index.html so react-router can handle it
+/* /index.html 200

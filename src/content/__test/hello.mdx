@@ -1,0 +1,29 @@
+# Four integrations, one page
+
+This page is the day-one smoke test from PLAN §14.10. If all of the following render correctly, the riskiest integration is cleared.
+
+## Inline math
+
+Pythagoras's old observation: $x^2 + y^2 = r^2$. If that fraction-free expression rendered with KaTeX serifs and not as literal dollar signs, remark-math and rehype-katex are wired in the correct order.
+
+## Display math
+
+$$
+\nabla f = \begin{pmatrix} \dfrac{\partial f}{\partial x} \\[6pt] \dfrac{\partial f}{\partial y} \end{pmatrix}
+$$
+
+## Embedded component
+
+A draggable handle, embedded in prose: <DragHandle label="drag me" />. The handle is a real React component imported into MDX; if you see the dotted-grid icon and the label, components-in-prose works.
+
+## Internal link
+
+Click [the Vectors topic](/vectors) to test that MDX `[]()` syntax is rerouted through `react-router-dom`'s `<Link>` so the browser doesn't full-reload.
+
+## External link
+
+[The MML book](https://mml-book.com) should open as a normal anchor.
+
+---
+
+Green on all four? Phase 0 is done.

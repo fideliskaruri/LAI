@@ -1,0 +1,62 @@
+@import "tailwindcss";
+@import "katex/dist/katex.min.css";
+
+@import "@fontsource/source-serif-4/400.css";
+@import "@fontsource/source-serif-4/400-italic.css";
+@import "@fontsource/source-serif-4/600.css";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/jetbrains-mono/400.css";
+
+@theme {
+  --color-cream: #FAF8F4;
+  --color-ink: #1A1A1A;
+  --color-vermilion: #C44536;
+  --color-vermilion-deep: #A8392C;
+  --color-dim: #6B6B6B;
+  --color-fade: #B5AEA5;
+
+  --font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-sans: "Inter", -apple-system, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-feature-settings: "kern", "liga", "calt";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-vermilion);
+  color: var(--color-cream);
+}
+
+.dropcap::first-letter {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 4.2em;
+  float: left;
+  line-height: 0.85;
+  margin-right: 0.10em;
+  margin-top: 0.05em;
+  color: var(--color-vermilion);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
