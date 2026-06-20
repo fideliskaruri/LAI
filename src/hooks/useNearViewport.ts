@@ -7,7 +7,10 @@ import { useEffect, useState, type RefObject } from 'react'
  */
 export function useNearViewport<T extends Element>(
   ref: RefObject<T | null>,
-  rootMargin = '200vh 0px',
+  // IntersectionObserver rootMargin accepts only px or %, NOT vh.
+  // 200% top/bottom = "extend viewport by 2× above and below" — PLAN §5.7's
+  // "within 2 viewports" semantic.
+  rootMargin = '200% 0px',
 ): boolean {
   const [near, setNear] = useState(false)
 
