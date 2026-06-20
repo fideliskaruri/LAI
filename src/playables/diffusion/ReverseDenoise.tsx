@@ -29,9 +29,10 @@ const VIEW_H = 480
 export interface ReverseState {
   t: number
   mode: 'clean' | 'noise'
+  interacting: boolean
 }
 
-export const INITIAL_REVERSE: ReverseState = { t: 400, mode: 'clean' }
+export const INITIAL_REVERSE: ReverseState = { t: 400, mode: 'clean', interacting: false }
 
 const SLIDER_Y = VIEW_H - 56
 const SLIDER_X_MIN = 60
@@ -57,14 +58,14 @@ export function LeftPane({
   const t = state.t
 
   const setT = useCallback(
-    (next: number) => {
+    (next: number, interacting = false) => {
       const clamped = Math.max(T_MIN, Math.min(T_MAX, Math.round(next)))
-      onChange({ ...state, t: clamped })
+      onChange({ ...state, t: clamped, interacting })
     },
     [onChange, state],
   )
 
-  const bind = useDrag(({ first, movement: [mx] }) => {
+  const bind = useDrag(({ first, last, down, movement: [mx] }) => {
     if (first) startRef.current = t
     const start = startRef.current
     if (start === null) return
@@ -74,7 +75,7 @@ export function LeftPane({
     const dxSvg = mx * sx
     const startX = tToX(start)
     const newX = Math.max(SLIDER_X_MIN, Math.min(SLIDER_X_MAX, startX + dxSvg))
-    setT(xToT(newX))
+    setT(xToT(newX), down && !last)
   })
 
   useKeyNudge(
@@ -101,6 +102,7 @@ export function LeftPane({
       <CanvasNarrative
         text={`The noisy image at step ${t} — what the denoiser sees as input. Signal share is ${signal.toFixed(2)}.`}
         priority="normal"
+        isInteracting={state.interacting}
       />
       <svg
         ref={svgRef}
@@ -223,6 +225,7 @@ export function RightPane({
             : `The model's predicted noise at step ${t} — the per-pixel epsilon that was added during the forward process.`
         }
         priority="normal"
+        isInteracting={state.interacting}
       />
       <svg
         viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}

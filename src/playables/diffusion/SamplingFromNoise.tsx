@@ -113,7 +113,12 @@ export function LeftPane({
         <g
           tabIndex={0}
           role="button"
-          aria-label={`Take one reverse diffusion step. ${TOTAL_STEPS - state.step} steps remaining.`}
+          aria-disabled={state.step >= TOTAL_STEPS}
+          aria-label={
+            state.step >= TOTAL_STEPS
+              ? `Step cap reached at ${TOTAL_STEPS}. Press reset to start over.`
+              : `Take one reverse diffusion step. ${TOTAL_STEPS - state.step} steps remaining.`
+          }
           onClick={handleStep}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -121,7 +126,7 @@ export function LeftPane({
               handleStep()
             }
           }}
-          style={{ cursor: state.step >= TOTAL_STEPS ? 'default' : 'pointer' }}
+          style={{ cursor: state.step >= TOTAL_STEPS ? 'default' : 'pointer', opacity: state.step >= TOTAL_STEPS ? 0.4 : 1 }}
           className="focus-visible:outline-none [&:focus-visible_rect]:stroke-vermilion-deep"
         >
           <rect

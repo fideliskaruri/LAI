@@ -1,0 +1,33 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="closing" eyebrow="Seven · Five nodes, sixty-eight years">
+
+# A lineage in five jumps
+
+The little diagram on the left has five nodes, and you can read it as the entire history of the field.
+
+*1958.* The perceptron. One neuron, one step, one learning rule. Front-page news. The first machine that could learn anything at all.
+
+*1969.* XOR. Four points on which Rosenblatt's beautiful theorem says nothing. A small dataset, a short proof, a long winter.
+
+*1986.* Backprop. The chain rule, applied to a stack of smooth-activation neurons, recovers the perceptron's promise and goes vastly beyond it. The architectures that XOR forbade become trainable.
+
+*2012.* AlexNet. A deep convolutional network &mdash; eight layers, sixty million parameters &mdash; wins the ImageNet competition by a margin so large that it ends the era of hand-engineered computer vision in a single afternoon. The deep learning revolution begins in earnest.
+
+*Today.* GPT, Gemini, Claude. Sonnet-by-Sonnet, the models are essentially the same architecture as the 1986 backprop network, scaled up by a factor of a trillion. Hundreds of billions of perceptron-shaped neurons, organised into stacked layers, trained by the same chain rule, on roughly the entire internet.
+
+If you trace any modern AI system back through its lineage &mdash; chapter 22's transformers, chapter 25's diffusion models, the language model behind whatever conversational assistant you're using &mdash; you eventually arrive at Rosenblatt's refrigerator-sized box on the Cornell Aeronautical Laboratory floor in the summer of 1958. The shape is the same. The arithmetic is the same. The fact that it can *learn* is the same. What changed is scale, depth, and the activation function.
+
+A few last things to take away.
+
+*The perceptron is the atomic unit.* Everything else &mdash; backprop, MLPs, CNNs, transformers, attention &mdash; is a way of stacking, connecting, training, or generalising the perceptron. Once you can see this little dot-product-and-threshold inside the larger machinery, the larger machinery stops looking magical.
+
+*Hard step versus smooth sigmoid is a choice.* Rosenblatt chose hard. Logistic regression chooses smooth. The two are otherwise the same model. The smooth version is differentiable and therefore trainable by gradient descent, which is why it won. The hard version is what most actual biological neurons look like, which is why Rosenblatt picked it and why it still has historical pride of place.
+
+*Linearly separable is a small box.* The class of functions a single perceptron can represent is small: half-planes only. Almost every problem you care about is not in this class. The way out, as Minsky and Papert tacitly acknowledged and Rumelhart, Hinton, and Williams later proved constructively, is to *stack*. Two layers can carve regions. Three layers can carve shapes. Many layers can carve anything.
+
+*The winter was a story about people, not mathematics.* The mathematics of multi-layer perceptrons was within reach for a long time before anyone took it seriously. What killed neural networks for two decades was funding, sociology, charisma deficits, and the death of Rosenblatt in a sailing accident at age forty-three. What revived them was a three-page paper, three names, and a deeply persistent group of people who refused to abandon the idea.
+
+Next, we walk through the door Rumelhart, Hinton, and Williams opened. The MLP chapter builds the two-layer network you just saw a sketch of, derives the backpropagation algorithm step by step, and watches it solve XOR &mdash; the same four points the perceptron couldn't &mdash; in real time.
+
+</Act>

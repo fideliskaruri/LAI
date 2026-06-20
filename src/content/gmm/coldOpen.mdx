@@ -16,6 +16,6 @@ That's the upgrade. Soft assignment instead of hard. Every point keeps a record 
 
 The question of this chapter is the one that hovers under the picture: *how do we compute those probabilities?* What is a "probability of belonging to a cluster" even supposed to mean? The answer turns out to require a model of what a cluster *is* &mdash; not just a centroid, but a *Gaussian distribution* with a center and a spread. Three Gaussians, summed up, will be our model. The probabilities will fall out of Bayes' rule. The fitting algorithm will be the most famous loop in unsupervised learning: *Expectation-Maximization*.
 
-Simon Newcomb wrote down the first mixture model in 1886, trying to make sense of a pile of astronomical measurements that didn't fit a single bell curve. Karl Pearson fit one to crab measurements in 1894. Dempster, Laird, and Rubin gave the algorithm its modern name and proof in 1977. We're walking through their picture.
+Simon Newcomb wrote down the first mixture model in 1886, trying to make sense of a pile of astronomical measurements that didn't fit a single bell curve. The earlier intuition was Adolphe Quetelet's, who in the 1840s argued that human-height distributions could be mixtures of multiple bell curves &mdash; but he never formalized it. Karl Pearson fit one to crab measurements in 1894. Dempster, Laird, and Rubin gave the algorithm its modern name and proof in 1977. We're walking through their picture.
 
 </Act>

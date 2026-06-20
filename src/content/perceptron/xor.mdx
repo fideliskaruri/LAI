@@ -1,0 +1,32 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="xor" eyebrow="Five · Minsky &amp; Papert · 1969">
+
+# Four points and an ice age
+
+In 1969 the MIT mathematicians **Marvin Minsky** and **Seymour Papert** published a book called *Perceptrons: An Introduction to Computational Geometry*. It was not a popular book. It was a careful, sometimes acerbic, technically dense analysis of what perceptrons could and could not compute. It ran to about three hundred pages of geometry, group theory, and combinatorics. It contained, in passing, an observation that would end Rosenblatt's research program and freeze the entire field of neural networks for roughly two decades.
+
+The observation rests on a four-point dataset, displayed on the left panel. Take the four corners of the unit square, with the labels of the binary XOR function:
+
+- (0, 0) → 0
+- (0, 1) → 1
+- (1, 0) → 1
+- (1, 1) → 0
+
+In other words: the output is 1 if exactly one of the inputs is 1, and 0 otherwise. This is the logical XOR &mdash; *exclusive or* &mdash; one of the four elementary binary operations. In the right panel I've drawn the truth table on the unit square; the two positive corners sit on one diagonal and the two negative corners sit on the other.
+
+**Claim.** No straight line through this square can put both positive corners on one side and both negative corners on the other.
+
+The proof is so short it's almost insulting. Any line divides the plane into two half-planes. There are exactly four corners. By the pigeonhole principle, one of the half-planes contains at least two corners. But the two positive corners are diagonal from each other, and the two negative corners are also diagonal &mdash; so whichever half-plane contains two corners *must* contain one positive and one negative. Therefore some corner is on the wrong side. Therefore no line separates them.
+
+Try it anyway. I've loaded the perceptron with the XOR data (just a small noisy cluster at each of the four corners, in the [−1, 1]² version of the same problem) and you can train it as before. Click **train** or **play**. Watch the boundary thrash. The faint trail shows the line trying every angle. The "best so far" counter, on the upper left of the canvas, tracks the lowest mistake count the perceptron has ever achieved on this dataset across the entire run. It never reaches zero. It can't. The data is not linearly separable, and the perceptron rule has no way to make it so.
+
+This is what Minsky and Papert proved &mdash; in much more general form &mdash; about a wide class of problems: *parity*, *connectedness*, *symmetry*, and others. The single-layer perceptron, restricted to local A-units of fixed size, could not compute them. The book was scrupulous about scope (the title was *An Introduction*, not *The Death Of*; Minsky in particular always insisted the book was not anti-neural-network), but the world read it as a verdict. *Perceptrons can't do XOR.* The phrase entered the folklore. Funding bodies, especially DARPA, drew a line through neural network research. The two leading research groups &mdash; Rosenblatt's at Cornell and the Stanford group around Bernard Widrow &mdash; withered. Frank Rosenblatt died in a sailing accident in Chesapeake Bay in 1971, at age 43, two years after the book's publication. His students dispersed. The hardware was eventually scrapped.
+
+The next decade is sometimes called the *first AI winter*. There are other reasons for that winter &mdash; over-promising on natural language and theorem proving, the failures of expert systems &mdash; but on the neural network side, Minsky and Papert's book is the textbook cause. The intellectual climate at the major US AI labs from about 1972 to about 1986 was that the perceptron was a dead end and that artificial intelligence would be built out of symbolic rules instead.
+
+This is not a story about Minsky and Papert being wrong, by the way. They were correct. The single-layer perceptron really can't compute XOR. The mistake &mdash; if there was one &mdash; was the implicit "and therefore neural networks are not the answer", which doesn't follow from the theorem. The way out was sitting in the open, in plain view, all along.
+
+The way out is the next act.
+
+</Act>

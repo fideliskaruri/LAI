@@ -21,9 +21,10 @@ const VIEW_H = 480
 
 export interface ForwardState {
   t: number
+  interacting: boolean
 }
 
-export const INITIAL_FORWARD: ForwardState = { t: 200 }
+export const INITIAL_FORWARD: ForwardState = { t: 200, interacting: false }
 
 const SLIDER_Y = VIEW_H - 56
 const SLIDER_X_MIN = 60
@@ -76,14 +77,14 @@ export function LeftPane({
 
   const t = state.t
   const setT = useCallback(
-    (next: number) => {
+    (next: number, interacting = false) => {
       const clamped = Math.max(T_MIN, Math.min(T_MAX, Math.round(next)))
-      onChange({ t: clamped })
+      onChange({ t: clamped, interacting })
     },
     [onChange],
   )
 
-  const bind = useDrag(({ first, movement: [mx] }) => {
+  const bind = useDrag(({ first, last, down, movement: [mx] }) => {
     if (first) startRef.current = t
     const start = startRef.current
     if (start === null) return
@@ -93,7 +94,7 @@ export function LeftPane({
     const dxSvg = mx * sx
     const startX = tToX(start)
     const newX = Math.max(SLIDER_X_MIN, Math.min(SLIDER_X_MAX, startX + dxSvg))
-    setT(xToT(newX))
+    setT(xToT(newX), down && !last)
   })
 
   useKeyNudge(
@@ -116,7 +117,11 @@ export function LeftPane({
 
   return (
     <figure className="w-full">
-      <CanvasNarrative text={narration.text} priority={narration.priority} />
+      <CanvasNarrative
+        text={narration.text}
+        priority={narration.priority}
+        isInteracting={state.interacting}
+      />
       <svg
         ref={svgRef}
         viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
@@ -262,6 +267,7 @@ export function RightPane({ state }: { state: ForwardState }) {
       <CanvasNarrative
         text={`At step ${t}, the signal share is ${signal.toFixed(2)} and the noise share is ${(Math.sqrt(1 - aBar)).toFixed(2)}. The per-step variance beta-t is ${beta.toExponential(2)}.`}
         priority="normal"
+        isInteracting={state.interacting}
       />
       <svg
         viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}

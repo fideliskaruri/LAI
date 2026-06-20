@@ -51,12 +51,16 @@ const RAW: number[][] = [
   [1, 2, 4, 3, 1, 5],
 ]
 
-// Row-normalise (softmax-like; here we just divide by sum so the row reads
-// directly as a discrete distribution).
-const W: number[][] = RAW.map((row) => {
-  const s = row.reduce((a, b) => a + b, 0)
-  return row.map((v) => v / s)
-})
+// Row-normalise: divide by row sum so each row reads directly as a discrete
+// distribution. This is not softmax (no exponentiation); just a plain
+// normalisation so the visual stays interpretable.
+const normalize_rows = (m: number[][]): number[][] =>
+  m.map((row) => {
+    const s = row.reduce((a, b) => a + b, 0)
+    return row.map((v) => v / s)
+  })
+
+const W: number[][] = normalize_rows(RAW)
 
 const VIEW_W = 600
 const VIEW_H = 480
@@ -221,15 +225,23 @@ export function RightPane({ state, onChange }: RightProps) {
     [onChange],
   )
 
-  // Arrow keys step the row.
+  // Arrow keys step the row (dy) and column (dx); clamp at edges.
   useKeyNudge(
     svgRef,
     useCallback(
-      (_dx: number, dy: number) => {
-        if (dy === 0) return
-        const cur = state.hoveredRow ?? 0
-        const next = Math.max(0, Math.min(N - 1, cur - Math.sign(dy)))
-        setHover(next, state.hoveredCol)
+      (dx: number, dy: number) => {
+        if (dx === 0 && dy === 0) return
+        const curRow = state.hoveredRow ?? 0
+        const curCol = state.hoveredCol ?? 0
+        const nextRow =
+          dy !== 0
+            ? Math.max(0, Math.min(N - 1, curRow - Math.sign(dy)))
+            : curRow
+        const nextCol =
+          dx !== 0
+            ? Math.max(0, Math.min(N - 1, curCol + Math.sign(dx)))
+            : curCol
+        setHover(nextRow, nextCol)
       },
       [state.hoveredRow, state.hoveredCol, setHover],
     ),

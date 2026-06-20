@@ -36,12 +36,12 @@ import {
  * The heat map is regenerated when the state changes — fine, the dataset is
  * tiny.
  *
- * State: GDState wraps a boundary plus a history of (wx, wy) for the trace.
+ * State: GDState wraps a boundary plus a history of (wx, wy, b) for the trace.
  */
 
 export interface GDState {
   current: BoundaryState
-  history: { wx: number; wy: number }[]
+  history: { wx: number; wy: number; b: number }[]
   steps: number
 }
 
@@ -49,7 +49,7 @@ export const INITIAL_GD: GDState = {
   current: { ...INITIAL_BOUNDARY },
   history: (() => {
     const w = toWeights(INITIAL_BOUNDARY)
-    return [{ wx: w.wx, wy: w.wy }]
+    return [{ wx: w.wx, wy: w.wy, b: w.b }]
   })(),
   steps: 0,
 }
@@ -70,7 +70,7 @@ function step(state: GDState): GDState {
   const w = toWeights(next)
   return {
     current: next,
-    history: [...state.history, { wx: w.wx, wy: w.wy }],
+    history: [...state.history, { wx: w.wx, wy: w.wy, b: w.b }],
     steps: state.steps + 1,
   }
 }
@@ -97,9 +97,7 @@ export function LeftPane({
   const trail = useMemo(() => {
     const recent = state.history.slice(-10, -1)
     return recent.map((h, i) => {
-      const b = fromWeights({ wx: h.wx, wy: h.wy, b: 0 }, state.current.gain)
-      // Note: this won't reflect bias accurately, but it's a faint trail —
-      // sufficient as a visual hint.
+      const b = fromWeights({ wx: h.wx, wy: h.wy, b: h.b }, state.current.gain)
       const e = boundaryEndpoints(b)
       return {
         i,
@@ -164,8 +162,13 @@ export function LeftPane({
           }}
           tabIndex={0}
           role="button"
-          aria-label={`Take a gradient-descent step. Current step ${state.steps} of ${MAX_STEPS}.`}
-          style={{ cursor: 'pointer' }}
+          aria-disabled={state.steps >= MAX_STEPS}
+          aria-label={
+            state.steps >= MAX_STEPS
+              ? `Step cap reached at ${MAX_STEPS}. Press reset to start over.`
+              : `Take a gradient-descent step. Current step ${state.steps} of ${MAX_STEPS}.`
+          }
+          style={{ cursor: state.steps >= MAX_STEPS ? 'default' : 'pointer', opacity: state.steps >= MAX_STEPS ? 0.4 : 1 }}
           className="focus-visible:outline-none [&:focus-visible_rect]:stroke-vermilion-deep"
         >
           <rect
@@ -408,8 +411,13 @@ export function RightPane({
           }}
           tabIndex={0}
           role="button"
-          aria-label={`Take a gradient-descent step.`}
-          style={{ cursor: 'pointer' }}
+          aria-disabled={state.steps >= MAX_STEPS}
+          aria-label={
+            state.steps >= MAX_STEPS
+              ? `Step cap reached at ${MAX_STEPS}. Press reset to start over.`
+              : `Take a gradient-descent step.`
+          }
+          style={{ cursor: state.steps >= MAX_STEPS ? 'default' : 'pointer', opacity: state.steps >= MAX_STEPS ? 0.4 : 1 }}
           className="focus-visible:outline-none [&:focus-visible_rect]:stroke-vermilion-deep"
         >
           <rect

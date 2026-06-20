@@ -1,0 +1,35 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="the-learning-rule" eyebrow="Three · How it adjusts">
+
+# A rule of thumb that happens to be a theorem
+
+Rosenblatt's learning rule fits on one line:
+
+$$
+\mathbf{w} \;\leftarrow\; \mathbf{w} \,+\, \eta \,(y - \hat y)\, \mathbf{x}
+$$
+
+We pronounce this: *adjust the weights by a small amount, in the direction of the input, scaled by the error.* The Greek letter η (eta) is a small positive number called the *learning rate* &mdash; how big a correction to make. We'll use η = 0.4 in the panel. The output ŷ ∈ {0, 1} is the perceptron's current guess; the truth y ∈ {0, 1} is what the label says. The quantity (y − ŷ) is therefore one of three things:
+
+- **0**, if ŷ = y &mdash; we got it right &mdash; *no update*. Skip this point.
+- **+1**, if ŷ = 0 and y = 1 &mdash; we said blue but the truth is red &mdash; *push w toward x*.
+- **−1**, if ŷ = 1 and y = 0 &mdash; we said red but the truth is blue &mdash; *push w away from x*.
+
+That's the whole algorithm. Click the input point at random (or cycle through the data once per epoch); ask the perceptron for its guess; if it's right, do nothing; if it's wrong, give w a little nudge in the direction that would have made it right. Then do it again, and again, and again.
+
+On the left panel I've laid out a small training set &mdash; twenty points, half blue (class 0), half red (class 1), arranged so that they *can* be separated by a single straight line. The starting weights produce a boundary that gets several points wrong. The misclassified points wear faint dashed rings around them so you can see who's complaining.
+
+Click **train** to apply the rule to one point at a time. Click **play** to let it run. The boundary line will rotate and slide as the weights change; you'll see a faint trail of the previous few positions; the most recently updated point flashes a vermilion ring. After a few dozen updates the rings disappear &mdash; everything is on the right side &mdash; and the panel announces *converged*. The line has landed in a separating position.
+
+Look at the right panel while you train. The three horizontal bars are the components of the weight vector: w₀ (the bias), w₁ (the coefficient on x), w₂ (the coefficient on y). After each update the bars twitch. The narration tells you which way they twitched and why &mdash; "last point was red but predicted blue: pushed w toward it", or "last point was blue but predicted red: pushed w away."
+
+The *geometry* of why this works is worth a beat of attention. The weight vector (w₁, w₂) is the normal to the boundary. The update adds η · x to w (when y − ŷ = +1) or subtracts it (when y − ŷ = −1). Adding x to the normal swings the normal a little bit toward x, which rotates the boundary so that x ends up on the positive side. Subtracting x swings the normal away from x, rotating the boundary the other way. Each misclassification is one little corrective rotation. Enough corrections in a row and the rotations compose into a working classifier.
+
+There is a beautiful subtlety: the rule never *over*corrects in the sense of "now this fixed point is wrong again." If the data is genuinely separable, every update strictly decreases the angle between the current w and the *true* separating w, and the proof that follows from this fact is the topic of the next act &mdash; Rosenblatt's convergence theorem.
+
+The rule comes from nowhere fancy. Rosenblatt didn't derive it from a loss function (logistic regression's rule, by contrast, is the gradient of the log loss). He proposed it, by analogy with biological reinforcement learning, in his 1958 paper, and proved that it worked in his 1962 monograph *Principles of Neurodynamics*. We'll borrow Cybenko's later phrasing: the rule is what you'd write down by intuition if you were trying to nudge a single neuron toward the right answer. The remarkable thing is that the intuitive thing is also the optimal thing &mdash; provably so &mdash; whenever the data is linearly separable.
+
+So: train. Watch the line settle. The next act asks what happens when you do this over and over from different starting points.
+
+</Act>

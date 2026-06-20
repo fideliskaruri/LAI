@@ -232,7 +232,7 @@ export function RightPane({
 
   const kernelText =
     state.kernel === 'poly'
-      ? 'polynomial: z equals x squared plus y squared'
+      ? 'quadratic radial lift: z equals x squared plus y squared'
       : 'radial basis function: z equals exp of minus gamma times r squared'
 
   // Sort projected points by sy ascending so foreground is drawn last.

@@ -24,7 +24,7 @@ You'd be forgiven for thinking this is wasteful &mdash; if one head's enough, wh
 
 In practice you get a mix. Some heads do learn beautifully interpretable patterns &mdash; in the GPT-2 and BERT papers, people have published cute visualisations of "the head that does coreference" and "the head that tracks subject-verb agreement." Most heads are murkier. Some look basically diagonal &mdash; "I'm just copying the current token's information." Some look uniform &mdash; "I'm averaging the whole sentence equally." That's fine too; the model figures out a way to use them.
 
-The number of heads is a hyperparameter. The 2017 paper used 8 heads. GPT-2 used 12 to 25 depending on the size. GPT-3 used 96. There's no theoretical reason for any particular number; you pick it by experiment.
+The number of heads is a hyperparameter. The 2017 paper used 8 heads. GPT-2's four sizes used 12, 16, 20, and 25 heads. GPT-3 used 96. There's no theoretical reason for any particular number; you pick it by experiment.
 
 Reasonable next question: "We've still been talking as if attention runs once from a query side to a key side. Where is the query side, in a model that's *generating* text and only has one sequence to work with?" Same place as the key side. The same sentence supplies all of them. That's the next act.
 

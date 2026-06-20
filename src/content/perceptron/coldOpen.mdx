@@ -1,0 +1,21 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="cold-open" eyebrow="Zero · Rosenblatt · Cornell · July 1958">
+
+# The day the machines started learning
+
+On the morning of July 7, 1958, Frank Rosenblatt &mdash; a twenty-nine-year-old psychologist at the Cornell Aeronautical Laboratory in Buffalo &mdash; gave a demonstration to a small room of Navy officials and reporters. The next day, page 25 of *The New York Times* carried the result under the headline *NEW NAVY DEVICE LEARNS BY DOING*. The subhead read: *Psychologist Shows Embryo Of Computer Designed to Read and Grow Wiser*. The lead sentence promised that the Navy had revealed "the embryo of an electronic computer today that it expects will be able to walk, talk, see, write, reproduce itself and be conscious of its existence."
+
+The device was the **Mark I Perceptron**. It was the size of a refrigerator. Its eye was a twenty-by-twenty grid of cadmium-sulfide photocells, four hundred of them in a square array. Behind the eye sat a tangle of wires running to a row of motor-driven potentiometers &mdash; the *adjustable weights* &mdash; whose settings the machine learned to change on its own. Rosenblatt's demonstration was modest by the standards of the press release: the machine looked at a printed card with a triangle or a square on it, and, after a few hundred examples of being told which was which, reliably told them apart by itself.
+
+It was the first time a machine had *learned*.
+
+The popular press, ever cooperative, went wild. *The New Yorker* (Dec. 6, 1958) repeated a phrase that has stuck ever since: "Electronic 'Brain' Teaches Itself." *Time* and *Newsweek* picked up the story. Rosenblatt &mdash; charismatic, fond of overstatement, a part-time astronomer who built his own optical telescope &mdash; predicted on the record that within a few years a perceptron would be able to translate Russian into English, recognise faces, and pilot a spaceship. Within Cornell he was already working on a Mark II.
+
+There is a thing the press did not quite emphasise but that is the whole point of this chapter: under the wires and the photocells and the press conference, the Mark I Perceptron was performing one very simple piece of arithmetic. It was taking the four-hundred-pixel image, multiplying each pixel by a number that the machine had learned (a *weight*), summing the products into a single real number, and then asking: *is that number bigger than zero?* If yes, say *triangle*. If no, say *square*. That's it. That's the entire operation. The "learning" was a small tweak to those weights, applied every time the machine got an answer wrong. Repeat enough times and the weights line up so the answers stop being wrong.
+
+A weighted sum and a step function. Logistic regression's stubborn, hard-edged cousin. Eleven years older than gradient descent on log loss; sixty years older than ResNet; the first model of artificial intelligence ever built and the first one to receive a front-page article.
+
+In this chapter we will build it from scratch in two acts, watch it learn in two more, and then watch it fail catastrophically on a four-point dataset that ended the field for a decade.
+
+</Act>

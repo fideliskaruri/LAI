@@ -10,7 +10,7 @@ $$
 x_t = \sqrt{1 - \beta_t}\,x_{t-1} + \sqrt{\beta_t}\,\varepsilon
 $$
 
-The number $\beta_t$ is small &mdash; in the schedule the original DDPM paper used, $\beta_t$ runs linearly from about $10^{-4}$ to $0.02$ over a thousand steps. So at each step you push the pixel a tiny way toward a random Gaussian and pull it slightly away from where it was. One step is invisible. A hundred steps starts to look fuzzy. A thousand steps and your arrow is gone.
+The number $\beta_t$ is small &mdash; in the schedule the original DDPM paper used, $\beta_t$ runs linearly from about $10^{-4}$ to $0.02$ over a thousand steps. DDPM (Ho et al. 2020) &mdash; not the 2015 paper &mdash; picked this linear $\beta$ schedule. So at each step you push the pixel a tiny way toward a random Gaussian and pull it slightly away from where it was. One step is invisible. A hundred steps starts to look fuzzy. A thousand steps and your arrow is gone.
 
 There are two things to notice. First, this isn't random vandalism &mdash; it's a *precisely specified Markov chain*. The state at step $t$ depends only on the state at step $t-1$, and the transition probability is known: it's a Gaussian centered at $\sqrt{1 - \beta_t}\,x_{t-1}$ with variance $\beta_t$. We chose this. We could compute it. We can run it forward in a closed form.
 

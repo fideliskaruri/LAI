@@ -95,10 +95,9 @@ const acts: SplitActDef[] = [
   {
     id: 'kernel-trick',
     label: 'Lift to 3D',
-    syncMode: 'right-drives-left',
+    syncMode: 'independent',
     initialLeft: { ...INITIAL_KERNEL } as KernelState,
     initialRight: { ...INITIAL_KERNEL } as KernelState,
-    deriveLeft: (r: unknown) => r as KernelState,
   },
   {
     id: 'closing',

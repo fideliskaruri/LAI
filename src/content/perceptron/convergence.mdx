@@ -1,0 +1,29 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="convergence" eyebrow="Four · Rosenblatt 1962">
+
+# The first theorem of machine learning
+
+Rosenblatt's 1962 book, *Principles of Neurodynamics*, is a strange document &mdash; six hundred pages of grandiose claims about brains and intelligence interleaved with surprisingly rigorous mathematics &mdash; and it contains one of the cleanest theorems in the history of machine learning. The theorem is sometimes called the *Perceptron Convergence Theorem*, sometimes (after a tighter 1962 proof by H. D. Block) the *Block Convergence Theorem*.
+
+Statement (informal):
+
+> If the training data is linearly separable, the perceptron learning rule will find a separating hyperplane in finitely many updates, regardless of the initial weights.
+
+That's a lot to absorb in one breath. The qualification matters. *If the training data is linearly separable* &mdash; if there exists *some* line that puts every blue point on one side and every red point on the other &mdash; then no matter what crazy starting weights you give the algorithm, no matter what order you feed it the examples, the rule will rotate the boundary into a working position after some finite number of corrections. It will not loop forever. It will not get stuck. It will not need an extraordinarily lucky start. It will converge.
+
+The proof is short. The idea is to look at the angle between the current weight vector w and any hypothetical true separator w*, and show that each update closes that angle by a strictly positive amount that can't be cancelled by the increase in length of w. After a finite number of updates the angle must reach zero, which means w points the right way, which means everything is classified correctly. (The bound on the number of updates depends on the *margin* &mdash; how big a gap there is between the two classes &mdash; and the *radius* of the data, but is finite whenever the margin is positive.) We won't work through the proof here; it's standard, it shows up in every machine learning textbook, and it's beautiful in the same way many small clever proofs are beautiful: at the end you can see exactly where each inequality earns its keep.
+
+What we *can* do is watch it empirically, which is what the left panel does. The data is the same as in the previous act; I've picked initial weights at random; the auto-play loop runs the rule until it converges. The boundary swings around &mdash; sometimes wildly, sometimes calmly, depending on what set of starting weights I happened to roll &mdash; and lands in a separating position. Hit **reroll** to randomise the start and watch it again. The line ends up somewhere different every time (there are infinitely many separating boundaries to choose from), but it always ends up somewhere *separating*.
+
+Two observations worth making.
+
+*The convergence theorem says nothing about the path being short.* If the margin is small, the number of updates can be large &mdash; quadratic in the inverse margin, in the standard bound. You can construct datasets where Rosenblatt's rule takes thousands of updates to converge even though the answer is obvious from looking. The theorem is about *termination*, not efficiency.
+
+*Where the line lands depends on the order of examples.* If you reroll the seed and the data is presented in a different sequence, the perceptron lands on a different separator. There are infinitely many separating lines (for any separable dataset with a non-zero margin); the rule picks one essentially arbitrarily, depending on its starting weights and its data ordering. This is *not* a maximum-margin classifier &mdash; the SVM (chapter 17) is what you get when you insist on the *best* separating line. The perceptron is what you get when you settle for *any*.
+
+But: when the data is separable, "any" is what the algorithm finds, and it finds it provably, in finitely many steps. This is the first formal convergence guarantee in the history of machine learning. In 1962 that was breathtaking. It was the foundation of Rosenblatt's claim that the perceptron could *learn*, in the strong sense &mdash; not just stumble around tweaking weights forever, but actually find a working answer.
+
+Reroll a few times. Convince yourself empirically. Then turn the page, because in 1969 two researchers at MIT showed up with a dataset of *four points* on which Rosenblatt's beautiful theorem says exactly nothing &mdash; because the dataset isn't separable &mdash; and proved that no amount of cleverness with this rule could ever make it work.
+
+</Act>

@@ -1,0 +1,35 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="forward-pass" eyebrow="Two · How it decides">
+
+# A line in the plane, a verdict on each side
+
+Forget photocells for a moment. We're working in two dimensions because everything important about the perceptron happens in two dimensions; the four-hundred-dimensional version is identical, just with more numbers.
+
+On the left panel is a feature space &mdash; the (x, y) plane &mdash; with a vermilion line drawn across it. That line is the boundary
+
+$$
+w_1 x + w_2 y + b \;=\; 0
+$$
+
+with three particular numbers for w₁, w₂, b that I've picked for the picture. (They don't matter; pick others and the line moves.) The two half-planes on either side of the line are tinted faintly: red on one side, blue on the other. Anywhere a point lands in the red half, the perceptron outputs 1. Anywhere in the blue half, 0. That is the geometry of a linear classifier in one sentence.
+
+Now drag the point. Or use Tab and arrow keys; Shift-arrow steps faster. As you slide the point around, watch the right panel: that's the *neuron diagram*. The two input nodes x and y receive your point's coordinates. The edges multiply by the weights w₁ and w₂. The summing junction Σ adds them up, along with the bias b, into one real number z. The step gate at the end fires if z ≥ 0 and emits 1, otherwise 0. That number sits at the output.
+
+The interesting moment is the *crossing*. Drag the point slowly until it hits the line. At the exact instant the point crosses the boundary, z passes through zero, and the step gate flips its output from 0 to 1 (or 1 to 0, depending on which way you crossed). The screen reader will announce the flip. There is no in-between. No "almost". No 0.5. The output is what mathematicians call *discontinuous in the inputs* &mdash; a small movement of the point can produce a jump from 0 to 1, but only when it happens to cross the line. Move parallel to the line and nothing changes. Move perpendicular and you cross it the fastest.
+
+This is the perceptron's whole personality. *I draw a line. I tell you which side you're on. I don't tell you how close to the line you are.*
+
+A few mechanical observations that will matter later:
+
+*The pre-activation z is a signed distance.* Far from the line on the red side, z is large and positive. Far on the blue side, z is large and negative. Right on the line, z = 0. (The magnitude of z is the distance to the line times the length of the weight vector √(w₁² + w₂²). We'll exploit this in the SVM chapter to build a *margin*. The perceptron doesn't care about margin &mdash; it only cares about which side &mdash; but the signed distance is sitting right there.)
+
+*The weight vector (w₁, w₂) is perpendicular to the line.* Geometrically, w is the *normal* of the boundary. It points from the blue half into the red half. Multiplying x by w and adding b gives you a signed projection onto that normal direction.
+
+*The bias b is a translation.* Increase b and the line slides toward the blue half (the red half grows). Decrease b and the line slides the other way. Without a bias, the line would always pass through the origin &mdash; geometrically inflexible, mathematically lazy, almost never what you want.
+
+That is the forward pass. Two multiplications, one addition, one threshold. The Mark I did this same thing four hundred times in parallel and got to the same answer. In a modern transformer it happens trillions of times. The shape is identical.
+
+What's missing is *learning*. So far we've assumed the weights w₁, w₂, b are given. In the next act we'll let the machine pick them.
+
+</Act>

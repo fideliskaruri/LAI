@@ -45,11 +45,17 @@ const INITIAL_MEANS: Pt[] = [
 export function Responsibilities() {
   const [means, setMeans] = useState<Pt[]>(INITIAL_MEANS)
   const svgRef = useRef<SVGSVGElement | null>(null)
-  const handleRefs = [
-    useRef<SVGGElement | null>(null),
-    useRef<SVGGElement | null>(null),
-    useRef<SVGGElement | null>(null),
-  ]
+  const handleRefs = useRef<(SVGGElement | null)[]>([null, null, null])
+  // Stable RefObject proxies for hooks that expect a RefObject.
+  const handleRefProxies = useMemo(
+    () =>
+      [0, 1, 2].map((k) => ({
+        get current() {
+          return handleRefs.current[k]
+        },
+      })),
+    [],
+  )
   const dragStartRef = useRef<Pt | null>(null)
   const [dragging, setDragging] = useState<number | null>(null)
 
@@ -135,9 +141,9 @@ export function Responsibilities() {
       ),
     )
   }, [])
-  useKeyNudge(handleRefs[0], nudge0)
-  useKeyNudge(handleRefs[1], nudge1)
-  useKeyNudge(handleRefs[2], nudge2)
+  useKeyNudge(handleRefProxies[0], nudge0)
+  useKeyNudge(handleRefProxies[1], nudge1)
+  useKeyNudge(handleRefProxies[2], nudge2)
 
   // Iso-contours for each component (single Mahalanobis-1 ellipse)
   const contours = useMemo(
@@ -256,7 +262,9 @@ export function Responsibilities() {
           return (
             <g
               key={k}
-              ref={handleRefs[k]}
+              ref={(el) => {
+                handleRefs.current[k] = el
+              }}
               {...binds[k]()}
               tabIndex={0}
               role="slider"

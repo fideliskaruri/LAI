@@ -1,0 +1,31 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="the-fix-was-hidden-layers" eyebrow="Six · Rumelhart · Hinton · Williams · 1986">
+
+# Stack two and the problem disappears
+
+It took seventeen years.
+
+The fix &mdash; in retrospect &mdash; was visible the whole time. Look at the network on the left. Two inputs, x and y. Two *hidden neurons*, h₁ and h₂. One output neuron, ŷ. Each hidden neuron is a perceptron in its own right; each computes a weighted sum of x and y, applies a nonlinearity, and emits a number. The output neuron is also a perceptron, but its inputs are h₁ and h₂ rather than the raw x and y. This is a *two-layer network*, or, more precisely, a network with *one hidden layer*. Stick a few of these together end-to-end and you've got a deep neural network, but for XOR, two hidden units are enough.
+
+The trick is what the hidden layer does. Each hidden neuron carves the (x, y) plane into two half-planes &mdash; just like the perceptron we already understood. With two hidden neurons we can carve the plane into *four* regions: the intersection of two half-planes. If we choose the weights so that h₁ separates the upper-left corner from everything else and h₂ separates the lower-right corner from everything else, then the output neuron sees a different combination of (h₁, h₂) at each of the four corners of the unit square &mdash; *and that combination is itself linearly separable in (h₁, h₂) space*. The output neuron, which is just another perceptron, can now do its job.
+
+That's it. That's the conceptual fix. Stack neurons. The first layer transforms the input into a representation where the problem becomes linear; the second layer solves it linearly. The combined model can represent any continuous function on a compact domain (Cybenko, 1989; Hornik, 1991) given enough hidden units. The hidden layer is the universal magic.
+
+So why did it take seventeen years?
+
+Because no one knew how to *train* the hidden layer. The perceptron rule works only if you know what the right answer should be for the neuron you're updating. For the output neuron we have labels: y ∈ {0, 1}. We can compute the error. We can update. But for the hidden neurons &mdash; what's the right value of h₁? Nobody told us. There is no "ground truth" for what the hidden representation should look like. The hidden neurons are *learning to represent the data*, and the data doesn't come pre-annotated with hidden-layer targets.
+
+The solution &mdash; **back-propagation** &mdash; was discovered, rediscovered, and rediscovered again. Henry Kelley wrote down a version in 1960 for optimal control. Paul Werbos, in a 1974 Harvard PhD thesis, wrote it down for neural networks specifically, and was ignored. Seppo Linnainmaa described automatic differentiation in 1970 in Finnish, and was also ignored. The thing that turned the tide was a single paper:
+
+> Rumelhart, D. E.; Hinton, G. E.; Williams, R. J. *Learning representations by back-propagating errors.* **Nature** 323 (9 October 1986), 533–536.
+
+Three pages. The authors showed that the chain rule from calculus &mdash; the same chain rule from the Derivatives chapter, the one that says (f ∘ g)' = f'(g) · g' &mdash; lets you push the error signal *backward* through a stacked network, computing how each weight in each layer contributed to the final mistake, and update each one accordingly. The activations have to be smooth (sigmoid, not step) so the chain rule has gradients to chase &mdash; that's why the smooth sigmoid from the logistic regression chapter is the right starting point, not Rosenblatt's hard step &mdash; but otherwise the procedure is mechanical, and in October 1986 the field came back from the dead.
+
+The right pane of the canvas is a facsimile of that Nature paper's title card. Three names. Three pages. The end of the winter.
+
+The chapter you've just read &mdash; the perceptron &mdash; is what backpropagation makes obsolete and inevitable at the same time. Obsolete, because no one uses the hard-step perceptron in production any more; the modern building block is the smooth-activation neuron from the previous chapter, with backprop driving the learning. Inevitable, because every modern neural network is, fundamentally, a stack of these little units. GPT-4 has hundreds of billions of perceptron-shaped neurons in it. AlphaFold, DALL-E, Stable Diffusion, the Tesla autopilot &mdash; all of them are made out of Rosenblatt's 1958 idea, scaled up.
+
+The MLP chapter (chapter 14) picks up exactly here. We'll build the two-layer XOR network from scratch, derive the backprop equations using the same chain rule the logistic regression chapter used in its gradient-descent act, and watch the hidden layer learn its own features &mdash; the moment from which all of modern deep learning unfolds.
+
+</Act>

@@ -1,0 +1,35 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="the-machine" eyebrow="One · The actual machine">
+
+# What was in the box
+
+It helps to look at the literal architecture &mdash; the diagram on the left is the one Rosenblatt drew in his 1958 Cornell technical report &mdash; because once you've seen it you can never again be surprised by what a "neuron" is. There are three stages.
+
+*One. The retina.* A grid of photocells. Pixels, really. In the Mark I there were four hundred of them, arranged twenty-by-twenty. Shine a triangle in front of the array; some cells light up, others stay dark. Each cell emits a number between 0 and 1 representing how much light hit it. That's the *input vector* x. Four hundred numbers.
+
+*Two. The association units (A-units).* Each A-unit is wired to a small random subset of the retina cells &mdash; about ten per A-unit in the Mark I &mdash; and applies a fixed (un-trainable) function to the cells it sees. Rosenblatt thought of these as primitive feature detectors, the way a biological retina has cells tuned to edges or moving dots. There were about a thousand A-units. None of them learned. They were the fixed wiring of the front end. (The interesting thing about A-units is that, decades later, people working on convolutional networks would put learnable feature detectors here and that's what made vision work. But that's chapter 19.)
+
+*Three. The response unit.* This was the trainable part. It took the outputs of the A-units &mdash; call them a₁, a₂, …, aₙ &mdash; and computed one weighted sum:
+
+$$
+z = w_1 a_1 + w_2 a_2 + \cdots + w_n a_n + b
+$$
+
+Then it asked: is z bigger than zero? If yes, the response unit fired and the machine said *one class*. If no, it stayed silent and the machine said *the other class*. That's the **step function**. The hard threshold. The little staircase glyph in the diagram on the right.
+
+The weights w₁, w₂, …, wₙ &mdash; one per A-unit &mdash; were stored physically. Each was the dial setting of a small electric motor driving a potentiometer. When the learning algorithm wanted to "adjust w₃", a motor whirred and a knob turned. The whole rack of motors clacked away during training. (Cornell's facilities staff, by all accounts, were not enthusiastic.)
+
+If we strip away the photocells and the motors and the A-units &mdash; which are just a fixed transform from raw pixels to features &mdash; what's left is the modern equation on the right pane:
+
+$$
+\hat y \;=\; \operatorname{step}(\mathbf{w} \cdot \mathbf{x} + b)
+$$
+
+That's the perceptron. A vector dot product. A bias. A sign. Three operations, in order. Everything we do from here is variations on this picture.
+
+Notice in particular what this *is not*: it is not differentiable. The step function has a jump at z = 0; there is no slope to follow there. We cannot do gradient descent on this directly. (Logistic regression, the previous chapter, solved this by replacing step with sigmoid &mdash; the smooth cousin. We'll need a different trick.) And it has no notion of *probability*. The output is a hard 0 or 1; no confidence, no "almost", nothing in between. It's a yes or it's a no.
+
+For all that, this little machine could learn. The next act shows how.
+
+</Act>
