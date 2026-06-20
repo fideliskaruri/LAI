@@ -4,6 +4,7 @@ import { Vectors } from './routes/topics/Vectors'
 import { Functions } from './routes/topics/Functions'
 import { Probability } from './routes/topics/Probability'
 import { Matrices } from './routes/topics/Matrices'
+import { Clustering } from './routes/topics/Clustering'
 import { Recall } from './routes/Recall'
 import { TestMDX } from './routes/__test/TestMDX'
 import { SplitCanvasTest } from './routes/__test/SplitCanvasTest'
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="/functions" element={<Functions />} />
         <Route path="/probability" element={<Probability />} />
         <Route path="/matrices" element={<Matrices />} />
+        <Route path="/clustering" element={<Clustering />} />
         <Route path="/recall" element={<Recall />} />
         <Route path="/__test-mdx" element={<TestMDX />} />
         <Route path="/__split-canvas-test" element={<SplitCanvasTest />} />

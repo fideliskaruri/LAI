@@ -32,7 +32,7 @@ export const topics: Topic[] = [
   { id: 'logistic-regression', number: 12, name: 'Logistic regression', x: 690, y: 630, status: 'coming-soon', part: 'II', prereqs: ['linear-regression', 'probability', 'optimization'] },
   { id: 'perceptron', number: 13, name: 'Perceptron', x: 760, y: 580, status: 'coming-soon', part: 'II', prereqs: ['logistic-regression'] },
   { id: 'pca', number: 14, name: 'PCA', x: 550, y: 680, status: 'coming-soon', part: 'II', prereqs: ['eigenvalues', 'vectors', 'matrices'] },
-  { id: 'clustering', number: 15, name: 'K-means', x: 620, y: 730, status: 'coming-soon', part: 'II', prereqs: ['vectors'] },
+  { id: 'clustering', number: 15, name: 'K-means', x: 620, y: 730, status: 'available', part: 'II', prereqs: ['vectors'] },
   { id: 'gmm', number: 16, name: 'Gaussian Mixtures', x: 760, y: 720, status: 'coming-soon', part: 'II', prereqs: ['clustering', 'distributions', 'optimization'] },
   { id: 'svm', number: 17, name: 'SVM', x: 850, y: 680, status: 'coming-soon', part: 'II', prereqs: ['vectors', 'matrices', 'optimization'] },
 

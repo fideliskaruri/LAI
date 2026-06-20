@@ -14,12 +14,6 @@ Sometimes one of the natural clusters gets *split between two centers* &mdash; t
 
 This is the *local minimum trap*, and it is K-means' single most-quoted weakness. The algorithm doesn't search for the *best* partition. It searches for *a* partition such that no single point is in the wrong cluster &mdash; a partition that's locally stable. Many partitions are locally stable. K-means picks one of them. Which one depends on where you started.
 
-The standard fix is an initialization scheme called **K-means++**, published by David Arthur and Sergei Vassilvitskii in 2007. The idea: pick the first center randomly, then pick each subsequent center with probability proportional to its squared distance from the nearest already-chosen center. Centers spread out. The bad initializations become rare. The expected inertia is provably within a logarithmic factor of optimal. Most modern implementations of `KMeans` use ++ by default.
-
-A second fix is simpler and almost as good: just run the algorithm many times from different random starts, and keep the one with the lowest final inertia. `scikit-learn` defaults to ten restarts.
-
-And then there's the question we've been quietly ducking the entire chapter.
-
-We picked `k = 3`. We knew there were three clusters because *we built the data and we can see them*. In real applications you don't get to know. Choosing `k` is its own subfield &mdash; the elbow method, the silhouette score, the gap statistic, BIC for the Gaussian-mixture version. None of them is decisive. The honest answer is usually: try a few, look at the results, talk to a domain expert. The math doesn't tell you how many clusters your data has. It tells you what happens if you commit to a number.
+Most modern implementations spread the initial centers out — pick one at random, then pick the next far from it, and so on (this is the K-means++ refinement, 2007). They also run the algorithm several times from different random starts and keep the best. The "right number of clusters" is a deeper question we'll return to when we hit Gaussian mixtures.
 
 </Act>

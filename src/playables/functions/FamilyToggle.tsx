@@ -58,7 +58,10 @@ const FAMILIES: FamilyDef[] = [
 ]
 
 function curvePath(f: (x: number) => number) {
-  // Sample densely so curves look smooth at any aspect ratio.
+  // Sample densely so curves look smooth at any aspect ratio. We emit every
+  // sample as a plain polyline and rely on the <clipPath id="family-clip">
+  // defined in <defs> to crop to the panel — the SVG renderer clips at
+  // arbitrary precision, so there are no visual artifacts at high zoom.
   const steps = 240
   const pts: string[] = []
   for (let i = 0; i <= steps; i++) {
@@ -66,12 +69,6 @@ function curvePath(f: (x: number) => number) {
     const y = f(x)
     const px = ORIGIN_X + x * UNIT
     const py = ORIGIN_Y - y * UNIT
-    // Clip values that would shoot off the panel (e.g. x² at the edges).
-    if (py < 20 || py > VIEW_H - 90) {
-      if (pts.length === 0) continue
-      pts.push(`L${px.toFixed(1)},${Math.max(20, Math.min(VIEW_H - 90, py)).toFixed(1)}`)
-      continue
-    }
     pts.push(`${pts.length === 0 ? 'M' : 'L'}${px.toFixed(1)},${py.toFixed(1)}`)
   }
   return pts.join(' ')
@@ -102,11 +99,23 @@ export function FamilyToggle() {
     <figure className="w-full">
       <CanvasNarrative text={narrationText} priority="high" />
       <svg
+        id="family-canvas"
         viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
         className="w-full h-auto"
         role="img"
         aria-label={`Same axes, three function families. Currently showing ${family.label}, the graph of ${family.formula}: ${family.describe}.`}
       >
+        <defs>
+          {/*
+           * Clip the curve panel to its drawable rectangle. Replaces the
+           * earlier conditional skip-include path logic, which produced
+           * jagged terminations at high browser zoom. Coordinates match
+           * the Grid() panel bounds: y in [20, VIEW_H - 90], x full width.
+           */}
+          <clipPath id="family-clip">
+            <rect x="20" y="20" width={VIEW_W - 40} height={VIEW_H - 110} />
+          </clipPath>
+        </defs>
         <Grid />
         <Axes />
 
@@ -120,6 +129,7 @@ export function FamilyToggle() {
             strokeWidth="1"
             strokeOpacity="0.18"
             strokeDasharray="3 4"
+            clipPath="url(#family-clip)"
           />
         ))}
 
@@ -130,6 +140,7 @@ export function FamilyToggle() {
           stroke="var(--color-vermilion)"
           strokeWidth="2.4"
           strokeLinejoin="round"
+          clipPath="url(#family-clip)"
         />
 
         {/* Readout */}

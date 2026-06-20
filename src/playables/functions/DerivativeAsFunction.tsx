@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { useDrag } from '@use-gesture/react'
 import { CanvasNarrative } from '../../components/topic/CanvasNarrative'
 import { useKeyNudge } from '../../hooks/useKeyNudge'
@@ -35,6 +35,24 @@ const fPrime = (x: number) => 2 * x
 const fmt = (n: number) => (n >= 0 ? ' ' : '') + n.toFixed(2)
 
 const TRACE_BUCKETS = 80 // resolution of the visited-x trace
+const INITIAL_X = -2.4
+
+function xToBucketIdx(xv: number) {
+  const t = (xv - X_MIN) / (X_MAX - X_MIN)
+  return Math.max(0, Math.min(TRACE_BUCKETS - 1, Math.round(t * (TRACE_BUCKETS - 1))))
+}
+
+/** Seed the visited set with the starting bucket plus a couple of neighbours
+ *  so the first paint shows the beginning of a trail, not a lone dot.
+ *  Computed lazily inside useState's initializer so it runs exactly once,
+ *  regardless of React 18 Strict Mode's double-invocation of effects. */
+function seedVisited(): Set<number> {
+  const s = new Set<number>()
+  s.add(xToBucketIdx(INITIAL_X))
+  s.add(xToBucketIdx(INITIAL_X - 0.15))
+  s.add(xToBucketIdx(INITIAL_X + 0.15))
+  return s
+}
 
 function parabolaPath() {
   const steps = 200
@@ -53,39 +71,22 @@ function parabolaPath() {
 export function DerivativeAsFunction() {
   const svgRef = useRef<SVGSVGElement | null>(null)
   const pointRef = useRef<SVGGElement | null>(null)
-  const [x, setX] = useState(-2.4)
+  const [x, setX] = useState(INITIAL_X)
   const startRef = useRef<number | null>(null)
 
-  // Trace of "visited" x-positions, as a boolean mask of buckets.
-  // We seed with the starting bucket so the trace isn't empty on first paint.
-  const visitedRef = useRef<Set<number>>(new Set())
-  const [, forceTraceTick] = useState(0)
+  // Trace of "visited" x-positions, as a set of bucket indices. Held in
+  // state with immutable updates (`new Set(prev).add(b)` — TRACE_BUCKETS
+  // is small, so the copy is trivially cheap). The starting bucket and
+  // its two neighbours are seeded inside the useState initializer, which
+  // React 18 Strict Mode runs exactly once — unlike a useEffect-driven
+  // ref seed, which would silently no-op on the second mount.
+  const [visited, setVisited] = useState<Set<number>>(seedVisited)
 
   const clampX = (val: number) => Math.max(X_MIN, Math.min(X_MAX, val))
 
-  const xToBucket = useCallback((xv: number) => {
-    const t = (xv - X_MIN) / (X_MAX - X_MIN)
-    return Math.max(0, Math.min(TRACE_BUCKETS - 1, Math.round(t * (TRACE_BUCKETS - 1))))
-  }, [])
-
-  const markVisited = useCallback(
-    (xv: number) => {
-      const b = xToBucket(xv)
-      if (!visitedRef.current.has(b)) {
-        visitedRef.current.add(b)
-        forceTraceTick((n) => n + 1)
-      }
-    },
-    [xToBucket],
-  )
-
-  useEffect(() => {
-    markVisited(x)
-    // Seed a couple of neighbouring buckets so the first paint shows the
-    // beginning of a trail, not a lone dot.
-    markVisited(x - 0.15)
-    markVisited(x + 0.15)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  const markVisited = useCallback((xv: number) => {
+    const b = xToBucketIdx(xv)
+    setVisited((prev) => (prev.has(b) ? prev : new Set(prev).add(b)))
   }, [])
 
   const updateX = useCallback(
@@ -122,7 +123,7 @@ export function DerivativeAsFunction() {
   // Compute trace path on the derivative panel: connect consecutive visited
   // buckets with line segments. (Gaps where the user hasn't been remain gaps.)
   const tracePath = (() => {
-    const sorted = Array.from(visitedRef.current).sort((a, b) => a - b)
+    const sorted = Array.from(visited).sort((a, b) => a - b)
     if (sorted.length === 0) return ''
     const segments: string[] = []
     let current: string[] = []
@@ -178,7 +179,7 @@ export function DerivativeAsFunction() {
   }
 
   // Are we "almost done"? Trace coverage signal for narration.
-  const coverage = visitedRef.current.size / TRACE_BUCKETS
+  const coverage = visited.size / TRACE_BUCKETS
   const narrationText =
     coverage > 0.7
       ? `You've traced most of the derivative. As you've moved the point, the slope value f' of x equals 2 x has drawn itself out. The derivative is a straight line through the origin.`

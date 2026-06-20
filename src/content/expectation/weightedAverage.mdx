@@ -1,0 +1,31 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="weighted-average" eyebrow="One · The operator">
+
+# Expectation is a weighted average
+
+Roll a fair die. What value do you expect?
+
+The honest answer is *all of them, in proportion*. One sixth of the time you get a 1, one sixth of the time a 2, and so on through 6. None of the six is special; none is more "expected" than the others. But if we have to commit to a single number that summarises "what you should expect" — a number you'd be willing to bet on, a price you'd pay to play — then there's only one defensible choice. It's the average of the outcomes, weighted by how often each one happens.
+
+For a fair die that's
+
+$$
+E[X] = \tfrac{1}{6}(1) + \tfrac{1}{6}(2) + \tfrac{1}{6}(3) + \tfrac{1}{6}(4) + \tfrac{1}{6}(5) + \tfrac{1}{6}(6) = \tfrac{21}{6} = 3.5.
+$$
+
+That's the expected value. The Greek letter $\mu$ is the other common symbol; statisticians switch between $E[X]$ and $\mu$ without ceremony. The two-letter "$E[\,]$" is a hint that *expectation is an operator* — something you apply to a random thing to extract a single number from it. It eats a distribution; it outputs a real number.
+
+The visual on the right is the operator made tactile. Six bars, one per outcome, and dragging any bar's height changes the *probability* assigned to that outcome — which means the other bars have to give up some mass to keep the total at one. (The constraint that probabilities sum to one is not a quirk of dice. It's the definition of a distribution: something has to happen.) As you drag, watch the vermilion arrow on the number line. It's $E[X]$, the weighted average, sliding to track wherever the *centre of mass* of the bars happens to be.
+
+Notice three things while you play.
+
+First, when the bars are equal — when you've recovered the fair die — the arrow sits at $3.5$, dead between $1$ and $6$. Symmetry forces the answer.
+
+Second, if you collapse all the probability onto one bar — say, you make a "die" that always rolls a $4$ — the arrow snaps to that outcome. A *degenerate* distribution has expected value equal to its only outcome. Sanity check.
+
+Third — and this is the part that bothers students at first — when you tilt the distribution heavily toward the high numbers, the arrow drifts above $3.5$, but it cannot exceed $6$. The expected value lives inside the range of possible outcomes, because it's a *weighted average* of them. There is no probability arrangement that produces an "expected" value of $7$. If your random variable can only take values $1$ through $6$, then $E[X]$ lives in $[1, 6]$. Always.
+
+Once you internalise expectation as "centre of mass of the histogram" the rest of the chapter writes itself.
+
+</Act>

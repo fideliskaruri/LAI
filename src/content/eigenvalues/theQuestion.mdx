@@ -1,0 +1,35 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="the-question" eyebrow="One · The question, plainly">
+
+# Which directions does a matrix leave alone?
+
+Look at the picture on the left. Six little arrows fan out from the origin in different directions. Then a 2 by 2 matrix gets applied to each of them — the matrix is sitting in the corner, the one with twos on the diagonal and ones off it. The grey arrow is where each one started; the vermilion arrow is where it landed.
+
+Most of them rotated. The arrow that started along the x-axis has tilted upward. The one that pointed mostly up and a little to the left has been bent rightward. That's the normal behavior. A matrix is a linear motion of the plane; it generally smears things into new directions.
+
+Two of them didn't rotate.
+
+The arrow along the direction (1, 1) — the line at forty-five degrees up and to the right — got *longer*. It stayed exactly on the same line, but stretched. You can see the dashed eigen-line running through it.
+
+The arrow along the direction (1, −1) — the other forty-five-degree line, the one going down-right — also stayed on its line. Slightly stretched, but not nearly as much.
+
+That's the whole question of this chapter: *which directions does a given matrix leave alone, in the sense of not rotating them?*
+
+The directions get a name. They're called *eigenvectors* of the matrix. The amount by which they get stretched — the ratio of the after-length to the before-length, with a sign if the matrix flipped them — is called the *eigenvalue* for that direction. In symbols, when v is an eigenvector,
+
+`Mv = λv`
+
+The matrix doesn't bend v. It just multiplies it by some plain number λ.
+
+Notice what the equation isn't doing. It isn't saying every vector behaves this way — almost no vector does. It's saying *some* vector does, for some particular λ. The whole game is to find the pairs (v, λ).
+
+There's a question hiding in here that sounds like it should have an obvious answer and doesn't. Why would such directions exist at all? Why would a matrix that mostly rotates things have any direction it doesn't rotate?
+
+For the symmetric matrices Cauchy was studying — and for the covariance matrices that come up everywhere in machine learning, and for many other tidy examples — the answer is: yes, always, and there are usually exactly *n* of them in *n* dimensions, and they're mutually perpendicular when the matrix is symmetric. For more general matrices the story gets more interesting; sometimes the eigenvectors collapse onto each other or move out into the complex numbers, and we'll wave at that later.
+
+But the first question is the simplest. Can *you* find an eigenvector by hand?
+
+Try it.
+
+</Act>

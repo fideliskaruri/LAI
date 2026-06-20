@@ -89,10 +89,10 @@ export function MereProblem() {
       <CanvasNarrative
         text={`One die, rolled ${n} time${n === 1 ? '' : 's'}. The probability of at least one six is ${pWin.toFixed(3)}. ${
           n === 4
-            ? 'At four rolls the bet flips from losing to winning.'
+            ? 'The probability of at least one six in four rolls crosses 0.5 — better than even odds.'
             : n === 1
-              ? 'A single roll is the baseline: one chance in six.'
-              : `As the number of rolls grows the chance climbs.`
+              ? `${n} roll gives probability ${pWin.toFixed(3)}. Less than even, but not the same as losing.`
+              : `${n} rolls give probability ${pWin.toFixed(3)}. Less than even, but not the same as losing.`
         }`}
         priority="high"
       />

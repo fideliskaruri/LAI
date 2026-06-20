@@ -37,17 +37,26 @@ function runToConvergence(initial: Pt[]) {
   return { centroids: cur, assignments: a }
 }
 
-/** Distance to each centroid as a normalized probability. Lower distance =
-    higher probability. Uses a softmax-style weighting with inverse squared
-    distance. Cheap, illustrative only — GMM uses Gaussian likelihoods. */
+/** Soft assignment via a proper Gaussian likelihood — the same recipe a
+ *  GMM uses (sans mixing weights and the 1/√(2π)σ constant, which cancel
+ *  in the normalization). For each centroid c we compute the unnormalized
+ *  likelihood exp(-d²/(2σ²)) and renormalize across centroids so the
+ *  three probabilities sum to one. The closing.mdx prose quotes specific
+ *  triples like "65 / 30 / 5" — only honest if the math here is honest. */
+// σ = 1.4 chosen by eye: large enough that boundary points get genuinely
+// mixed colours (not crushed to ~1 on a single cluster), small enough that
+// points sitting inside a cluster's core read as nearly pure colour.
+const SIGMA = 1.4
+const TWO_SIGMA_SQ = 2 * SIGMA * SIGMA
+
 function softProbs(p: Pt, centroids: Pt[]): number[] {
-  const inv = centroids.map((c) => {
+  const weights = centroids.map((c) => {
     const dx = p.x - c.x
     const dy = p.y - c.y
-    return 1 / (dx * dx + dy * dy + 0.25)
+    return Math.exp(-(dx * dx + dy * dy) / TWO_SIGMA_SQ)
   })
-  const sum = inv.reduce((a, b) => a + b, 0)
-  return inv.map((v) => v / sum)
+  const sum = weights.reduce((a, b) => a + b, 0)
+  return weights.map((w) => w / sum)
 }
 
 /** Blend cluster colours by per-cluster probability. The three CLUSTER_COLORS

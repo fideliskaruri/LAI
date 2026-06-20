@@ -1,0 +1,25 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="find-the-fixed-line" eyebrow="Two · Hunt one with your hands">
+
+# Drag the arrow
+
+On the left there's an arrow v, in vermilion, and its image Mv, in grey. The matrix M is the same one we just looked at — twos on the diagonal, ones off it.
+
+Grab the vermilion tip and start dragging it around. Watch the grey arrow.
+
+Two things will happen as you move v. First, the grey arrow obviously moves too — that's just *Mv* updating. Second, and this is the thing to watch for, the *angle* between v and Mv changes. When you happen to point v along the eigen-direction (1, 1), the grey arrow will line up with the vermilion one exactly, both pointing in the same direction. A halo will light up around the line. The readout will say λ = 3.
+
+That's an eigenvector. There's nothing magical about how you got there — you just dragged your arrow into the position where the matrix's stretch and the arrow's direction happened to agree.
+
+(If you can't find it by eye, hit Tab to focus the tip, then use the arrow keys. The eigen-direction is at forty-five degrees up and to the right. The display snaps when you get close.)
+
+Try the other one too: (1, −1), the line at forty-five degrees going down-right. There the readout will show λ = 1. The matrix barely stretches that direction — by a factor of one, in fact, which means it leaves the arrow's length alone *and* its direction alone. That arrow is a fixed point of M, in the strong sense that Mv equals v exactly.
+
+How is the screen deciding when you've "found" one? It's measuring whether the cross product of v and Mv is close to zero. In two dimensions, the cross product is just the signed area of the parallelogram with v and Mv as sides; when v and Mv are parallel, that parallelogram is squished flat and the area is zero. The threshold is around two degrees of slop, so you don't have to land perfectly.
+
+What you're doing here by hand, a computer would do by solving an equation. In the next act we'll write that equation down. For now, just notice how it *feels*: every other direction wobbles, and there are these two little ridges where things lock in.
+
+(There's something almost physical about it. When I first played with one of these I sat for ten minutes just running my arrow around, watching for the lock-in to happen. It's a feeling, not a calculation. Hold onto it. The algebra later will be friendlier if you remember it.)
+
+</Act>

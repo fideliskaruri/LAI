@@ -138,7 +138,7 @@ export function CayleyTitle() {
           fontSize="10"
           fill="var(--color-dim)"
         >
-          Read December 10, 1857 — printed 1858
+          Read 1858 · Printed Phil. Trans. Royal Soc. vol. 148, 1858
         </text>
       </svg>
       <figcaption className="font-serif italic text-[13px] text-dim text-center mt-2">

@@ -1,0 +1,27 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="cold-open" eyebrow="Zero · The chevalier, still losing">
+
+# An expected loss
+
+We left de Méré at a table in 1654, baffled. His earlier bet — one die, four rolls, betting on at least one six — paid out. The variant — two dice, twenty-four rolls, betting on at least one double-six — drained him. Pascal and Fermat worked out *why* in those letters. The probability had crept just below one-half; the bet quietly inverted from a winner into a loser. That's the chapter you just finished.
+
+What it didn't tell him was the more practical thing.
+
+A gambler doesn't really want to know "what's the chance I win this bet." He wants to know *how much he should expect to make, or lose, in an evening*. That's the question whose answer pays his rent or empties his pocket. A bet that wins 51 times out of 100 is mathematically a winner, but if it pays one livre when it wins and costs you forty when it loses, you go home broke. The chance and the *value* of each outcome are different things — and the long-run answer depends on multiplying them together.
+
+Christiaan Huygens, a young Dutch polymath living between Leiden and The Hague, wrote that idea down in a little Latin treatise in 1657. *De Ratiociniis in Ludo Aleae* — *On Reckoning in Games of Chance.* Thirty pages. The first paragraph defines, almost in passing, what he called *expectatio*: if a game gives you outcome $x_1$ with probability $p_1$, $x_2$ with probability $p_2$, and so on, then the "fair price" to pay to play once is
+
+$$
+\text{expectatio} = p_1 x_1 + p_2 x_2 + \cdots
+$$
+
+That's it. That's the entire idea of the chapter. Multiply each outcome's value by its probability, add them up. The result is the *expected value*. It's not a value that will actually occur on any single roll — the expected value of a fair die is $3.5$, and you never roll three-and-a-half — but it's what you'd average if you rolled forever.
+
+I want you to feel why this is *the* useful operator in probability. Knowing what's possible isn't enough. You also need to know what to expect.
+
+So this chapter teaches expectation as a habit of mind: a function $E[\cdot]$ that turns a random thing into a single number. It teaches a beautiful property — *linearity* — that lets us add expectations even when the underlying randomness is tangled. It shows you the *law of large numbers*: as you average more samples, the average locks onto the expected value, with mathematical certainty. And it introduces *variance* and *standard deviation*: how much, on a typical draw, you can expect the outcome to deviate from its expected value.
+
+The chevalier needed all of this. So does everyone betting on anything.
+
+</Act>

@@ -1,0 +1,27 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="cold-open" eyebrow="Zero · Cauchy · Paris · 1829">
+
+# A French astronomer's headache
+
+The eighteenth century ended with a quiet problem that wouldn't go away. The planets, the ones Newton had so neatly tidied up a hundred years earlier, kept *almost* keeping his rules — and then, very slowly, drifting away from them. Mercury's orbit was rotating. Jupiter's was speeding up. Saturn's was slowing down. Over centuries the changes were small. Over millennia they were enough to worry about.
+
+The astronomers had a name for these slow drifts: *secular inequalities*. The word *secular* here doesn't mean non-religious. It comes from the Latin *saeculum* — an age. A secular inequality was a wobble that took an age to play out.
+
+Laplace and Lagrange had worked on the problem for decades. They had reduced it, after pages and pages of celestial mechanics, to one piece of pure algebra: take an n × n matrix that encodes how the planets pull on each other, and find the n values of *s* for which the determinant of that matrix, with *s* subtracted down the diagonal, equals zero. Those values would tell you the frequencies of the wobbles. If any of them turned out to be complex, the solar system was unstable; the planets would eventually fly apart. If all of them were real, the wobbles were honest oscillations and we were safe.
+
+The trouble was that no one could prove they were all real. Laplace had checked the case of seven planets by hand. Lagrange tried general arguments and they leaked.
+
+Then, in 1829, Augustin-Louis Cauchy — 39 years old, recently returned to Paris from his royalist exile in Turin — published a memoir with the long title you can see in the panel on the left. *Sur l'équation à l'aide de laquelle on détermine les inégalités séculaires des mouvements des planètes.* On the equation by which one determines the secular inequalities of the motions of the planets.
+
+In it, Cauchy proved that whenever the matrix was *symmetric* — and the planetary one was, because gravity is — the roots were all real. The solar system was safe.
+
+What he had really proven, though it would take half a century for the rest of mathematics to notice, is that every real symmetric matrix has real *eigenvalues*. The word *eigenvalue* didn't exist yet. Hilbert would coin it in 1904, in German: *Eigenwert*, "own value" — a value belonging to the matrix in some intimate way that no other number did.
+
+This is the chapter where we go find them.
+
+We won't need any planets. We need one thing, and it's strange when you first see it: most directions, when you push them through a matrix, come back pointing somewhere new. A few — usually two, in two dimensions — come back pointing the same direction, only longer or shorter. Those are the eigenvectors. The factor by which they got longer or shorter is the eigenvalue.
+
+That's it. That's the idea. Cauchy's astronomical proof was hundreds of pages of analysis, and on the other side it turns into something you can drag with a finger on a screen. We'll get to the finger soon enough.
+
+</Act>
