@@ -28,7 +28,7 @@ export const topics: Topic[] = [
 
   // Part II — First Models (middle cluster)
   { id: 'linear-regression', number: 10, name: 'Linear regression', x: 580, y: 580, status: 'available', part: 'II', prereqs: ['vectors', 'matrices'] },
-  { id: 'optimization', number: 11, name: 'Optimization', x: 670, y: 460, status: 'coming-soon', part: 'II', prereqs: ['derivatives', 'vectors', 'linear-regression'] },
+  { id: 'optimization', number: 11, name: 'Optimization', x: 670, y: 460, status: 'available', part: 'II', prereqs: ['derivatives', 'vectors', 'linear-regression'] },
   { id: 'logistic-regression', number: 12, name: 'Logistic regression', x: 690, y: 630, status: 'coming-soon', part: 'II', prereqs: ['linear-regression', 'probability', 'optimization'] },
   { id: 'perceptron', number: 13, name: 'Perceptron', x: 760, y: 580, status: 'coming-soon', part: 'II', prereqs: ['logistic-regression'] },
   { id: 'pca', number: 14, name: 'PCA', x: 550, y: 680, status: 'available', part: 'II', prereqs: ['eigenvalues', 'vectors', 'matrices'] },

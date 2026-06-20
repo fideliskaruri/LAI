@@ -1,0 +1,27 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="linear-regression-revisited" eyebrow="Six · Why Gauss had a formula">
+
+# A single bowl
+
+A confession before we close. Two chapters ago, in *Linear regression*, the story ended with a closed-form solution. We minimized the sum of squared residuals and a formula fell out — $\boldsymbol{\beta} = (\mathbf{X}^\top \mathbf{X})^{-1}\mathbf{X}^\top \mathbf{y}$. We left it as if Gauss had simply solved the problem in 1809 and gone home, and the rest of statistics had followed.
+
+That isn't quite the whole story. Gauss could solve it because the *shape of the loss surface* admitted a closed form. Now that we've spent a chapter staring at loss surfaces, we can say more precisely what that means.
+
+Here is the SSE for a tiny synthetic dataset (twenty-two points generated from $y = 0.4 + 1.2 x + \varepsilon$, with $\varepsilon$ a little Gaussian noise), viewed as a function of the line's intercept $a$ and slope $b$. The heatmap shows the loss value on the $(a, b)$ plane. The vermilion $\times$ is the closed-form minimum.
+
+Drag the small circle around. You can position $(a, b)$ anywhere. *There is no second minimum.* The whole surface is a single convex bowl, like the very first paraboloid we saw in act 1 — only ellipsoidal because the $x$ and $y$ axes scale differently. Whichever direction you move from the $\times$, the loss goes up. Whichever starting point you pick, vanilla gradient descent will eventually find the same minimum. There's no choice to make.
+
+The reason the loss is shaped this way is that $\text{SSE}(a, b)$ is a *quadratic function* of $a$ and $b$. Quadratic functions of two variables are paraboloids — bowls. Bowls are convex. Convex functions have a unique minimum (or a flat valley of equivalent minima, in degenerate cases). And the minimum of a quadratic is the place where its gradient is zero. That equation — *set the gradient to zero* — was solvable by Gauss in 1809 with paper, ink, and the determinant rules he'd worked out for solving linear systems.
+
+For ordinary least squares, then, *no gradient descent is needed*. The closed form *is* the answer to the optimization problem; it's just that the optimization problem is so easy you can solve it with algebra instead of climbing.
+
+What about everything else?
+
+*Logistic regression* (next chapter) has a loss surface that is still convex — it's a sum of log-sigmoid terms — but no closed form exists for the minimum. Gradient descent is required. The good news: the loss is convex, so any descent algorithm finds the global minimum.
+
+*Neural networks* have non-convex loss surfaces. Multiple minima, saddles, the works. Gradient descent finds *a* minimum, not *the* minimum. (We saw this two acts ago.)
+
+*Modern transformer models* have non-convex loss surfaces *in a billion dimensions*. They are trained by stochastic gradient descent — basically the algorithm in this chapter, with a small noise added by sampling random batches of data — and they find loss values that are good enough to produce extraordinary behavior. The fact that gradient descent *works at all* on these landscapes is one of the empirical miracles of modern machine learning. We don't have a fully satisfying theory of why. The picture you're looking at is the bowl. The picture from now on will be a stranger surface, but the algorithm is the same. We climb.
+
+</Act>

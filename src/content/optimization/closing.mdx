@@ -1,0 +1,29 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="closing" eyebrow="Seven · The thread">
+
+# The workhorse
+
+What we've built in this chapter is, by some distance, the most important algorithm in modern AI. *Gradient descent.* Compute the gradient. Step against it. Repeat.
+
+The next chapter, *Logistic regression*, will give us a model whose loss has no closed form. We'll train it by gradient descent.
+
+The chapter after that, the *Perceptron*, was historically trained by a special-case algorithm of Rosenblatt's, but is best understood now as a particular variant of gradient descent on a hinge-shaped loss. Same algorithm.
+
+*MLP / backpropagation* (chapter 18) is gradient descent through a stack of layers, with a clever trick — the chain rule we built in Derivatives, applied recursively — for computing the gradient efficiently. Same algorithm.
+
+*Convolutional networks*, *Transformers*, *language models*, *RLHF*, *diffusion* — all of them trained by some variant of stochastic gradient descent. The variants matter for practical performance (Adam, RMSprop, Adagrad, Lion, momentum, weight decay, learning-rate schedules) but the *underlying move* is the one Cauchy wrote down in 1847. Compute the gradient. Step against it. Repeat.
+
+*Support vector machines* (chapter 17), *Gaussian mixtures* (16, via EM), and even some classical statistical methods are best understood as gradient-style algorithms on appropriately chosen losses.
+
+The exception, in the chapters left in this platform, is anywhere a closed form exists — and that exception is shrinking. We saw it for linear regression. Principal Component Analysis (next-but-one, chapter 14) has a closed form in terms of the eigendecomposition of the covariance matrix. K-means (chapter 15) has an iterative algorithm that isn't gradient descent but is structurally similar in spirit. Everything past that, gradient descent.
+
+(I find it hard to overstate how much of modern machine learning is just *this*. There's a tendency, when learning about a new neural network architecture, to think that the architecture is the interesting part. It usually isn't. The interesting part — the part that actually distinguishes a model that works from one that doesn't — is the *loss function*, the *data*, and the *training trajectory*. The architecture chooses the *shape* of the loss surface; the data populates it with real values; the training trajectory follows the gradient down to a good minimum. The architecture is a parameterization, not a procedure. The procedure is always gradient descent.)
+
+A final thank-you to Cauchy, who could not have known. In October of 1847 he was sixty years old, working out an orbital problem, and he wrote down two and a half pages explaining how to minimize a function by walking downhill. He did not publish a more developed treatment. He moved on to other problems. He died in 1857. For a hundred years his method sat in the *Comptes Rendus* of the French Academy, occasionally cited, mostly forgotten.
+
+Then a man named Frank Rosenblatt at Cornell wrote a paper in 1958 about a learning machine called the *perceptron*. He wanted to train it. He used gradient descent. (He called it *the delta rule* and didn't credit Cauchy; the literature was still recovering the citation.) The machine learned. Other people copied his trick. The trick worked on bigger problems. The trick is still working. The two and a half pages turn out to have been the foundation of everything.
+
+Next: *Logistic regression*, where we train a model with gradient descent for the first time and watch a loss curve come down.
+
+</Act>

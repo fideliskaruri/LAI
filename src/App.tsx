@@ -10,6 +10,7 @@ import { Distributions } from './routes/topics/Distributions'
 import { Matrices } from './routes/topics/Matrices'
 import { Eigenvalues } from './routes/topics/Eigenvalues'
 import { LinearRegression } from './routes/topics/LinearRegression'
+import { Optimization } from './routes/topics/Optimization'
 import { Pca } from './routes/topics/Pca'
 import { Clustering } from './routes/topics/Clustering'
 import { Embeddings } from './routes/topics/Embeddings'
@@ -33,6 +34,7 @@ export default function App() {
         <Route path="/matrices" element={<Matrices />} />
         <Route path="/eigenvalues" element={<Eigenvalues />} />
         <Route path="/linear-regression" element={<LinearRegression />} />
+        <Route path="/optimization" element={<Optimization />} />
         <Route path="/pca" element={<Pca />} />
         <Route path="/clustering" element={<Clustering />} />
         <Route path="/embeddings" element={<Embeddings />} />

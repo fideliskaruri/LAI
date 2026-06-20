@@ -38,8 +38,6 @@ const F_SPAN = F_MAX - F_MIN
 const STEPS = 60
 const ETA = 0.05
 
-const fmt = (n: number) => (n >= 0 ? ' ' : '') + n.toFixed(2)
-
 const CELL_PX = 14
 const COLS = Math.ceil((X_MAX - X_MIN) * UNIT_X / CELL_PX)
 const ROWS = Math.ceil((Y_MAX - Y_MIN) * UNIT_Y / CELL_PX)

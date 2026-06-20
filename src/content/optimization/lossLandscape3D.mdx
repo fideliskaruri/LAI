@@ -1,0 +1,21 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="loss-landscape-3d" eyebrow="Five · In three dimensions you can see it">
+
+# The bowl, rotated
+
+This is the same surface you've been looking at from above — $f(x, y) = x^4 - 2x^2 + y^2$ — but now in three dimensions, lifted out of the heatmap. The two basins are the dips on either side of the $y$-axis. The saddle is the small pinched ridge at the center. The camera orbits, slowly, so you can see the geometry from different angles. (If you have `prefers-reduced-motion` enabled, the camera holds at a fixed viewing angle — same picture, no rotation.)
+
+A vermilion ball runs an automated descent path, starting in the upper-left and finding its way into the left basin. The trail behind it is the trajectory. The ball restarts every few seconds so you can watch the same descent over and over from different angles.
+
+The reason we put this scene in 3D is the same reason we put the *nD leap* in 3D at the end of the Vectors chapter. In two dimensions you can show the surface as a heatmap or as level curves, and the math comes through, but the *experience* of descent — the sensation of rolling down a hillside — only really lands when you can rotate the geometry. The picture you should hold in your head as you read about training neural networks is *this picture*, in some unimaginable number of dimensions. The ball rolls. The surface tilts. The minimum is found, eventually.
+
+(I keep coming back to a Sebastian Lague aesthetic for this kind of thing — *not* the loud, particle-festooned style of bad scientific dataviz, but the quiet, geometric style where the object you're rendering is the point and the rendering is in service of seeing it. I find that the more dramatic the visualization, the less you actually see the underlying object. The ball, the surface, the trail; nothing else.)
+
+A word on the dimensionality from here on. Real loss landscapes for neural networks are hyper-surfaces in ten- to hundred-billion-dimensional spaces. Nobody has ever drawn one of those, and nobody ever will. But papers occasionally produce slice-and-project visualizations — Li, Xu, Taylor, Studer, and Goldstein's *Visualizing the Loss Landscape of Neural Nets* (2018) is the canonical reference, and the pictures in it are surprisingly bowl-like. The basins are wide and shallow. The saddles are everywhere. The intuition you've built on this little double-well is, with appropriate humility, the right intuition for what's happening in those rooms.
+
+When you read about an optimizer choice (SGD, Adam, RMSprop, Lion) — *what those choices change is the rule for rolling the ball*. The surface is what the data and the architecture give you; the optimizer is your strategy for descending it. We'll talk about specific optimizers in the *Backpropagation* chapter, once we have a model whose weights are actually doing something to descend.
+
+For now: rotate the camera in your head. The ball rolls. The surface bows. Optimization is just that.
+
+</Act>
