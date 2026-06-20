@@ -1,0 +1,41 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="attention-matrix" eyebrow="Three · The pattern of focus">
+
+# Six rows. Each one is a window.
+
+Last act we picked one query word and computed one row of weights for it. Now we widen out. For a six-word sentence &mdash; *the cat sat on the mat* &mdash; there are six query rows. Each one is its own little softmax over the same six key columns. Stack them up and you get a 6 &times; 6 matrix.
+
+That's the heatmap on the right.
+
+Read it like this. *Each row is a query word.* The row tells you what that word is attending to. Darker cells are higher weights; together the cells in a row add up to one. *Each column is a key word* &mdash; what's being looked at. The diagonal &mdash; the cells where row index equals column index &mdash; is, in this picture, fairly dark. Words tend to attend to themselves, because their own key matches their own query well.
+
+Hover any row on the right. The English word that row corresponds to lights up on the left. (Or use the arrow keys, once the matrix has focus.) The right pane drives the left. *This is the showcase for the right-drives-left sync mode &mdash; the visualisation tells you which token the right pane has under its lens.*
+
+Now read the rows out loud.
+
+From *the* (row 0): the heaviest weight is on *cat*. The first *the* knows it's a determiner attached to *cat*.
+
+From *cat* (row 1): heaviest on itself, second-heaviest on *sat*. The subject pays attention to its verb.
+
+From *sat* (row 2): heaviest on *cat*. The verb looks back at its subject &mdash; a learned echo of "who is doing the sitting?".
+
+From *on* (row 3): heaviest on *mat* and *sat*. A preposition needs to attend to both what it modifies (the verb) and what it points at (the object).
+
+From the second *the* (row 4): heaviest on *mat*. Same pattern as the first *the*: a determiner looks at its noun.
+
+From *mat* (row 5): heaviest on *mat* itself and *sat*. The object knows it's the object of the verb.
+
+That's what one well-trained attention head would do for this sentence. It learned a soft picture of grammatical structure &mdash; no one ever told it about subjects, verbs, determiners, or objects.
+
+(In Bahdanau's paper, when they visualised the trained alignments for English-French translation, the heatmaps had this same character: mostly diagonal &mdash; word *i* on the left tended to be where word *i* on the right was looking &mdash; with off-diagonal jogs wherever the languages have different word order. The most-quoted figure from the paper is one of those heatmaps. It looked like a hand-drawn alignment table. The model had learned to draw it from translation pairs alone.)
+
+The matrix view also makes the cost honest. A 6-word sentence is a 6 &times; 6 matrix &mdash; 36 weights, 36 dot products. A 30-word sentence is 900 dot products. A 1,000-word sentence is *a million*. Attention scales **quadratically** with sequence length. That's the famous engineering problem of attention: it works beautifully and it costs you. The whole field of "efficient attention" is people trying to make this cheaper. We won't go into that here, but you should know it's where the next chapter's cost story starts.
+
+Two more things before we move on.
+
+One row is one *attention head*. We've drawn one matrix. Real transformers run *many* attention matrices in parallel &mdash; 12, 32, 96 of them &mdash; on the same input. That's act 5.
+
+And so far Q, K, V have all come from different sentences (encoder versus decoder). In modern transformers they all come from the *same* sentence. That's act 6. The two together &mdash; many heads, all looking at the same sequence &mdash; is what *self-attention* means, and it is what makes transformers go.
+
+</Act>

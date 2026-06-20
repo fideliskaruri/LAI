@@ -1,0 +1,33 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="forward-noise" eyebrow="One · The forward process">
+
+# Watching an image dissolve
+
+Pick a small image &mdash; here, a vermilion arrow on a cream background, 16 pixels by 16. Now do something violent to it. At each step, replace each pixel value $x$ with a slight blend of itself and a fresh random Gaussian number $\varepsilon$:
+
+$$
+x_t = \sqrt{1 - \beta_t}\,x_{t-1} + \sqrt{\beta_t}\,\varepsilon
+$$
+
+The number $\beta_t$ is small &mdash; in the schedule the original DDPM paper used, $\beta_t$ runs linearly from about $10^{-4}$ to $0.02$ over a thousand steps. So at each step you push the pixel a tiny way toward a random Gaussian and pull it slightly away from where it was. One step is invisible. A hundred steps starts to look fuzzy. A thousand steps and your arrow is gone.
+
+There are two things to notice. First, this isn't random vandalism &mdash; it's a *precisely specified Markov chain*. The state at step $t$ depends only on the state at step $t-1$, and the transition probability is known: it's a Gaussian centered at $\sqrt{1 - \beta_t}\,x_{t-1}$ with variance $\beta_t$. We chose this. We could compute it. We can run it forward in a closed form.
+
+Second &mdash; and this is the bit that took thirty years of physics to understand &mdash; if you do enough small noise injections, the *output* converges to a standard normal distribution no matter what you started with. Drag the slider all the way to $t = 1000$ on the canvas. The arrow is gone. What's there is just noise. And it would have been the same noise if we'd started with a *cat*, or a *Mondrian*, or my grocery list.
+
+You can also write down a single-shot version. If you compose all the per-step noisings, you get
+
+$$
+x_t = \sqrt{\bar\alpha_t}\,x_0 + \sqrt{1 - \bar\alpha_t}\,\varepsilon
+$$
+
+where $\bar\alpha_t = \prod_{s=1}^{t} (1 - \beta_s)$. That's the *signal-to-noise schedule* you see on the right pane. The vermilion curve is $\sqrt{\bar\alpha_t}$ &mdash; how much of the original image is left at step $t$. The dashed curve is $\sqrt{1 - \bar\alpha_t}$ &mdash; how much noise has accumulated. As $t \to T$, the signal share goes to zero and the noise share goes to one. The image becomes the noise.
+
+There's a thing to feel about this schedule. The choice of $\beta_t$ &mdash; how fast we let the signal slip away &mdash; is not arbitrary. If $\beta$ is too small, you barely add noise per step and you need a *huge* number of steps to fully forget the image; that wastes compute. If $\beta$ is too large, you destroy structure too fast and the reverse process has trouble learning anything useful in the late steps. DDPM picks a linear schedule from $10^{-4}$ to $0.02$ over a thousand steps almost as folklore. Cosine schedules, learned schedules, variance-preserving vs. variance-exploding &mdash; whole research papers exist on this single design choice. We will not litigate them. The point is that the schedule is a *decision*, and like every decision it has consequences.
+
+So far this is a recipe for *destruction* &mdash; for systematically erasing an image. The trick of diffusion modeling, which won't pay off until acts four and five, is that *every step of this destruction is invertible in principle*. Each one is a Gaussian transition: if we knew the right distribution to step backwards in, we could undo the noise. And it turns out that under remarkably mild conditions &mdash; small enough $\beta_t$, smooth enough data &mdash; the reverse step is *also* approximately Gaussian, with a mean we can learn.
+
+That is the bet of the whole chapter. Move the slider. Watch the arrow erode. Then ask: what would it take to walk backwards.
+
+</Act>

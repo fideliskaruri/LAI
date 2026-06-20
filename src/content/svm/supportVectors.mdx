@@ -1,0 +1,25 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="support-vectors" eyebrow="Three · The points that hold up the line">
+
+# Three points decide; the other forty-seven are silent
+
+The line on the left starts where the SVM put it. Look at the points that are ringed in vermilion. There are only a handful &mdash; it depends on the exact line, but typically two or three. Those are the *support vectors*. They're the points that sit exactly on the boundary of the margin band.
+
+Here's the disturbing fact. *Delete every point that isn't ringed*, and the SVM you'd get is the same SVM. Move any of the un-ringed points around inside its class &mdash; as long as you don't push it across the margin boundary &mdash; and the answer doesn't change. The fifty-point dataset, for the purposes of the SVM, is really a three-point dataset, plus forty-seven witnesses.
+
+This is the property that gives the algorithm its name. The hyperplane is *supported* by those few points, the way an arch is supported by its keystones. Drag the line a little &mdash; the right pane will update the count and the list of support-vector coordinates. If you tilt the line too far, sometimes a different point becomes the closest one on one side, and a support vector swaps. That's the algorithm finding a new pivot.
+
+Mathematically, the support vectors are exactly the points where the *dual variables* &alpha;<sub>i</sub> from the Lagrangian formulation come out nonzero. For everything else &mdash; the forty-seven irrelevant points &mdash; &alpha;<sub>i</sub> = 0 and the point drops out of the formula completely. The decision rule then looks like:
+
+$$
+f(x) = \mathrm{sign}\left( \sum_{i \in SV} \alpha_i y_i (x_i \cdot x) + b \right)
+$$
+
+The sum runs over the support vectors only. To classify a new point, you don't need to look at the training set; you need to look at the handful of points that happened to be on the margin.
+
+This is what makes the SVM, at inference time, a *sparse* classifier. Even if you train on a million examples, the final decision might depend on only a few hundred of them. That's lovely. It's also, as the closing act will explain, exactly what *isn't* true at training time &mdash; you need the whole kernel matrix to figure out which points get to be support vectors in the first place &mdash; and that's the cost that eventually broke the chapter.
+
+But that's the closing. For now: notice that the line drawn on the left is held up by an absurdly small committee of dots.
+
+</Act>

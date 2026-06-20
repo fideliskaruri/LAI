@@ -1,0 +1,47 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="log-loss" eyebrow="Three · Why squared error isn't right">
+
+# A penalty that takes confidence personally
+
+We have probabilities now. We need a way to score how well they match the labels. Repeat after the linear regression chapter: *every fit problem becomes a sum problem, and the sum is what we minimise*. The question is which sum.
+
+The obvious sum, copied wholesale from linear regression, is the *squared error* between the predicted probability and the true label:
+
+$$
+\text{MSE} = \frac{1}{N}\sum_i (y_i - p_i)^2
+$$
+
+Here y is the true label (0 or 1) and p is the model's predicted probability. The right panel shows it in the right-hand card. Squared error has nice properties &mdash; it's smooth, it's symmetric, it's everything Gauss loved. It is also wrong for this problem, and the way it's wrong is instructive.
+
+Suppose a point's true label is 1 (red) and the model predicts p = 0.01. The model is *very confidently wrong*. Squared error: (1 &minus; 0.01)² ≈ 0.98. That's barely larger than the penalty for predicting p = 0.5 on the same point, which would give (1 &minus; 0.5)² = 0.25. Squared error penalises confident-wrong by less than 4&times; the penalty for uncertain. That's mild. We probably want it to be *brutal*.
+
+The proper sum is **log loss**, also called *binary cross-entropy*:
+
+$$
+L = -\frac{1}{N}\sum_i \bigl[\, y_i \log p_i + (1 - y_i) \log (1 - p_i)\,\bigr]
+$$
+
+For each point, only one of the two terms is "on" (the other has a y or 1−y coefficient of zero). For y = 1, the term is &minus;log p; for y = 0, it's &minus;log(1 &minus; p). Either way, it's the negative log of "the probability the model assigned to the *correct* label."
+
+That negative-log is the load-bearing operation. log(0.5) is about &minus;0.69. log(0.1) is about &minus;2.30. log(0.01) is about &minus;4.61. log(0.001) is about &minus;6.91. The penalty for being confidently wrong **explodes**. If a point's true label is 1 and the model says p = 0.001 &mdash; "almost certainly not red" &mdash; log loss says: *that costs almost seven units, and it would cost twenty if you'd been even more confident*. Squared error says: *eh, about one*.
+
+Toggle between the two cards on the right. Notice that the per-point bar chart shows the worst eight points, log-loss bar in vermilion and MSE bar in dim ink. For most points the bars are similar; for the spectacular failures &mdash; the points the boundary puts way on the wrong side &mdash; the log-loss bar towers over the MSE bar. That tower is the model getting yelled at for being confidently wrong.
+
+Why is this the *right* yelling?
+
+There are three reasons that all agree.
+
+*One — likelihood.* If you assume the labels are independent samples from a Bernoulli distribution with the model-predicted probability, then minimising log loss is **exactly** maximising the likelihood of the data. This is the statistician's view; it goes back to Fisher. Probabilistic models want probabilistic objectives.
+
+*Two — calibration.* If you minimise log loss, the predicted probabilities mean what they say. Of all points predicted with p ≈ 0.7, about 70% will turn out to be class 1. MSE doesn't give you this; minimising MSE drives the model toward median-ish probabilities. Log loss keeps the calibration honest.
+
+*Three — gradient.* This one is the killer. The gradient of log loss with respect to z (recall: z is the linear score before the sigmoid) simplifies to a single beautiful expression: ∂L/∂z = p &minus; y. The error in the prediction *is* the gradient. The MSE gradient picks up an extra factor of σ' = σ(1 − σ) that vanishes when p is close to 0 or 1 &mdash; exactly when learning is most needed. Log loss never vanishes its gradient on confident-wrong predictions; MSE does. That's why MSE-trained classifiers learn slowly when the model is confidently wrong, and log-loss-trained ones learn fastest precisely there.
+
+That's the case for log loss. It's the rare situation in statistics where three independent arguments &mdash; probabilistic, calibration, optimisation &mdash; point at the same loss function. Berkson's intuition in 1944 was that log-odds were the natural quantity; this loss is the formal consequence.
+
+(There's one important caveat. Log loss as written above is undefined if p is exactly 0 or 1, because log(0) is &minus;∞. In practice you clamp p away from 0 and 1 by a tiny epsilon &mdash; we do that in the readout above &mdash; or you exploit the fact that the model can never reach 0 or 1 exactly anyway; σ approaches them asymptotically but never reaches them. The mathematical pearl: the model is *forced to hedge*, however slightly, because the sigmoid is asymptotic. That's a feature.)
+
+Drag the boundary around. Watch both losses fall and rise. They have minima in similar places &mdash; both want a boundary that separates the clouds &mdash; but log loss is much more sensitive near the boundary, and much harsher at the extremes. The next act asks: how do we *find* the boundary that minimises log loss?
+
+</Act>

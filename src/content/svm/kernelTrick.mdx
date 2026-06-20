@@ -1,0 +1,25 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="kernel-trick" eyebrow="Five · Boser · Guyon · Vapnik · 1992">
+
+# The hardest trick to explain and the easiest to use
+
+The data on the left is genuinely hopeless for a straight line. The +1 class is a tight blob in the middle, and the &minus;1 class is a ring around it. The two faded lines drawn through the plot are there to make a point: any straight line you try will misclassify, badly, in at least one quadrant. No tilting, no shifting, no soft margin will help. You need to bend the boundary, and a linear classifier can't bend.
+
+The kernel trick, introduced by Boser, Guyon and Vapnik at COLT in 1992, is a way to *not* bend the boundary &mdash; and yet bend it. The idea is to send the data into a higher-dimensional space, called a *feature space*, where a straight separator does exist. Lift the dots, slide a flat plane between them in 3D, and then look back at where that plane intersects the original 2D plane: it'll be a curve, exactly the curve you needed.
+
+On the right is what that looks like for the ring data. Each point has been lifted up by a function &phi; that adds a third coordinate. With the polynomial choice (the default toggle), &phi;(*x*, *y*) = (*x* &minus; *x*<sub>0</sub>)<sup>2</sup> + (*y* &minus; *y*<sub>0</sub>)<sup>2</sup> &mdash; the squared distance to the centre. Points near the centre get a small lift; points on the ring get a large one. The inner blob now sits *below* the outer ring on the new vertical axis. A horizontal plane separates them cleanly. Toggle to the RBF kernel and the lift function changes shape &mdash; a Gaussian bump instead of a paraboloid &mdash; but the same story unfolds: inner points end up on one side, outer points on the other.
+
+This is the literal version of the kernel trick. The *clever* version &mdash; the part that made the 1992 paper famous &mdash; is that you never have to compute &phi;(*x*) at all. Because the SVM's decision rule (act three) depended only on *inner products* between data points, all you need is a function *K*(*x*, *z*) that gives you the inner product in the lifted space:
+
+$$
+K(x, z) = \langle \phi(x), \phi(z) \rangle
+$$
+
+For a polynomial kernel this is just (*x* &middot; *z* + 1)<sup>d</sup>. For an RBF it's exp(&minus;&gamma; &Vert;*x* &minus; *z*&Vert;<sup>2</sup>). Both can be computed in the original 2D space with no &phi; in sight, and yet the resulting classifier behaves *as if* you had lifted everything into a much bigger (in the RBF case, *infinite*-dimensional) feature space. You get the geometric power of a high-dimensional separator at the cost of computing a 2D dot product. That's the trick.
+
+I'm not going to derive Mercer's theorem &mdash; the condition that says which functions *K* count as valid kernels &mdash; because it's a serious analysis problem and the chapter has limited patience. Take it on trust: there are several well-known kernel families (polynomial, RBF, sigmoid), and you pick one the same way you pick C, by cross-validation.
+
+The point of this act is the picture, not the algebra. *A straight line in 3D, viewed from above, can be a circle.* That's all the kernel trick is doing. Bending the decision boundary by bending the underlying space.
+
+</Act>

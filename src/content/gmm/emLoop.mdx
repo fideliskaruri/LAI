@@ -1,0 +1,23 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="em-loop" eyebrow="Five · Run until convergence">
+
+# Dempster, Laird, Rubin · 1977
+
+Now stitch the two halves together. Press *step*. The button alternates: E phase, M phase, E phase, M phase. Or press *Run to convergence* to fast-forward to the answer.
+
+Watch the sparkline in the upper-right. The log-likelihood is the same one from the E step &mdash; "how well do the current Gaussians explain the data?" &mdash; and as you step, it climbs. Never falls. Never stalls early. Just climbs, smoothly, until it flattens out at a stable value. We call that *convergence*.
+
+This monotonic climb is the *theorem*. It's what Arthur Dempster, Nan Laird, and Donald Rubin proved in their 1977 paper *Maximum Likelihood from Incomplete Data via the EM Algorithm*, the most-cited statistics paper of the late twentieth century. They were the first to see that the trick we just used &mdash; treat the missing cluster labels as latent variables, alternate between filling them in and refitting &mdash; was a *general technique*, not a one-off mixture-model trick. It worked for hidden Markov models. It worked for factor analysis. It worked for Hartley's older method for fitting truncated normal data. It worked for *any* model where you could write the joint distribution of observed and missing data, and you could compute either the conditional expectation of the latents (E) or the maximizer in the parameters (M) in closed form.
+
+EM gave a unified vocabulary to fifty years of half-discovered algorithms in different fields. After 1977 it was no longer "Newcomb's mixture trick" or "Pearson's method of moments for crab measurements" or "Baum-Welch for speech HMMs." It was all *EM*, with one proof and one schema and one set of guarantees. Dempster-Laird-Rubin is a hinge paper.
+
+A few honest disclaimers, while we're here:
+
+- EM converges to a *local* maximum of the log-likelihood, not necessarily the global one. The same starting-condition warning from K-means applies. People run EM with several random restarts and keep the best run.
+- EM converges *linearly*, which is statistician-speak for "kind of slow near the answer." For real fitting work, second-order methods often beat it.
+- EM is *easy*. The closed-form E and M for mixtures of Gaussians fit on a postcard. That ease is much of why it took over the world.
+
+The thirty points are a toy. But this same loop, with bigger $N$ and bigger $K$ and richer component distributions, is doing real work right now somewhere on every continent. Voice recognisers fit GMMs to acoustic features. Astronomers fit mixtures of Gaussians to stellar populations. Biologists model gene expression with them. The Hubble Space Telescope's PSF was fit with EM. The technique you just stepped through has been quietly running ML systems for forty-eight years.
+
+</Act>

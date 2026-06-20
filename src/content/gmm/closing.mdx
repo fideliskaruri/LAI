@@ -1,0 +1,32 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="closing" eyebrow="Six · Density estimation is the gateway">
+
+# What you really fit was a generator
+
+So that's GMM.
+
+You picked $K$. You initialised the Gaussians. You alternated:
+
+- **E**: for each point, ask Bayes' rule "who owns me, and by how much?" Each point gets a probability triple across the $K$ components.
+- **M**: for each component, refit its mean and covariance as the weighted average of the points it owns. Update the mixing weight to its average ownership.
+
+You repeated until the log-likelihood stopped moving. The output was the same shape as the input to K-means &mdash; a set of cluster centers &mdash; *plus* a covariance for each, *plus* a soft assignment matrix for every point. It's clustering with uncertainty, which is the small reading. We'll close on the bigger reading.
+
+Look at the two panels on the left. Same data on the left panel. On the right, the same scene plus the *density* the algorithm has learned: a smooth surface $p(\mathbf{x})$ that says how likely you'd be to find a new point at every location in the plane.
+
+That right panel is the actual prize.
+
+K-means gave you cluster *labels*. GMM gave you a *distribution*. With a distribution, you can:
+
+- *score new points*. The next observation $\mathbf{x}_\text{new}$ gets a probability $p(\mathbf{x}_\text{new} \mid \theta)$ &mdash; high if it lands where the model says points like to live, low if it lands somewhere the model thinks is unlikely. Anomaly detection, in two lines.
+- *generate new points*. Pick a component proportional to $\pi_k$. Sample from that Gaussian. You just synthesised a fake data point that looks like the real ones. That's a *generative model* of your data.
+- *compose with other probabilities*. Treat $p(\mathbf{x} \mid \theta)$ as a building block in a bigger Bayesian story &mdash; a prior over user behaviour, a class-conditional likelihood inside a classifier, an empirical distribution to be matched by a deeper model.
+
+This last move is the route forward. Modern generative modelling &mdash; variational autoencoders, normalising flows, diffusion models &mdash; is largely a story of *better and better density estimators*. They beat GMM by using neural networks to represent shapes more flexible than Gaussians, and tricks like the variational lower bound (a *direct descendant* of the EM derivation) to fit them. But the conceptual move is the same one you made here: stop asking "what cluster?" and start asking "what's the distribution?"
+
+That move is the door from classical statistics into the generative side of machine learning. You just walked through it.
+
+The mixture of Gaussians is everywhere. The EM loop is everywhere. The first paper was 1886. The naming paper was 1977. The future is whatever rich densities we learn to fit next.
+
+</Act>

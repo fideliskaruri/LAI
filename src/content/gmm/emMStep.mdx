@@ -1,0 +1,31 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="em-m-step" eyebrow="Four · The Maximization step">
+
+# Given the responsibilities, refit
+
+The E step gave us soft assignments. The M step uses them to refit the Gaussians.
+
+Press *M step*. The three diamond centers slide to new positions; the iso-contours retract and tilt; the mixing-weight bars on the right adjust.
+
+Mechanically, the M step is three weighted averages. For each component $k$:
+
+$$
+\mu_k = \frac{\sum_i \gamma_{ik} \, \mathbf{x}_i}{\sum_i \gamma_{ik}},
+\quad
+\Sigma_k = \frac{\sum_i \gamma_{ik} (\mathbf{x}_i - \mu_k)(\mathbf{x}_i - \mu_k)^{\mathsf{T}}}{\sum_i \gamma_{ik}},
+\quad
+\pi_k = \frac{\sum_i \gamma_{ik}}{N}.
+$$
+
+That's it. Every data point contributes to every Gaussian's update, weighted by how strongly that data point belongs to it. A point with $\gamma_{17,2} = 0.7$ contributes seventy percent of itself to component 2's mean, thirty percent across the other components. *No assignment is final.*
+
+Compare these formulas to fitting a single Gaussian to data. If you had $N$ points and you wanted the maximum-likelihood Gaussian for them, you'd compute the sample mean and sample covariance &mdash; the unweighted versions of the formulas above, where every $\gamma_i$ is just $1$. The M step is the same calculation, but every point gets a weight saying how *much* of it belongs to this component. It's a *weighted* refit, one per component, all three running in parallel from the same responsibility matrix.
+
+The mixing weights $\pi_k$ update for free: they're just the average responsibility per component. If, after E, the data effectively gave component 2 a population of twelve points (in soft units), then $\pi_2 = 12/30 = 0.4$. The prior follows the population.
+
+Notice that the responsibilities in this scene don't change &mdash; we colour the points with the *old* $\gamma$, the ones computed at the start of this iteration. The point of M is to use those soft assignments to recompute the parameters. The new responsibilities, recomputed against the *updated* Gaussians, come at the start of the next E step.
+
+That alternation &mdash; E uses the current $\theta$ to get $\gamma$; M uses the current $\gamma$ to get a new $\theta$ &mdash; is the EM loop. The next act runs it.
+
+</Act>

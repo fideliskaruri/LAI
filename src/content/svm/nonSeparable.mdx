@@ -1,0 +1,25 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="non-separable" eyebrow="Four · The 1995 addition">
+
+# What if there is no gap at all?
+
+The scatter on the left is the same situation as before, except the two classes have wandered into each other. Some vermilion circles are sitting deep in the lower-left where the ink crosses live, and several ink crosses have leaked up to the right. There's no straight line that separates them. None.
+
+A hard-margin SVM &mdash; the classifier from Vapnik's earlier 1960s work &mdash; just gives up at this point. There's no feasible solution to its optimization problem. The 1992 kernel-trick paper handled some non-separable cases by lifting them into higher dimensions, which we'll meet in the next act, but it doesn't solve this problem in general. This is the situation Cortes and Vapnik fixed in 1995, and it's why the 1995 paper is the one everyone cites.
+
+Their fix is to give up on perfect separation, and instead pay a price for every point that ends up inside the margin or on the wrong side of the line. The optimization becomes:
+
+$$
+\min_{w, b, \xi} \; \tfrac{1}{2} \| w \|^2 + C \sum_i \xi_i
+$$
+
+The first term penalizes a narrow margin (smaller *w* means wider band). The second term penalizes the *slack* &xi;<sub>i</sub> &mdash; how far each point intrudes past the margin boundary. The constant C controls the trade-off. That's the dial on the right.
+
+Slide C around. With small C &mdash; left edge &mdash; the algorithm doesn't care much about violations, so it widens the band aggressively and lets a lot of points sit inside it. The margin is wide; the number of violations is large. With large C &mdash; right edge &mdash; violations get expensive, so the algorithm narrows the band to push more points clear of it. Narrower margin, fewer violations.
+
+Neither extreme is "correct." It's a tuning knob, and the right value depends on how noisy you think your training data is. Noisy data &mdash; some labels are wrong, or some points are extreme outliers &mdash; calls for small C: you trust the bulk of the distribution and shrug off the outliers. Clean data with a few legitimate hard cases calls for large C: you don't want to lose those hard cases just because they're inconvenient. In practice people tune C by cross-validation, the same way they'd tune any hyperparameter.
+
+The violating points are marked with a small dashed ring on the left. As you slide C, watch the ring count change. Watch the margin band swell and contract. This dial is the difference between a clean piece of 1960s theory and a classifier that you can actually run on real data.
+
+</Act>

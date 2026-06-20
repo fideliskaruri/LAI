@@ -1,0 +1,25 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="closing" eyebrow="Six · Why diffusion took over">
+
+# The recipe didn't change. The world did.
+
+Three things happened in this chapter, and they happened in a specific order, and the order is the point.
+
+*One.* We chose a destruction. A particular Markov chain that, applied to any image, walks it to pure Gaussian noise in a thousand small steps. The schedule of how aggressively we noise &mdash; the $\beta_t$ curve &mdash; was a *design decision*. We picked something modest and well-behaved.
+
+*Two.* We chose what to learn. The reverse step. Specifically: given a noisy image and a step index, predict the noise that was added. The loss was *mean-squared error*, the most boring loss imaginable. The architecture was a U-Net &mdash; convolutional, time-conditioned. Everything about the training pipeline was a familiar regression problem.
+
+*Three.* We discovered we were doing something else. The thing the network was learning &mdash; predicted noise &mdash; turned out to be, up to a scaling, the *score* of the noisy data distribution. The denoising network and the score network are the same animal. Which means we hadn't just built a noise predictor; we'd built a *compass* that pointed toward the data manifold at every level of corruption. And once you have such a compass, you can use it to walk *anywhere on the manifold* by starting at pure noise and following the arrows down.
+
+That third thing &mdash; the equivalence between denoising and score &mdash; is what makes diffusion *real* in the sense of being a fact about probability rather than a trick about networks. Sohl-Dickstein in 2015 wrote the variational version. Song and Ermon in 2019 wrote the score version. Ho et al. in 2020 made the engineering work. By the time Stable Diffusion shipped open-weight in August 2022, the same algorithm was being trained on five-billion-image datasets &mdash; LAION, mostly &mdash; and could turn an English sentence into a photograph.
+
+A specific frame to hold. The math we wrote down for a 16-by-16 toy arrow is, *exactly*, the math behind every diffusion product in the world. Stable Diffusion, DALL&middot;E 3, Midjourney, Imagen, Sora, Veo &mdash; the architecture is bigger, the training set is bigger, there's a text encoder grafted on, the noise schedule is tuned, the sampler is fancier. But the core loop &mdash; *forward noise, reverse denoise, score equals epsilon, sample by walking down* &mdash; is the loop we just built. What scales is the dataset.
+
+This is, I think, the deepest lesson of the diffusion story. A useful research idea can sit unused for five years not because it's wrong but because the *ecosystem around it* &mdash; datasets, hardware, training tricks, architectural conventions &mdash; isn't ready. The 2015 paper proposed a real algorithm. It took half a decade for the rest of the stack to catch up.
+
+There's also a thread back to the earlier chapters that's worth flagging out loud. The reverse-process update rule is *gradient descent in disguise* &mdash; you're walking in the direction of the score, which is the gradient of log probability. Optimization (chapter 11) is happening, hidden inside every diffusion sampling loop. The noise comes from probability and distributions (chapters 7 and 9). The U-Net is built on the matrix and convolution machinery from earlier chapters. Diffusion is what happens when you stack a *lot* of the previous chapters together and ask them to generate.
+
+Up next is the final chapter of the platform: *Agents*. We're going to make a turn outward &mdash; from a model that draws the world to a model that *acts in it*. The mathematics will be different. The aesthetic, oddly, won't.
+
+</Act>

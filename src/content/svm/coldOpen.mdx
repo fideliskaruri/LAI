@@ -1,0 +1,19 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="cold-open" eyebrow="Zero · Cortes & Vapnik · Bell Labs · 1995">
+
+# The classifier that won the nineties
+
+In the summer of 1995, in volume 20 of *Machine Learning*, a paper appeared from two researchers in Holmdel, New Jersey, with a title that nobody could quite parse the first time: *Support-Vector Networks*. The authors were Corinna Cortes, a young Danish statistician who had joined AT&T Bell Labs three years earlier, and Vladimir Vapnik, a Soviet-trained mathematician who had emigrated from Moscow in 1990 and brought with him a quarter of a century of statistical learning theory that almost nobody in the United States had read yet.
+
+The paper introduced the modern *support-vector machine*. The "modern" qualifier matters. There had been earlier versions. Vapnik had been working on the geometric idea &mdash; find the line through your data that leaves the widest empty band &mdash; since the 1960s, and a 1992 paper at COLT by Boser, Guyon and Vapnik had already introduced the kernel trick that lifts everything into higher-dimensional spaces. What Cortes and Vapnik added in 1995 was the last necessary piece: a way to handle data that *didn't* cleanly separate, by letting a few points sit inside the margin in exchange for a finite penalty. The "soft margin". Once you have that, you have something that works on real data.
+
+The paper landed at a strange moment. Neural networks &mdash; the kind people had been building since Rumelhart's 1986 backpropagation paper &mdash; had hit a wall. Training was finicky, GPUs didn't exist, the datasets were too small, the theory was vague. SVMs, by contrast, came with a beautiful theory (Vapnik and Chervonenkis had proven in 1968 that you could *bound* the generalization error of a classifier from above using a quantity called VC dimension), a convex objective (one global optimum, found by quadratic programming), and an obvious geometric picture you could draw on a napkin. Half the machine-learning community moved over within five years. By 2000, if you wanted to publish a paper on classification, an SVM baseline was nearly mandatory.
+
+The dominance lasted until roughly 2012, when one neural network &mdash; Krizhevsky's AlexNet &mdash; won the ImageNet challenge by a wide enough margin that the field changed direction overnight. By 2015 the SVM had been gently retired from the front line, kept on as a workhorse for small-data problems where its theoretical guarantees still beat anything a deep net could offer, but no longer the headline act. The reason for the shift is the subject of the last act in this chapter, and it's not what people sometimes say. It's not that SVMs were "wrong". It's that they don't *scale*.
+
+On the left I've drawn a stylized facsimile of the 1995 paper's title page. On the right is a three-rung ladder &mdash; the 1968 VC-theory paper at the bottom, the 1992 kernel-trick paper in the middle, the 1995 paper at the top &mdash; because the soft-margin SVM didn't appear from nothing. It's the third in a sequence, and each rung made the next one possible.
+
+The whole chapter, in five interactive scenes, is about answering one question: *given two clouds of dots, which line through the gap is the right one?* And then: *what do you do when there is no gap?*
+
+</Act>

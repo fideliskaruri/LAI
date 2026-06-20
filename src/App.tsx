@@ -11,9 +11,14 @@ import { Matrices } from './routes/topics/Matrices'
 import { Eigenvalues } from './routes/topics/Eigenvalues'
 import { LinearRegression } from './routes/topics/LinearRegression'
 import { Optimization } from './routes/topics/Optimization'
+import { LogisticRegression } from './routes/topics/LogisticRegression'
 import { Pca } from './routes/topics/Pca'
 import { Clustering } from './routes/topics/Clustering'
+import { Gmm } from './routes/topics/Gmm'
 import { Embeddings } from './routes/topics/Embeddings'
+import { Attention } from './routes/topics/Attention'
+import { Diffusion } from './routes/topics/Diffusion'
+import { Svm } from './routes/topics/Svm'
 import { Recall } from './routes/Recall'
 import { TestMDX } from './routes/__test/TestMDX'
 import { SplitCanvasTest } from './routes/__test/SplitCanvasTest'
@@ -35,9 +40,14 @@ export default function App() {
         <Route path="/eigenvalues" element={<Eigenvalues />} />
         <Route path="/linear-regression" element={<LinearRegression />} />
         <Route path="/optimization" element={<Optimization />} />
+        <Route path="/logistic-regression" element={<LogisticRegression />} />
         <Route path="/pca" element={<Pca />} />
         <Route path="/clustering" element={<Clustering />} />
+        <Route path="/gmm" element={<Gmm />} />
         <Route path="/embeddings" element={<Embeddings />} />
+        <Route path="/attention" element={<Attention />} />
+        <Route path="/diffusion" element={<Diffusion />} />
+        <Route path="/svm" element={<Svm />} />
         <Route path="/recall" element={<Recall />} />
         <Route path="/__test-mdx" element={<TestMDX />} />
         <Route path="/__split-canvas-test" element={<SplitCanvasTest />} />

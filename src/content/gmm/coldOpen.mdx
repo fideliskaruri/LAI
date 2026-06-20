@@ -1,0 +1,21 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="cold-open" eyebrow="Zero · The same scatter, but softer">
+
+# Three clusters, blended
+
+Here we go again.
+
+This is the same thirty-point scatter from the K-means chapter. Same lower-left group, same upper group, same lower-right group. The picture hasn't changed. What changed is the *colouring*.
+
+In the last chapter, every point was exactly one colour. A point on the boundary between two clusters got assigned to whichever centroid happened to be closest by a hair, and after that it was a vermilion point, end of discussion. The algorithm carried no record that the assignment had been a coin flip.
+
+Look at the points on the left now. The ones in the middle of a cluster are saturated &mdash; that one is *vermilion*, full stop. The ones near the edges of a cluster are muddy. Slightly olive, slightly blue, slightly vermilion. The colours are *blended*, weighted by a probability triple: this point is sixty-five percent likely to belong to the vermilion cluster, thirty percent likely to belong to the blue cluster, five percent likely to belong to the olive cluster.
+
+That's the upgrade. Soft assignment instead of hard. Every point keeps a record of its own uncertainty.
+
+The question of this chapter is the one that hovers under the picture: *how do we compute those probabilities?* What is a "probability of belonging to a cluster" even supposed to mean? The answer turns out to require a model of what a cluster *is* &mdash; not just a centroid, but a *Gaussian distribution* with a center and a spread. Three Gaussians, summed up, will be our model. The probabilities will fall out of Bayes' rule. The fitting algorithm will be the most famous loop in unsupervised learning: *Expectation-Maximization*.
+
+Simon Newcomb wrote down the first mixture model in 1886, trying to make sense of a pile of astronomical measurements that didn't fit a single bell curve. Karl Pearson fit one to crab measurements in 1894. Dempster, Laird, and Rubin gave the algorithm its modern name and proof in 1977. We're walking through their picture.
+
+</Act>

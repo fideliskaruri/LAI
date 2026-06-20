@@ -1,0 +1,31 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="the-mixture" eyebrow="One · Sum of Gaussians">
+
+# Three bumps
+
+To get a probability of "belonging to a cluster," you have to first say *what a cluster is*.
+
+We will say: a cluster is a *Gaussian distribution*. A bell curve in two dimensions. It has a center (its mean, $\mu$) and a spread (its covariance matrix, $\Sigma$, which is a small two-by-two table telling you how stretched the bell is in each direction, and how tilted). One Gaussian, by itself, looks like a smooth hill rising up at the center and fading out to zero in every direction.
+
+Three Gaussians, *added together*, look like the picture on the left. Three coloured hills. Vermilion at the lower-left, blue at the upper, olive at the lower-right. Where two hills overlap, the colours blend; the heatmap is showing you the per-component weight at each location. We'll call this combined surface the *mixture density*, and write it like this:
+
+$$
+p(\mathbf{x}) = \sum_{k=1}^{K} \pi_k \, \mathcal{N}(\mathbf{x} \mid \mu_k, \Sigma_k).
+$$
+
+The $\pi_k$ are *mixing weights* &mdash; how much of the total mass belongs to each component. They're non-negative and sum to one, so you can read them as "if I pluck a random sample from this density, what's the prior probability it came from component $k$?" In this picture they're each $1/3$.
+
+Now click anywhere on the left. The readout will tell you, for that location, *how much of the density there came from each component*. That ratio is the **responsibility** $\gamma_k(\mathbf{x})$, and it's just Bayes' rule applied to the mixture:
+
+$$
+\gamma_k(\mathbf{x}) = \frac{\pi_k \, \mathcal{N}(\mathbf{x} \mid \mu_k, \Sigma_k)}{\sum_{j} \pi_j \, \mathcal{N}(\mathbf{x} \mid \mu_j, \Sigma_j)}.
+$$
+
+The numerator is "how likely a sample from component $k$ would land here." The denominator is the same question summed over all components. The ratio is the posterior probability that *this* point belongs to component $k$, given the model.
+
+That is, mechanically, what we meant by "probability of belonging to a cluster." It needed a model. The model is a sum of Gaussians.
+
+The next four acts answer the harder question: *given the data, how do we choose the Gaussians?*
+
+</Act>

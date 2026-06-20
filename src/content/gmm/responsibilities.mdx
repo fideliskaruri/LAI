@@ -1,0 +1,21 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="responsibilities" eyebrow="Two · Soft assignment">
+
+# Pies, not labels
+
+In the last act, you clicked anywhere on the plane and read off a responsibility triple for that location.
+
+Now do it for every data point at once.
+
+Each of the thirty points is a little pie chart. The slice sizes are the point's responsibilities $(\gamma_1, \gamma_2, \gamma_3)$ &mdash; its probability of belonging to each of the three components. A point dead in the middle of the vermilion cluster is almost entirely vermilion: a tiny notch of blue and olive, almost a full disc of red. A point sitting on the edge of the upper cluster, halfway toward the lower-left cluster, is genuinely *split*: maybe sixty percent blue, thirty percent vermilion, ten percent olive. The pie *shows you* the algorithm's uncertainty about that point. K-means would have lied and called it blue.
+
+Grab one of the diamond handles and drag it. Watch the pies redistribute across every point in real time. Pull a center away from its cluster and the pies on that cluster grow slices toward whichever component is now closer. Pull two centers on top of each other and you'll see most points hedge, half-and-half.
+
+This is the soft-assignment view. It's how the algorithm thinks about every data point internally.
+
+For this act we've held the covariances fixed &mdash; only the means are draggable. The covariance matrix controls the *shape* of each bell: how wide, how tilted. We'll let the covariances move freely starting in the next act, where we describe the actual fitting algorithm. For now, three round bells of equal radius are enough to get the picture.
+
+One more naming convention before we go. The responsibility $\gamma_{ik}$ depends on two indices: the point $i$ and the component $k$. So $\gamma_{17, 2}$ is "the probability that data point number seventeen belongs to component number two, given our current model." Across all points and all components, $\gamma$ is an $N \times K$ matrix whose rows sum to one. That matrix &mdash; the *responsibility matrix* &mdash; is what the E step in the next act computes from scratch each iteration.
+
+</Act>

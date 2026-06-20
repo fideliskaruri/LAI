@@ -1,0 +1,33 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="sampling-from-noise" eyebrow="Five · The reverse walk">
+
+# Generating, one step at a time
+
+Now we cash in. We have a trained denoiser. We have the forward schedule. We want a new sample.
+
+The procedure, in pseudocode, is the most absurdly short generative-model algorithm you'll ever see:
+
+```
+x_T ~ N(0, I)
+for t from T down to 1:
+    eps_hat = model(x_t, t)
+    x_{t-1} = (1/sqrt(alpha_t)) * (x_t - (beta_t/sqrt(1 - alpha_bar_t)) * eps_hat) + sigma_t * z
+return x_0
+```
+
+That's it. Start with noise. Use the model to estimate the noise at the current step. Subtract a scaled version of it. Add a little fresh Gaussian noise (the $\sigma_t \, z$ term &mdash; the *stochastic* part of the reverse step). Repeat. After $T$ steps you have a sample.
+
+The hairy update rule in the middle is what DDPM derives from the variational lower bound. You can read it more plainly as: *take a tiny step toward what the denoiser thinks is the truth, and add a touch of randomness so the chain doesn't collapse to a deterministic path.* That randomness matters. Without it, you'd get one image per starting noise. With it, you get a *distribution* of plausible images for a given starting point.
+
+On the left of the canvas, click *Step* and you'll do one iteration of this loop. Click it fifty times and you'll watch the arrow emerge from pure noise. We're cheating, slightly, by using an oracle denoiser &mdash; one that knows the ground truth. A real diffusion model has only its trained network, and the emergence is *less* clean and *more* surprising: at high $t$, the network is committing to coarse structure (where the dark blob should be, roughly), and only at low $t$ does it sharpen pixel grain. Watch the checkpoints on the right: noise, then glimmer, then shape, then arrow.
+
+There's an enormous practical wrinkle here, which is that doing this with $T = 1000$ steps means a thousand neural-net forward passes per image. That is, charitably, *not fast*. Most of the work in the post-DDPM era has been on schemes to reduce this &mdash; clever solvers that take larger steps (DDIM, DPM-Solver), distilling many-step samplers into few-step ones (progressive distillation, consistency models), or training entirely different objectives that allow one- or two-step generation. The best modern diffusion samplers run in fewer than 10 steps. The pedagogical version we're walking through here is the original DDPM &mdash; slow, simple, easy to think about.
+
+A second wrinkle: in real generative models, you usually want to *condition* on something &mdash; a text prompt, a class label, an image you're editing. The mechanism is the same; you just feed the conditioning information into the denoiser alongside $x_t$ and $t$. Then the model learns to predict noise *given the prompt*, and at sampling time the reverse walk drifts toward the part of the manifold that matches the prompt. This is how Stable Diffusion turns "a vermilion arrow on a cream background" into the arrow we started with &mdash; it's running this exact loop, conditioned on the text.
+
+The thing to feel, on the canvas, is that the picture appears *gradually*. There's no point at which it suddenly is. Every step, the noise is slightly less wrong, the shape slightly more present. By step 25 you can sort of tell it's an arrow. By step 40 it's obvious. By step 50 it's clean. This gradualness is what makes diffusion easy to train and easy to control. You're not asking the model to do one giant generative leap. You're asking it to do a thousand tiny corrections, and each correction is a manageable regression problem.
+
+That is the whole machine. Forward noising builds the schedule. The denoiser learns the reverse step. Sampling walks the schedule backwards. The math is one paper from 2015 plus a handful of engineering decisions made between 2019 and 2022.
+
+</Act>

@@ -1,0 +1,27 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="self-attention" eyebrow="Five · Attention to yourself">
+
+# Q, K, V from the same sentence
+
+In Bahdanau's original setup, the attention was *cross-attention*. The query side &mdash; the decoder, mid-translation &mdash; was a different sequence from the key/value side &mdash; the encoder, holding the source sentence. Two sentences. Two roles.
+
+The simplification that made transformers work is to drop one of the sentences.
+
+**Self-attention** runs the same computation, but Q, K, and V all come from the *same* sequence. Every word, simultaneously, gets to peek at every other word in the same sentence (including itself) and produce an updated vector that reflects what it saw.
+
+Hover any token on the left. The arcs above the sentence show how that token attends to the others; thicker = stronger. The right pane shows the same weights as a bar chart, and computes the *context vector* &mdash; the weighted blend of value vectors &mdash; that gets handed to the next layer.
+
+That context vector is the whole point. After one round of self-attention, the model no longer "sees" *the cat sat on the mat* as six unrelated 300-dimensional embeddings. It sees six *blended* vectors, each of which already carries some information about the others. The vector that used to mean *cat* now also carries a tinge of *sat*, because it attended to *sat*. The vector for *on* now carries information about both *sat* and *mat*. Context has been *baked in*.
+
+That's the move. It's the moment word vectors stop being independent and start *talking to each other*.
+
+Then you do it again. The output context vectors become the inputs to the *next* self-attention layer, where the same operation runs all over again with a different set of learned projection matrices. Now *cat*'s vector knows about *sat* (from layer 1), so when *cat* attends in layer 2, it has more interesting things to attend to. By the tenth layer, a token's vector is a deeply-mixed function of the whole sentence's structure. By the ninety-sixth layer &mdash; the depth of GPT-3 &mdash; the vectors carry abstractions that don't have nouns to attach to anymore.
+
+There's one constraint I'm leaving out. In a language model that's *generating text left to right*, you can't let the token at position *i* attend to tokens at positions > i &mdash; those haven't been generated yet. The fix is to *mask* the attention: set the weights for "future" positions to negative infinity before the softmax, so they come out as zero. That's called *causal attention* or *masked attention*. It's what makes GPT a *decoder-only* model. The picture above doesn't show this &mdash; it shows the full attention pattern, which is what you'd use in an encoder (like BERT) or in a non-autoregressive setting. The mechanism is the same; only the mask differs.
+
+The other thing I'm hiding is that, in real transformers, there is *also* a feed-forward network after each self-attention block, and *also* a residual connection that adds the input back to the output, and *also* a layer-norm step, and ... a lot. The block is denser than just attention. But attention is the part that moves information *across* positions. Everything else in the block processes information *within* a position. The reason transformers work is that they alternate "across" (attention) with "within" (feed-forward), many times.
+
+You're now close to the picture of a transformer.
+
+</Act>

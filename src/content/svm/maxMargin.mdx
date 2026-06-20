@@ -1,0 +1,23 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="max-margin" eyebrow="Two · The optimal hyperplane">
+
+# Make the band as wide as you can
+
+Drag either endpoint of the line on the left and the band swells or contracts in real time. The number on the right is the perpendicular distance from the line to the nearest data point on either side. That number is what the SVM optimizes. The bar below it shows your current solution as a fraction of the *best possible* margin on this dataset &mdash; the cap the SVM solver would find with quadratic programming.
+
+If you can push the bar to a hundred percent, you have found the support-vector machine. The status sentence will say so.
+
+What you'll discover, if you fiddle with it for a minute, is that there's a kind of pivot point. Tilt the line one way and the upper cloud's nearest point gets closer; tilt it the other way and the lower cloud's nearest point does. The optimal line is the one where moving it in *any* direction makes some nearest point closer. It's a saddle, in a sense &mdash; the maximum of a minimum. Mathematicians write it like this:
+
+$$
+\max_{w, b} \; \min_{i} \; \frac{y_i (w \cdot x_i + b)}{\|w\|}
+$$
+
+The outer max is over all possible lines, parameterized by their normal vector *w* and intercept *b*. The inner min is over all the data points. The thing inside is the signed perpendicular distance from point *x<sub>i</sub>* to the line, multiplied by *y<sub>i</sub>* (which is &plusmn;1) so the sign is positive when the point is on the correct side and negative when it's on the wrong side. Maximize the minimum signed distance, and you've found the widest separating band.
+
+The actual SVM training algorithm doesn't solve this nasty max-min directly. It uses Lagrangian duality to turn it into something convex and well-behaved &mdash; a quadratic program in the dual variables &mdash; which then gets solved with off-the-shelf QP routines. The resulting machinery is industrial and unromantic. The picture, though &mdash; widening a band until it's pinned by points on both sides &mdash; is what the machinery is computing.
+
+Now: drag your line so it's the SVM solution. You'll know you've got it when the bar maxes out and the band looks symmetric around the gap. In the next act we ask a quietly disturbing question about that solution: which of those fifty points actually mattered for it?
+
+</Act>

@@ -1,0 +1,23 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="cold-open" eyebrow="Zero · Bahdanau, Cho, Bengio · 2014">
+
+# The paper that invented attention
+
+In the autumn of 2014 a graduate student in Montréal posted a paper to arXiv that nobody, including the authors, expected to matter very much.
+
+The student was **Dzmitry Bahdanau**, a 23-year-old from Belarus visiting Yoshua Bengio's group at the Université de Montréal. He was supposed to be working on machine translation. At that moment, machine translation worked like this: an *encoder* &mdash; usually a recurrent neural network &mdash; read a French sentence one word at a time, mashed all of it into a single fixed-size vector at the end, and a *decoder* RNN then unrolled that vector into an English sentence one word at a time. This was Sutskever, Vinyals, and Le's *sequence-to-sequence* model from a few months earlier. It worked on short sentences and fell apart on long ones.
+
+You can see why. The single fixed vector in the middle had to carry *the whole French sentence*. Twelve words; thirty words; sixty words; all squeezed through the same little neck. The longer the sentence got, the more of it the model forgot. That's the bottleneck on the right.
+
+Bahdanau, with **Kyunghyun Cho** (a postdoc) and **Yoshua Bengio** (the supervisor), tried something else. What if, when the decoder was about to produce the next English word, it could look *back at all the French words*, not just at the squashed bottleneck vector? And what if the decoder could *learn for itself* which French words were relevant to which English word &mdash; without anyone telling it what aligned with what?
+
+They called it *jointly learning to align and translate*. The paper appeared on 1 September 2014. Its title was *Neural Machine Translation by Jointly Learning to Align and Translate*. The mechanism they introduced &mdash; the decoder computing a weighted average over the encoder's hidden states, with the weights themselves learned end-to-end &mdash; is what we now call **attention**.
+
+The translation results were better, particularly on long sentences. That was the headline. The deeper thing &mdash; that "let the model look at every other position with learnable weights" was a general-purpose move that worked outside of translation, outside of language, outside of sequences &mdash; took another three years to be fully appreciated. In 2017, the paper *Attention Is All You Need* would throw away the recurrent part entirely and build a whole architecture out of nothing but attention. That architecture is the transformer. Every modern language model is a transformer. The chain runs straight back to Bahdanau's 2014 paper.
+
+There is an honest earlier ancestor. Five months before Bahdanau, **Alex Graves** at DeepMind published *Generating Sequences with Recurrent Neural Networks*, in which he described something he called *soft attention* &mdash; a Gaussian-weighted window over a sequence, used to handwrite English text. It was a narrower idea, attached to a different problem, but it's there in the lineage. The full credit for attention as we now use it goes to Bahdanau, Cho, and Bengio.
+
+We're going to spend this chapter unpacking what the mechanism actually does. Why "soft" was the load-bearing word. Why dot products and a softmax turn out to be enough. Why the move generalises far past translation. And why, when you stack many copies of it on top of each other, you get something that reads.
+
+</Act>

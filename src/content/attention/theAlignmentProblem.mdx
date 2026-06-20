@@ -1,0 +1,35 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="the-alignment-problem" eyebrow="One · the cat sat on the mat">
+
+# The problem nobody had labelled the answer to
+
+Before we talk mechanism, let's look at the problem.
+
+On the left, an English sentence: *the cat sat on the mat*. On the right, the French translation: *le chat s'est assis sur le tapis*. Hover any French word; the English word (or words) it corresponds to lights up on the left.
+
+A few things to notice.
+
+*Most of the alignments are one-to-one.* *cat* aligns to *chat*; *on* aligns to *sur*; *mat* aligns to *tapis*. Six French words pair off cleanly with six English words.
+
+*Some are one-to-many.* The English *sat* is two French words: *s'est assis*. ("Has-itself sat," literally; French uses a reflexive past tense for "to sit down" that English doesn't have.) The French *s'est* and *assis* both look back at the English *sat*. The mapping is not always tidy.
+
+*Some words duplicate.* English has *the* twice. So does French &mdash; *le*. But the first *le* attends to the first *the* and the second *le* attends to the second *the*, because of the noun each *the* attaches to. The model has to figure this out from context.
+
+Here's the question this picture is supposed to land:
+
+**Nobody labelled these alignments for the model.** In the dataset Bahdanau and Cho were training on &mdash; the WMT-14 English-French corpus, eight million translated sentence pairs &mdash; you had pairs of sentences. You did *not* have, "the word at position 3 in the English sentence corresponds to the words at positions 3 and 4 in the French sentence." That kind of annotation was rare and expensive. Older statistical machine translation systems &mdash; IBM Model 1 from 1990, and its successors &mdash; tried to *infer* alignments from sentence pairs alone using expectation-maximisation. They worked, sort of. They were brittle and hand-engineered.
+
+Bahdanau wanted a model that *learned* these alignments as a side effect of being trained to translate well. No alignment labels. No EM. Just sentence pairs, gradient descent, and the right architecture.
+
+What he and Cho did was insert, between the encoder and the decoder, a small differentiable mechanism that &mdash; at every step of producing an English word &mdash; computed a *weighted average* over all the encoder's hidden states. The weights were real numbers between 0 and 1; they summed to 1; they depended on the decoder's current state. *And they were learned end-to-end as part of training the translation loss.*
+
+If the model produced a better next word when it weighted the French *chat* heavily while emitting English *cat*, then gradient descent rewarded that. After enough sentence pairs, the weights settled into the patterns you'd hope for. The picture on the right &mdash; with most weight on *chat* when emitting *cat* &mdash; emerged on its own from training.
+
+It worked. The translation quality went up; long sentences stopped falling apart; and when Bahdanau visualised the learned weights as a heatmap, the picture looked like a real alignment table that a linguist might have drawn by hand. (We'll look at the heatmap in act 4.)
+
+The mechanism Bahdanau introduced was called *additive attention*; the version that took over the field three years later, *scaled dot-product attention*, has slightly cleaner mechanics. Both have the same essential shape: at each output position, mix the input positions with learned weights. That mixing &mdash; the weighted sum &mdash; is the whole game.
+
+The next act builds the dot-product version in detail.
+
+</Act>

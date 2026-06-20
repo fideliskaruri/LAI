@@ -1,0 +1,57 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="qkv-mechanics" eyebrow="Two · Query · Key · Value">
+
+# Three vectors. One dot product. One softmax.
+
+I want to show you the smallest version of the move &mdash; small enough that you can compute it in your head &mdash; before we let it scale up.
+
+Three words: *the*, *cat*, *sat*. Each word is a vector. (In the last chapter we built those vectors. Word embeddings, three hundred numbers each. Pretend, for the picture, that they're two-dimensional.) The picture on the left attaches *three* vectors to each word, not one. The original word vector goes off and gets multiplied by three learned matrices &mdash; we'll spare the matrix details for now &mdash; and pops out as:
+
+- **Q** &mdash; the *query*. "What am I looking for?" The question this word is asking about the others.
+- **K** &mdash; the *key*. "What do I match?" The label this word advertises to others.
+- **V** &mdash; the *value*. "What do I contribute, if I'm matched?" The content this word hands over.
+
+That's the whole vocabulary. Three vectors per word. Query, Key, Value. Q, K, V.
+
+(The names are not arbitrary. They come from how databases work. A *key-value store* maps keys to values; a *query* fetches the values whose keys match. Attention is a soft, differentiable version of that lookup. Instead of "fetch the value whose key exactly matches the query," it's "blend the values, weighted by how well each key matches the query.")
+
+Click any of the three tokens on the left to make it the *query word*. The right pane springs to life. Here's what it's computing.
+
+**One.** For each other token *j*, compute the dot product
+
+$$
+\text{score}_j = Q_i \cdot K_j
+$$
+
+where *i* is the query word's index. A high dot product means *Q* and *K* point in similar directions &mdash; the query word's question matches that key's answer.
+
+**Two.** Run all the scores through a softmax to turn them into weights
+
+$$
+w_j = \frac{e^{\text{score}_j}}{\sum_k e^{\text{score}_k}}.
+$$
+
+(Softmax is the same thing you saw in Distributions, applied here to scores instead of logits. It produces a discrete probability distribution &mdash; non-negative numbers that sum to 1.)
+
+**Three.** Take the weighted average of the *value* vectors:
+
+$$
+\text{out}_i \;=\; \sum_j w_j \, V_j.
+$$
+
+That's it. The output for the query word is a blend of every other word's value vector, weighted by how well its key matched the query's question.
+
+Click around. Notice how the weights re-distribute. When *cat* is the query, the weight on *cat*'s own key tends to be largest &mdash; words attend to themselves. But the weight on *sat* is also high &mdash; in this toy example the K vector for *sat* points in a similar direction to *cat*'s Q. The model has learned, in some sense, that *cat* and *sat* go together.
+
+A word on what this isn't.
+
+It is *not* a lookup. Nothing here picks out one "winning" word. The softmax is *soft* &mdash; it leaks weight onto every key, even bad matches. That softness is what makes the whole thing differentiable. If attention picked the single best key, gradient descent couldn't train it; there'd be no gradient through the choice. The softmax is the trick that turns "find the most relevant word" into "blend the words, with most of the blend on the relevant one." Soft attention is differentiable. Hard attention isn't, mostly.
+
+That softness is also where the *attention* metaphor comes from. The weights *w<sub>j</sub>* are how much the model is "paying attention to" word *j*. A weight near 1 is rapt focus; a weight near zero is ignoring. They never quite reach zero or one. Attention, in this technical sense, is graded; it's not binary; it's not exclusive. You can attend to several things at once, weighted.
+
+There's one detail I'm hiding for clarity. In real implementations the dot product is divided by &radic;d &mdash; the square root of the key's dimension &mdash; before going into the softmax. That's the "scaled" in "scaled dot-product attention." It keeps the softmax from saturating into a hard one-hot when *d* is large. Mechanically the same picture; numerically nicer at scale. We'll skip the factor here.
+
+Now we widen out to six words and watch the whole table at once.
+
+</Act>

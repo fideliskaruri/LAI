@@ -1,0 +1,35 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="the-boundary" eyebrow="Two · Where σ hits ½">
+
+# The line you draw on the world
+
+Now z stops being a free parameter and becomes a function of position. For a 2D feature space &mdash; the only kind we can draw &mdash; the linear score is
+
+$$
+z(x, y) = w_x \, x + w_y \, y + b
+$$
+
+Three numbers parametrise it: w_x, w_y, and b. The probability the model assigns to the point (x, y) being class 1 is
+
+$$
+p(x, y) = \sigma\bigl(z(x, y)\bigr)
+$$
+
+On the left, the vermilion line is the set of points where z(x, y) = 0 &mdash; the *decision boundary*. Everywhere on that line, σ(0) = 0.5; the model is at maximum uncertainty. On one side of the line, z is positive and p > 0.5; the model leans red. On the other side, z is negative and p < 0.5; the model leans blue. The two half-planes are tinted faintly in the corresponding direction.
+
+You can move the line two ways. Drag the centre dot to *slide* it perpendicular to itself (the line stays parallel, changes which side each point is on). Drag the end dot to *rotate* it about the centre. Keyboard works on both handles &mdash; arrow keys nudge; Shift + arrow steps more aggressively.
+
+Try to find an angle and offset that puts most of the blue points on one side and most of the red on the other. Almost any reasonable diagonal will work, because the two clouds were generated to be roughly linearly separable. (They overlap a bit on purpose &mdash; perfect separation would make the next two acts uninteresting.)
+
+Now look at the right panel. It plots σ(gain · d), where d is the perpendicular distance from the boundary line. The boundary itself sits at d = 0, and that's where the curve passes through ½. To the right of the boundary, distance is positive, σ rises toward 1, and the model predicts red. To the left, σ falls toward 0; blue.
+
+That panel has a second slider on it: the *gain*, sometimes written ||w||. The gain is the length of the weight vector (w_x, w_y) &mdash; a measure of how *steeply* z changes as you move perpendicular to the boundary. Drag the gain slider all the way to the left and the curve flattens into a gentle ramp: every point gets a probability close to ½, regardless of distance. Drag it all the way to the right and the curve becomes a near-vertical wall: every point is either p ≈ 0 or p ≈ 1, hard-thresholded by the boundary, with almost no in-between.
+
+This matters more than it looks. The shape of the curve is the shape of the model's *confidence*. A flat curve means the model is rarely sure of anything &mdash; it hedges. A steep curve means the model commits hard the moment a point crosses the line &mdash; it's confident even about points that are barely on the right side. Neither extreme is what we want. We want a curve that's steep enough to give clearly-blue and clearly-red points high-confidence predictions, but gentle enough to hedge near the ambiguous middle.
+
+The remarkable thing &mdash; the thing that makes logistic regression a *learning* algorithm rather than a parameter-tuning exercise &mdash; is that we don't have to choose the gain by hand. The training procedure of the next two acts will choose it for us, along with the angle and the offset, all at once. Three numbers, fit from data.
+
+(There's a small but real piece of history here. In statistics, "logistic regression" usually means *fit the three weights to maximise the likelihood of the labels under the model*. In machine learning, it usually means *fit the three weights to minimise log loss*. These are the same problem. Berkson would have approved. So would Fisher, eventually, after another decade of arguing.)
+
+</Act>

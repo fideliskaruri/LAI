@@ -1,0 +1,31 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="the-sigmoid" eyebrow="One · The squashing function">
+
+# σ — a function that turns numbers into probabilities
+
+Grab the marker on the number line on the left and drag it left and right. Or use Tab and arrow keys; Shift + arrow steps by 1. The marker can sit anywhere between &minus;6 and 6 &mdash; though in principle it lives on the whole real line; the panel just runs out of room.
+
+Now watch the right panel. The vermilion dot tracks the marker, but it's pinned to a curve that's bounded between 0 and 1 no matter how far you drag. Push the marker to +6 and the dot is essentially at 1. Push it to &minus;6 and the dot is essentially at 0. Land it at 0 and the dot is *exactly* at one-half.
+
+That curve is the sigmoid:
+
+$$
+\sigma(z) = \dfrac{1}{1 + e^{-z}}
+$$
+
+It takes any real number z and returns a number between 0 and 1. That is the whole of what it does. Three properties earn it its place in the chapter.
+
+*One.* It's *bounded*. The exponential in the denominator is always positive, so the denominator is always greater than 1, so the output is always between 0 and 1. We can hand the result to anyone who's expecting a probability and they won't complain.
+
+*Two.* It's *smooth*. Drag the marker through the centre and watch how the curve flows; there are no corners, no jumps, no discontinuities anywhere. The derivative exists everywhere and (it turns out) is given by σ(z) · (1 &minus; σ(z)) &mdash; a fact we'll use heavily in act 4. Smooth things have gradients; gradients let us do calculus; calculus lets us train.
+
+*Three.* It's *monotonic*. Larger z always means larger σ. This means it preserves *ordering*: if one input is more positive than another, its probability is higher. The mapping is invertible in principle &mdash; you can recover z from σ(z) via the *logit* function log(p / (1 &minus; p)) &mdash; which makes Berkson's whole 1944 trick possible.
+
+Try dragging the marker very slowly through the centre. The screen-reader narration confirms the milestone: at z = 0, σ = 0.5. This is the point where the model is maximally uncertain. Push the marker a little to the right and σ moves to 0.55, 0.6, 0.7; the model is now leaning red but not yet *confident*. Push to z = 3 and σ jumps to about 0.95 &mdash; confidently red. Push to z = 6 and σ is 0.998; pushing further does almost nothing. That flattening at the top is called *saturation*, and it'll matter later: when the model is already very confident, gradients are small, learning slows down.
+
+(For symmetry: the same shape, mirrored, lives at negative z. σ(&minus;3) ≈ 0.05. σ(&minus;6) ≈ 0.002. Definite blue. The sigmoid is point-symmetric about (0, 0.5), which means σ(&minus;z) = 1 &minus; σ(z). That tiny algebraic fact is the reason "swapping the labels" in binary classification is a no-op.)
+
+So far we've turned one real number into one probability. That's not yet a model of anything. The model arrives in the next act, when we promote that real number z from "something the user drags" to "something computed from the input." If z = w₁x + w₂y + b is a *linear function of two features*, then σ(z) is a probability that depends on where the input lives in the plane. And the locus of points where σ = 0.5 &mdash; the boundary &mdash; is a straight line.
+
+</Act>

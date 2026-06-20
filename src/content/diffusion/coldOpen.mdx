@@ -1,0 +1,25 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="cold-open" eyebrow="Zero · Sohl-Dickstein · 2015">
+
+# The paper that nobody read
+
+In March 2015 four researchers at Stanford — Jascha Sohl-Dickstein, Eric Weiss, Niru Maheswaranathan, and Surya Ganguli — posted a paper to arxiv with one of the more forbidding titles in machine learning: *Deep Unsupervised Learning using Nonequilibrium Thermodynamics*. It proposed a strange procedure. Take an image. Repeatedly add a little Gaussian noise until the image is indistinguishable from random static. Then train a neural network to invert that process step by step: given a slightly noisier image, predict the slightly cleaner one underneath. If your network is good enough, you can start with a fresh sample of pure noise and walk all the way back to a new, plausible image &mdash; one that was never in your training set.
+
+It was a beautiful idea, drawn by analogy from statistical physics. (Sohl-Dickstein had been a postdoc in Ganguli's lab; the lab was steeped in the kind of nonequilibrium thermodynamics that physicists use to describe systems being driven away from equilibrium. The paper's *form* &mdash; "a forward stochastic process, a learned reverse" &mdash; is lifted, almost verbatim, from how you'd describe a chemical reaction running backwards.) And by every reasonable account the math worked. The paper showed proof-of-concept generations of small images. The technique was sound.
+
+Almost nobody noticed.
+
+For five years, *Deep Unsupervised Learning using Nonequilibrium Thermodynamics* was a paper that interested specialists read and other people did not. The dominant generative models in the late 2010s were *generative adversarial networks* &mdash; GANs &mdash; introduced by Goodfellow in 2014, which trained a generator and a discriminator against each other in a high-stakes minimax game. GANs were dramatic. They made beautiful pictures. They were also notoriously unstable, and people who trained them spent a lot of their lives debugging mode collapse. Variational autoencoders, the other respectable option, made *blurry* pictures. Diffusion didn't seem better than either, and it required hundreds of forward passes to generate one sample, which made it pedagogically interesting and practically uncompetitive.
+
+Then, in 2019, Yang Song and Stefano Ermon at Stanford published *Generative Modeling by Estimating Gradients of the Data Distribution* &mdash; the same idea framed differently, as *score matching*. The score is the gradient of log density; if you know which way the probability is going up, you can climb toward where the data lives. Song and Ermon's paper made the noise schedule cleaner and the connection to physics sharper.
+
+Then, in mid-2020, Jonathan Ho, Ajay Jain, and Pieter Abbeel at Berkeley posted *Denoising Diffusion Probabilistic Models* &mdash; DDPM, the paper that would carry the field. DDPM made a series of small architectural and training choices &mdash; a particular noise schedule, a U-Net denoiser, a clever parameterization of what the network should predict &mdash; that suddenly made diffusion *work* at the level GANs did, with images so good that the GAN community started to feel restless.
+
+By 2021 every major lab was on it. By 2022 *Stable Diffusion* shipped open-weight, and a paper from 2015 that nobody had read became the technical foundation of the cultural moment when AI image generation went from research demo to mass-market tool. Sohl-Dickstein, who had been working on Google Brain's neural-tangent-kernel theory in the years between, suddenly became one of the most-cited authors in the field.
+
+I love this story because of what it reveals about how research compounds. The idea wasn't *wrong* in 2015. It wasn't even unappreciated for the right reasons. It just didn't yet have the engineering tricks &mdash; the noise schedule, the parameterization, the architecture, the dataset &mdash; that turn an idea from "it should work" to "it works at scale." Five years' worth of small fixes, distributed across a dozen labs, did that.
+
+On the left I've drawn the title page of the original 2015 paper. On the right is a timeline of what happened next: four years of near-silence, then in 2019 and 2020 the revival, then in 2022 the cultural arrival. That's the path we're going to spend the rest of this chapter inside: forward noising, learned reverse, score field, sampling. The math is not really hard. What's strange is that the math is *all there was*, and that was enough.
+
+</Act>

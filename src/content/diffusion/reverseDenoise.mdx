@@ -1,0 +1,39 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="reverse-denoise" eyebrow="Three · The reverse process">
+
+# Learning to take one step backwards
+
+We need a way to go from $x_t$ back to $x_{t-1}$. Equivalently: given a noisy image, we need to know what the slightly-less-noisy image underneath looks like. Equivalently still &mdash; and this is the framing DDPM eventually settled on &mdash; we need to know what *noise was added* to produce $x_t$ in the first place. If we knew the noise, we could subtract it.
+
+That second framing is the one we'll train. Here's the setup. We take a clean image $x_0$ from our dataset. We sample a step $t$ uniformly between $1$ and $T$. We sample a fresh Gaussian noise vector $\varepsilon$. We compute the noisy version using the closed-form forward shortcut:
+
+$$
+x_t = \sqrt{\bar\alpha_t}\,x_0 + \sqrt{1 - \bar\alpha_t}\,\varepsilon
+$$
+
+Now we hand $x_t$ to a neural network &mdash; in DDPM, a U-Net &mdash; and *also* tell it which step $t$ we're at (it gets an embedding of $t$ alongside the image). The network outputs a prediction $\hat\varepsilon$. The training loss is just
+
+$$
+\mathcal{L} = \|\varepsilon - \hat\varepsilon\|^2.
+$$
+
+That's it. A mean-squared error between the actual noise we added and the noise the network thinks we added. No adversarial games, no KL divergences to estimate, no variational tricks at training time. Just regression. The simplicity of this is one of the reasons diffusion swept the field once people realized.
+
+On the left of the canvas you'll see the noisy input the model is handed at step $t$. On the right you'll see what the model produces. Toggle the button to swap between *predicted clean image* and *predicted noise*. They're equivalent &mdash; if you know one, you can compute the other &mdash; but the model is actually trained on the noise version, because predicting noise turns out to be statistically easier than predicting the clean image at every $t$. (Roughly: at high $t$, the clean image is far away and hard to guess, but the noise is the dominant signal and easier to identify; at low $t$, vice versa. Predicting noise balances out across $t$.)
+
+A subtle thing: the model is given $t$ as an input. This means it's not learning *one* denoising function but a *family* of denoising functions indexed by the noise level. Early in the process ($t$ close to $T$, almost pure noise) the network needs to guess at coarse structure &mdash; "I think there's a roundish blob here." Late in the process ($t$ close to $0$, almost clean) it needs to clean up the last bits of pixel-grain. These are different jobs and the network has to do both, with the same weights, conditioned on the step. The architectural trick is to inject the embedding of $t$ throughout the network &mdash; at every U-Net block &mdash; so the model can specialize its behavior to the noise level it's facing.
+
+We're showing you an *oracle* denoiser on the right pane &mdash; one that happens to know the ground-truth clean image, because we created the noisy image ourselves. A real model learns this from data and gets close, not perfect. The fact that it can get close *at all*, across the full range of $t$ from $1$ to $1000$, is the empirical content of diffusion modeling. If the network is expressive enough and the dataset large enough, the denoiser learns to do something extraordinary: it learns the structure of the data manifold *as a function of how far you've drifted from it.*
+
+There's a connection to the next act buried in here. Suppose at step $t$, the model produces $\hat\varepsilon$. Then the implied "best guess at $x_0$" is
+
+$$
+\hat x_0 = \frac{x_t - \sqrt{1 - \bar\alpha_t}\,\hat\varepsilon}{\sqrt{\bar\alpha_t}}.
+$$
+
+That is, knowing the noise tells you the clean image. But there's an even tighter framing: the predicted noise, scaled appropriately, *is* (an estimate of) the score &mdash; the gradient of log density of the noisy distribution at $x_t$. The denoising network and the score network are, mathematically, the same animal in different clothes. Song and Ermon arrived at this from one direction; Ho and Abbeel from the other; they met in the middle.
+
+Which means: if you wanted to know *which direction to walk to get back toward the data manifold*, your trained denoiser is telling you, every step.
+
+</Act>

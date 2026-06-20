@@ -1,0 +1,32 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="score-matching" eyebrow="Four · Song & Ermon · 2019">
+
+# A compass that always points home
+
+Here is the same idea told a different way.
+
+Suppose you have data living on some shape in space &mdash; on the left, a ring. You don't know the analytic form of the density; all you have are samples. But you want to *generate* new samples that look like they came from the same distribution. One way to think about it: at every point in space, ask "which direction would I have to walk to make the probability density go up?" The answer is a vector &mdash; the gradient of log density, written $\nabla_x \log p(x)$. This vector is called the **score**.
+
+On the right pane I've drawn the score field for our ring data. Every arrow points toward the ring. Arrows near the ring are short &mdash; you're already where the density is high, no need to move much. Arrows far from the ring are long &mdash; you're in low-density territory, walk briskly back. The score is a kind of compass that always points home.
+
+If you had this compass, you could generate data by doing what's called **Langevin sampling**: start anywhere, take a small step in the direction of the score, add a little random noise, repeat. The noise prevents you from getting stuck at exactly one point; the score keeps pulling you back toward the data. Over many steps, your random walk concentrates on the ring &mdash; samples from $p(x)$, more or less, without ever having needed an analytic form for $p$.
+
+The hard part is *learning* the score from data. You can't just compute $\nabla_x \log p(x)$ &mdash; you don't know $p$! This is where **score matching** comes in. The trick &mdash; due originally to Hyv&auml;rinen in 2005, but reborn for deep models by Song and Ermon in 2019 &mdash; is that you can train a network to predict the score *without ever evaluating the density*. You can fit a neural network $s_\theta(x)$ to be the score, using a loss that magically doesn't require knowing $p$. The clever variant Song and Ermon used, called *denoising score matching*, goes like this:
+
+1. Pick a noise level $\sigma$.
+2. Take a data sample $x_0$.
+3. Make a noisy version $\tilde x = x_0 + \sigma \varepsilon$, where $\varepsilon \sim \mathcal{N}(0, I)$.
+4. Train the network so that $s_\theta(\tilde x) \approx -\varepsilon / \sigma$.
+
+Why $-\varepsilon / \sigma$? Because under the Gaussian noise model, the score of the noisy distribution turns out to equal exactly this quantity: the direction you'd have to go to undo the noise, scaled by how much noise there was. Predicting noise *is* predicting score.
+
+Stop and notice what just happened. The denoising loss from act four &mdash; "predict the noise" &mdash; and the score-matching loss from this act &mdash; "predict the gradient of log density" &mdash; are *the same loss*. The function the network is computing is the same. The interpretation is different. From one angle you're undoing noise; from the other you're climbing a probability landscape. Ho et al. and Song & Ermon were, in 2020, writing papers about what turned out to be the same algorithm in two languages.
+
+That kind of cross-derivation is, in my experience, almost always a sign that you're looking at something *real* &mdash; a fact about the structure of the world, rather than an accident of one particular framing. Diffusion models work because the data manifold has a *score*, and the score is something a neural network can learn from samples, and learning the score lets you sample new things from the manifold.
+
+The forward chain we built in acts two and three was a way of *sweeping the score across all noise levels* &mdash; not just one $\sigma$, but every $\sigma$ on a schedule from 0 to enormous. The model learns the score at every level. At sampling time, you walk down the levels, using the score at each one to figure out which way to go.
+
+On the canvas, you can think of the right pane &mdash; the field of arrows &mdash; as showing you what the model *outputs* at a particular noise level. The reverse sampling loop, which we'll run in the next act, is just: follow these arrows, downhill in noise space, until you reach $t = 0$.
+
+</Act>

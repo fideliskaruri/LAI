@@ -1,0 +1,43 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="multiclass" eyebrow="Five · More than two classes">
+
+# Three colours, three sigmoids, one softmax
+
+Real classification problems are rarely binary. Letters of the alphabet, species of bird, digits on a postcard, intents of a user query &mdash; the world routinely asks "which of K possibilities is this?", and K is usually much bigger than two. There are two standard ways to lift logistic regression into the K-class setting, and they live on either side of the panel.
+
+The first &mdash; the older, simpler one &mdash; is **one-vs-rest**. For each class k, you train a separate logistic regressor that distinguishes "this is class k" from "this is something else." You end up with K classifiers, each producing its own probability. The class whose classifier reports the highest probability wins. The boundaries on the left pane are the one-vs-rest boundaries for the focused class; click a different class pill in the top right to see its boundary instead.
+
+One-vs-rest is conceptually clean (a classifier for each class) but slightly philosophically dirty: the K probabilities don't sum to 1. If three classifiers all report 0.7, what's the *combined* probability distribution? You'd have to renormalise post-hoc. People do this and it usually works fine; it's the standard "scikit-learn defaults to one-vs-rest" workhorse. But there's a more elegant approach.
+
+The second &mdash; the modern default &mdash; is **softmax regression**, sometimes called *multinomial logistic regression*. Instead of K separate models, you keep a *single* linear scorer per class (so K of them, in total), and you turn the K scores z₁, z₂, …, z_K into a probability distribution over the K classes in one shot:
+
+$$
+p_k = \frac{\exp(z_k)}{\sum_{j=1}^{K} \exp(z_j)}
+$$
+
+The output is a vector of K positive numbers that sum to 1 by construction. It's a probability distribution. Three properties earn it its name.
+
+*One.* Each p_k is bounded between 0 and 1 because the numerator is a positive number and the denominator includes it.
+
+*Two.* The p_k sum to 1. (Add them up: the numerators add to the denominator. Done.)
+
+*Three.* It reduces to the sigmoid when K = 2. The binary case is a softmax with two classes. (Try the algebra; it falls out via division by exp(z₀) in numerator and denominator.)
+
+Click any point in the left pane. The right pane updates with the softmax probabilities for that point, shown as a bar chart in the three class colours, plus the marker on each per-class sigmoid panel showing where on each curve the point falls.
+
+A point smack in the middle of the blue cloud might score (0.92, 0.05, 0.03) &mdash; high confidence for class 0, low for the other two. A point on the boundary between the blue cloud and the red one might score (0.45, 0.50, 0.05) &mdash; the model is genuinely torn between blue and red, with amber out of the running. A point in the middle of the plot, far from all three clouds, might score (0.30, 0.30, 0.40) &mdash; everything is roughly tied. The softmax never lies about uncertainty; if the linear scorers are close, the probabilities are close.
+
+The loss generalises the same way log loss did. For each labelled point, the negative-log-likelihood of the correct class is
+
+$$
+L = -\log p_{y_i}
+$$
+
+summed (or averaged) over the dataset. This is called the *categorical cross-entropy*. Gradient descent on it works exactly as in the binary case &mdash; same form, same elegant gradient ∂L/∂z_k = p_k &minus; 1[k = y].
+
+(A historical note. The name "softmax" comes from the fact that the function is a "soft" version of the max: as you scale all the z's up by a large factor, the probability mass concentrates on the largest z, approximating one-hot. As you scale them down, the distribution flattens out. In the limit of zero temperature you get the hard maximum; in the limit of infinite temperature you get the uniform distribution. That parameterisation &mdash; "temperature" &mdash; will come back when you meet language models, where softmax is what turns a vocabulary-sized vector of "logits" into a distribution over the next word.)
+
+That's all the multiclass machinery you'll need. The next chapter takes the binary picture &mdash; one linear scorer, one nonlinear squashing function, one trainable boundary &mdash; and looks at it from a different angle entirely.
+
+</Act>

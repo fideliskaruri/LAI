@@ -1,0 +1,23 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="pure-noise-at-end" eyebrow="Two · The other end of the chain">
+
+# The chain has two endpoints
+
+The forward process has two ends, and they don't look alike. On the left end, at $t = 0$, you have your data &mdash; whatever the actual image is. On the right end, at $t = T$, you have *pure Gaussian noise*. That's the punchline of the previous act, but it's worth sitting with for a minute, because it's the load-bearing fact of everything that follows.
+
+What does "pure Gaussian noise" mean? It means that the joint distribution of all the pixel values, marginal over what the original image was, is just $\mathcal{N}(0, I)$. Same distribution regardless of source. That's the standard normal on the right &mdash; the bell curve every pixel ends up obeying after enough noisings.
+
+This is convenient in a way that bears emphasizing.
+
+Suppose you wanted to *generate* new images that look like they came from your data distribution. You don't have a way to sample from that distribution directly &mdash; that's the whole problem of generative modeling. But you *do* know how to sample from $\mathcal{N}(0, I)$. It's three lines of NumPy. So if you had a way to *reverse the forward process* &mdash; to go from $t = T$ back to $t = 0$ &mdash; you'd have a sampler for the data. Start with noise, walk backwards, end up with an image.
+
+The forward process is essentially a *bridge*. It connects two distributions: the data distribution (which you don't know how to sample from) and a Gaussian (which you trivially can). If you can learn the reverse step at each $t$, you can sample by starting in the easy place and walking to the hard one.
+
+There's something almost ridiculous about this framing once you've seen it. The hard part of generative modeling &mdash; "how do I sample from a complicated unknown distribution?" &mdash; gets reduced to "how do I undo a known noise schedule?" The first problem is a research direction. The second one is a learning problem with a clear loss function and a clear target. That's the move.
+
+It also has a nice physical interpretation, the one Sohl-Dickstein leaned into in the original paper. The forward process is like a drop of ink dissolving into a glass of water. The information in the spatial structure of the ink dissipates into the larger thermal bath of random water-molecule positions. Run it forward long enough and the system reaches *equilibrium* &mdash; a featureless, uniform distribution. The reverse process is asking: given the equilibrium state, can we recover the drop of ink we started with? Thermodynamically, the answer is *almost never*. Entropy doesn't run backwards. But you're allowed to *learn an approximation*, and the approximation can be good enough to look like a sample from the original distribution.
+
+The right pane just draws the standard normal one last time, as a kind of formal goodbye to the data side. Up next, we start learning the reverse.
+
+</Act>

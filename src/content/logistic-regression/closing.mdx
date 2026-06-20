@@ -1,0 +1,39 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="closing" eyebrow="Six · One neuron, looking back at us">
+
+# A logistic regression is a one-neuron neural net
+
+Five things happened in this chapter, and the order they happened in is the entire story of why neural networks are built the way they are.
+
+*One.* We had a linear scorer &mdash; z = w·x + b &mdash; copied wholesale from linear regression.
+
+*Two.* We squashed its output through a smooth nonlinearity &mdash; σ(z) &mdash; so the result lived in [0, 1] and could be read as a probability.
+
+*Three.* We picked a loss &mdash; log loss &mdash; that aligns with the probabilistic interpretation, calibrates the predictions, and produces an exquisitely tidy gradient.
+
+*Four.* We trained the weights by gradient descent &mdash; the same Cauchy 1847 procedure that ran underneath the Optimization chapter, applied here to a smooth, convex, non-quadratic loss.
+
+*Five.* We generalised to K classes by stacking K linear scorers and normalising their exponentials &mdash; the softmax.
+
+Look at the left pane. That diagram &mdash; two inputs, weighted edges into a single output node, σ inside the node, a probability out the right side &mdash; **is** a neural network. It is, in fact, the simplest neural network there is. One layer, one neuron, sigmoid activation, log-loss objective. The whole apparatus of "neural networks" is what you get when you take this picture and stack it: feed the output of one neuron into the input of another, repeat, train all the weights at once.
+
+The vocabulary that the deep-learning community uses is just a relabelling of what we already have.
+
+- A "neuron" is a linear scorer plus an activation function. We have one.
+- "Weights" are the parameters of the linear scorer. We have three.
+- The "activation function" is the nonlinearity. Ours is σ. Other choices &mdash; ReLU, tanh, GELU &mdash; will appear in the MLP chapter and bring their own personalities.
+- "Logits" are the pre-activation linear scores z. We've been computing them all along.
+- "Cross-entropy loss" is log loss for K classes. We just derived it.
+- A "fully connected layer" is what you get when you stack many linear scorers in parallel. We stacked three for the multiclass act; do many more and you've got a hidden layer.
+- "Backpropagation" is gradient descent on a composition of layers, with the chain rule used to push gradients backward through the network. We did the one-layer case.
+
+Logistic regression sits in the chapter directly before the perceptron for a reason. The **perceptron**, introduced by Frank Rosenblatt in 1958, takes the same linear scorer, but with a *hard* step function for the activation: output 1 if z > 0, output 0 otherwise. The hard step makes the perceptron a classifier with a learning rule (the "perceptron learning algorithm") that's older than gradient descent on log loss by about fifteen years and famously *cannot* solve problems whose classes aren't linearly separable. That limitation, dramatically pointed out by Minsky and Papert in 1969, killed neural network research for a decade.
+
+What unlocks the limitation is precisely the swap we've already made: replace the hard step with the smooth sigmoid, replace the perceptron rule with gradient descent on log loss, then *stack* &mdash; feed the outputs of many sigmoid neurons into another layer of sigmoid neurons, and another, and another. The resulting model can represent arbitrary continuous functions (Cybenko, 1989; Hornik, 1991). Backpropagation makes it trainable (Rumelhart, Hinton, Williams, 1986). Logistic regression is the building block.
+
+In other words: everything you've spent six acts learning &mdash; the boundary, the σ, the log loss, the gradient, the softmax &mdash; is exactly the unit of computation that gets repeated billions of times inside GPT, Stable Diffusion, AlphaFold, and every modern model in production. Each neuron in each layer is doing what one logistic regression does. The chapter you just finished is the atomic unit of modern AI.
+
+Next, we go back to 1958 and meet the perceptron itself &mdash; the model whose limitations made all of the above necessary, and whose comeback made all of the above possible.
+
+</Act>

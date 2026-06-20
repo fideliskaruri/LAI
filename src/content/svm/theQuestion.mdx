@@ -1,0 +1,19 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="the-question" eyebrow="One · Which line, exactly?">
+
+# A gap, three lines, three margins
+
+There are two clouds of dots on the left. The vermilion circles are class +1 and the ink crosses are class &minus;1. They sit in a configuration that's almost embarrassingly clean &mdash; a wide diagonal band of empty space between them. Anyone could draw a separating line. *Lots* of separating lines, actually. I've drawn three: A, B and C.
+
+All three lines split the data correctly. None of them misclassifies a point. So if you only graded them on accuracy &mdash; "fraction of training points on the right side" &mdash; they'd tie. A perceptron would happily return any of them, depending on what order it saw the examples and where it started.
+
+The SVM says: that's not enough. Among all the lines that separate the data correctly, there's one that's *better*, and the criterion is geometric. Look at the band on the right: each line's "margin" is the perpendicular distance from the line to the nearest data point on either side. Line A skims close to the lower cloud; its margin is narrow. Line B leans the other way; its margin is also narrow. Line C threads the middle of the gap; its margin is the widest of the three. And that's the line the SVM picks.
+
+Why is wider always better? The honest answer is partly aesthetic and partly statistical. Aesthetically, a wide margin tells you the classifier isn't making a knife-edge decision; small perturbations to a new point won't flip its label. Statistically &mdash; and this is the Vapnik-Chervonenkis argument from 1968 &mdash; the *fat* of the margin is what bounds the classifier's generalization error. Roughly: if you can separate your training data with a margin of width *&gamma;*, then with high probability you can correctly classify new data from the same distribution, and the larger *&gamma;* is, the tighter the guarantee. This is genuinely a theorem, not a hope. We won't prove it &mdash; the proof needs a measure-theoretic apparatus &mdash; but the picture is the right intuition.
+
+What the SVM does, then, is take "find a separator" and add "and make the empty band as wide as possible." Wider band means more confident classifier means tighter generalization bound. Everything else in this chapter is a way of computing that.
+
+In the next act, you get to drag the line yourself. The right pane will show you the margin width live. The game is to make it as wide as you can.
+
+</Act>

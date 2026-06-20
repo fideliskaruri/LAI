@@ -1,0 +1,25 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="cold-open" eyebrow="Zero · Verhulst · Pearl · Reed · 1838–1920">
+
+# Two clouds, one line, the wrong tool
+
+Here is a scatter plot. Each point is one thing or the other &mdash; blue or red, healthy or sick, fraud or honest, cat or dog. The labels are 0 and 1. There is no middle ground; nothing is 0.4 of a cat.
+
+On the left I've drawn a straight line through the cloud. The line is the *linear regression* answer from the last chapter, dropped into a problem it doesn't belong on. Read off what it predicts at the far left of the plot &mdash; somewhere around minus 0.4. At the far right, somewhere around 1.5. Those aren't labels. There is no such thing as &minus;0.4 of a class. The line overshoots both ways and it can't be talked out of it; least squares will happily extrapolate to anything.
+
+What we want, on the right, is a smooth thing. A surface, a gradient, *something* that gently traverses from "definitely blue" to "definitely red" without ever escaping to negative numbers or sailing past one. A function that obeys the cliff of probability without taking offence at it. A function that says, when a point sits squarely on the boundary: *it's a coin flip, give it 0.5*.
+
+The curve that does this &mdash; called the **sigmoid** or sometimes the **logistic** &mdash; was invented twice for reasons that had nothing to do with classification.
+
+The first time was 1838, when a young Belgian mathematician named **Pierre-François Verhulst** was sitting on a problem set for him by his teacher Quetelet: model the growth of a human population. Malthus had said population grows exponentially. Verhulst noticed it can't &mdash; food runs out, land runs out, something stops it. He wrote down a differential equation in which growth slows as the population approaches a carrying capacity, integrated it, and got a curve shaped like a stretched-out *S*. He called it the *logistic function*. He published it in three short papers and died young, in 1849, before anyone paid much attention.
+
+The function then went quietly to sleep for eighty years. In **1920** the American biologists **Raymond Pearl** and **Lowell Reed**, working on the same population question with US census data, rediscovered Verhulst's equation, cited him properly, and made it famous. By the 1930s it had crept into chemistry, then bioassay (predicting the dose at which an organism dies), then economics, then biology textbooks under the name *logistic curve*.
+
+Then, in **1944**, the biostatistician **Joseph Berkson** &mdash; a Mayo Clinic clinician with a sideline in arguing with R. A. Fisher &mdash; was studying response-vs-dose curves and proposed that the natural quantity to model isn't the *probability* p of a response, but the *log-odds* &nbsp;log(p / (1 &minus; p)). He called this transformation the **logit**, by analogy with the *probit* &mdash; Fisher's preferred transformation &mdash; and showed that fitting straight lines in logit-space was numerically much easier than fitting probit curves. The 1944 paper is the first appearance of "logistic regression" as a method. Berkson and Fisher disagreed about it loudly and at length for the rest of the 1940s. Berkson won, slowly, on practicality.
+
+That's the function we're going to spend the next six acts unpacking. It does only one thing, but it does it perfectly: it takes any real number and returns a probability. Negative infinity goes to zero. Positive infinity goes to one. Zero goes to one-half. Everything else lies on a smooth S between them.
+
+Look at the right-hand card. *We want a probability.* The whole chapter is about how to build one out of a line.
+
+</Act>

@@ -1,0 +1,31 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="closing" eyebrow="Six · Forward to transformers">
+
+# Stack this. Train on the internet. Wait.
+
+Look at the column on the left.
+
+Six identical-looking boxes, stacked vertically, each labelled *self-attention layer*. Tokens come in at the bottom; predictions come out at the top. Each layer takes the previous layer's vectors and lets them attend to each other again, with its own freshly-learned projection matrices. The drawing tops out at six layers because there isn't room for more. The real numbers are bigger.
+
+- The 2017 *Attention Is All You Need* transformer: **6 layers**, **8 heads** per layer.
+- BERT-Base, 2018: **12 layers**, **12 heads**.
+- GPT-2 XL, 2019: **48 layers**, **25 heads**.
+- GPT-3, 2020: **96 layers**, **96 heads**, with a model dimension of 12,288.
+- GPT-4 is rumoured to be deeper still &mdash; the architecture details aren't public, but the shape is the same.
+
+That's what a modern language model *is*. A column of self-attention layers, deep. The mechanism in each layer is what we just built: query, key, value, softmax, weighted sum. The layers are stacked with feed-forward networks and residual connections between them, all the way up. The whole thing is trained end-to-end by gradient descent &mdash; the chapter you'll find at /optimization &mdash; on the loss of predicting the next token in a giant pile of text.
+
+The whole pile of text matters. GPT-3 was trained on roughly 500 billion tokens of internet text, books, and code. GPT-4's training set isn't disclosed but is in the trillions. When you push *this much* attention through *this much* data, the model isn't just learning the subject-verb alignment from act 5. It's learning syntax, semantics, world facts, programming languages, multiple-step reasoning that arises by accident from imitating humans who reason &mdash; everything that's in the data, at every level of abstraction, all in the same big tower of matrix multiplications and softmaxes.
+
+This is the move that ate the field.
+
+In 2014, attention was a clever fix for a translation problem. In 2017, somebody realised it was strong enough to support a whole architecture by itself. In 2020, scaling that architecture up produced GPT-3, which surprised everyone by being good at things nobody had explicitly trained it to do. In 2022, ChatGPT shipped. In 2026, you and I sit here looking at six little boxes on a screen and reading about the mechanism underneath everything.
+
+The next chapter, *Transformers*, builds the full architecture &mdash; positional encodings, layer norm, feed-forward blocks, residuals, the whole thing. After that, *Language models* shows what happens when you scale it up and train on the internet. After that, *RLHF* shows how you teach the scaled-up model to behave. The whole right half of the constellation grows out of this chapter.
+
+If you came to this site to understand the maths behind AI, you've just crossed the line. You're past the foundations and into the architecture. Attention is the architecture.
+
+Onward.
+
+</Act>

@@ -1,0 +1,23 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="closing" eyebrow="Six · Why this chapter is short">
+
+# The chapter ends because the matrix wouldn't fit
+
+Three things happened in this chapter. We named the gap between two classes and made it a number &mdash; the margin. We made the number as large as possible, subject to the points staying on their correct sides, and called the resulting object a support-vector machine. And we noticed two beautiful things about the result: the answer depends only on a tiny subset of the training data (the support vectors), and a clever choice of inner product lets us bend the boundary into any shape we want, without ever leaving the original feature space (the kernel trick).
+
+For about fifteen years that was the dominant paradigm for classification. If you read papers between 1996 and 2011 in vision, in text classification, in bioinformatics, in computational chemistry &mdash; SVMs are nearly everywhere. The original Cortes-Vapnik paper has been cited more than seventy thousand times, which is *Newton-Principia* numbers, and the kernel-methods textbooks that followed it (Scholk&ouml;pf and Smola, 2002; Shawe-Taylor and Cristianini, 2004) became canonical. There was a moment around 2005 when it was reasonable to predict that machine learning was going to *be* kernel methods, indefinitely.
+
+And then the datasets got too big.
+
+The picture on the left is why. The horizontal axis is N, the number of training examples. The vertical axis is memory. Both are on log scales. Look at the slopes. The neural net line rises with slope 1 &mdash; doubling N doubles the memory. The SVM line rises with slope 2 &mdash; doubling N *quadruples* the memory. The reason is the kernel matrix. To train a kernel SVM you need to compute *K*(*x*<sub>i</sub>, *x*<sub>j</sub>) for every pair of training points, which gives you an N by N matrix. With N = 10,000 that's a hundred million entries, which is a manageable gigabyte. With N = 100,000 it's ten billion entries, which is a hundred gigabytes. With N = 1,000,000 it's a *terabyte* of pairwise distances, just to start the training. There are clever sparse approximations and online variants and Nystr&ouml;m methods and they all push the wall slightly further out, but the fundamental story is &mdash; the kernel matrix is N by N, and N kept going up.
+
+ImageNet has 14 million images. The Common Crawl has 240 billion web pages. Modern speech corpora have hundreds of thousands of hours of audio. The kernel methods don't get there. They can't get there. Quadratic in N is the wrong scaling for the world we ended up living in.
+
+Neural networks, by contrast, don't need to remember the training set. They distill it into a fixed-size matrix of weights. Training is linear in N because you do one gradient update per example and then you're done with it; the example never needs to be looked at again. The memory cost of training a neural net on a million examples is approximately the memory cost of training it on a thousand examples, plus some bookkeeping. That's the property that turned out to matter. And once GPUs made the per-example training cost cheap, the inevitable happened: kernel methods got benched, and neural nets became the new default.
+
+There's a quiet melancholy to this story. The SVM was *correct*. Its theoretical guarantees were stronger than anything a neural net offers, even now. Its geometric picture is gorgeous. Its support-vector sparsity is a thing of beauty. On any dataset small enough for it to fit in memory, it usually still works better than a neural net of comparable complexity. None of that turned out to matter, because the field discovered it needed a method that scaled to the entire internet, and the SVM was the wrong tool for that job.
+
+So this is where we leave Vapnik's chapter. Not because the algorithm was beaten on quality, but because *N* outgrew it. Next is the technique that didn't have that problem: the multi-layer perceptron, trained by backpropagation. Less elegant. Less theoretical. Linear in the dataset size, which is what the world wanted.
+
+</Act>

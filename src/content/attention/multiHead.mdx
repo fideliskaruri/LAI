@@ -1,0 +1,31 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="multi-head" eyebrow="Four · Different perspectives at once">
+
+# One head sees one thing. Run many.
+
+If a single attention matrix can learn the subject-verb pattern, what about the determiner-noun pattern? What about prepositions reaching across the sentence? What about agreement &mdash; singular versus plural? What about coreference &mdash; "she" attending to "Mary" three sentences earlier? Surely there's no single 6 &times; 6 matrix that can capture *all* of those at once.
+
+There isn't. Vaswani and colleagues, in the 2017 *Attention Is All You Need* paper, do something simple and powerful: they run **many attention mechanisms in parallel**, each with its own Q, K, V projection matrices, each learning its own pattern. They called the result *multi-head attention*. The "heads" are the parallel attention slices.
+
+I've drawn three heads on the left. Click each one and watch the heatmap on the right change. Same sentence; same input vectors; three completely different attention patterns.
+
+**Head 1 &mdash; subject &harr; verb.** The strongest cell is the (cat, sat) pair. This head has specialised in linking subjects to their verbs. If you fed it ten thousand sentences, you'd see *cat &harr; sat*, *dog &harr; ran*, *I &harr; think*, over and over.
+
+**Head 2 &mdash; determiner &harr; noun.** *the* attends to *cat*. The second *the* attends to *mat*. The head has learned the article-noun bond.
+
+**Head 3 &mdash; long-range preposition.** *sat* attends to *mat* via *on*; *mat* attends back to *sat*. This head reaches *across* the sentence, modelling the kind of dependency a tree-grammarian would draw as a long arc.
+
+What's the engineering picture?
+
+In code, each head is a separate set of three matrices &mdash; W<sup>Q</sup><sub>h</sub>, W<sup>K</sup><sub>h</sub>, W<sup>V</sup><sub>h</sub> &mdash; that project the input vectors into a lower-dimensional Q, K, V space *just for that head*. Each head runs the dot-product / softmax / weighted-average computation independently. At the end, you concatenate all the heads' output vectors back together and apply one more learned matrix to mix them.
+
+You'd be forgiven for thinking this is wasteful &mdash; if one head's enough, why run twelve? The answer is: each head specialises into a different "lens" by accident of training. None of the heads are explicitly told to find subjects, prepositions, or anything else. They're each given a different random initialisation, the same gradient signal, and the same training data. They diverge into different specialisations because, at the loss surface's lowest points, that's what works best. The model finds a *division of attentional labour* on its own.
+
+In practice you get a mix. Some heads do learn beautifully interpretable patterns &mdash; in the GPT-2 and BERT papers, people have published cute visualisations of "the head that does coreference" and "the head that tracks subject-verb agreement." Most heads are murkier. Some look basically diagonal &mdash; "I'm just copying the current token's information." Some look uniform &mdash; "I'm averaging the whole sentence equally." That's fine too; the model figures out a way to use them.
+
+The number of heads is a hyperparameter. The 2017 paper used 8 heads. GPT-2 used 12 to 25 depending on the size. GPT-3 used 96. There's no theoretical reason for any particular number; you pick it by experiment.
+
+Reasonable next question: "We've still been talking as if attention runs once from a query side to a key side. Where is the query side, in a model that's *generating* text and only has one sequence to work with?" Same place as the key side. The same sentence supplies all of them. That's the next act.
+
+</Act>

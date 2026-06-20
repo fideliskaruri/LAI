@@ -1,0 +1,29 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="em-e-step" eyebrow="Three · The Expectation step">
+
+# Given the Gaussians, ask Bayes
+
+We now start the EM loop.
+
+Press *E step*. The grey points on the left flush out into their soft-assignment colours. That's it. That's the E step.
+
+What just happened, in one line:
+
+$$
+\gamma_{ik} = \frac{\pi_k \, \mathcal{N}(\mathbf{x}_i \mid \mu_k, \Sigma_k)}{\sum_{j} \pi_j \, \mathcal{N}(\mathbf{x}_i \mid \mu_j, \Sigma_j)}.
+$$
+
+For each of the thirty data points we evaluated each of the three Gaussian PDFs, weighted by the mixing prior, and normalised so the three numbers sum to one. The result is the $N \times K$ responsibility matrix from the last act. *That's all the E step does.* No iteration, no optimisation, no choice. Given the current Gaussians, Bayes' rule hands you the responsibilities for free.
+
+In the corner of the canvas you'll see one other number: $\log L(\theta)$, the **log-likelihood** of the data under the current mixture. It's the sum over all data points of the log of the mixture density at that point:
+
+$$
+\log L(\theta) = \sum_{i=1}^{N} \log \sum_{k=1}^{K} \pi_k \, \mathcal{N}(\mathbf{x}_i \mid \mu_k, \Sigma_k).
+$$
+
+You can think of it as a score for how well the current Gaussians explain the data &mdash; high if the bells sit over where the points actually are, low if they don't. The whole point of EM is to *maximise this number*. And the trick that makes it work is that the alternation between E and M is guaranteed to never decrease it.
+
+The starting Gaussians are deliberately wrong &mdash; oversized and slightly off-center &mdash; so you can watch the log-likelihood climb when we start running M steps next.
+
+</Act>

@@ -1,0 +1,41 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="gradient-descent" eyebrow="Four · The connection back to Optimization">
+
+# No closed form, but a path downhill
+
+Linear regression had a closed form. You wrote down the normal equations, inverted a matrix, the optimal slope and intercept fell out. The reason the trick worked is that squared error is *quadratic* &mdash; differentiate, set to zero, solve a linear system.
+
+Log loss is not quadratic. It's the negative log of a sigmoid of a linear function. The gradient with respect to the weights is
+
+$$
+\nabla_w L = \frac{1}{N}\sum_i (p_i - y_i) \, x_i
+$$
+
+which is mathematically elegant (it's *just* the prediction error times the input, as we said in the last act) but **not** linear in w. Setting ∇L to zero gives a system of nonlinear equations with no general closed-form solution. There is no formula for the optimal w.
+
+So we walk downhill. Each click of the **step** button takes one gradient descent step:
+
+$$
+w \leftarrow w - \eta \, \nabla L(w)
+$$
+
+where η is the *learning rate* &mdash; how big a stride you take in the direction of steepest descent. The procedure has the exact same shape as Cauchy's 1847 method that the Optimization chapter introduced: compute the gradient at the current point, step opposite to it by a small multiple of itself, repeat. It is the simplest learning algorithm there is, and (within constant factors) it's what trains every neural network on the planet.
+
+Watch what happens. The left pane shows the boundary's history as a faint trail of past lines, with the current line in bold vermilion. The right pane shows the same descent through *weight space* &mdash; a heat map of log loss as a function of (w_x, w_y), with low loss in pale cream and high loss in dim ink. The vermilion dot is the current (w_x, w_y); the trace behind it is where the algorithm has been.
+
+Click step. Click it again. After a few clicks, the boundary visibly improves &mdash; rotating toward the diagonal that best separates blue from red. The dot in weight space slides smoothly along the basin floor. After thirty or forty steps the boundary stops moving much; we've found a minimum.
+
+Three things to notice.
+
+*One.* The path through weight space is smooth and basin-shaped, because for logistic regression the log loss is a **convex** function of the weights. This is rare. Almost no other model has a convex training objective; once you stack neurons (chapter 18), the landscape becomes a nightmare of basins and ridges. Logistic regression is the last chapter where gradient descent is **guaranteed** to find the global optimum from any starting point. From the next chapter onward, "guaranteed" gets quietly replaced with "we hope."
+
+*Two.* The boundary moves faster in the early steps than in the late ones. This is because the gradient is largest when the model is most wrong; as the predictions get better, the gradient shrinks, the steps shorten, and the algorithm converges asymptotically. The flip side: if you'd started from a much worse boundary, the first few steps would have been much larger. Gradient descent self-regulates.
+
+*Three.* The trajectory through weight space doesn't go directly to the minimum &mdash; it curves. That's because the loss surface, while convex, isn't *isotropic*: the basin is stretched more in one direction than another, depending on the spread of the data along each feature. Gradient descent always takes the steepest *local* direction, which is generally not the direction of the minimum. In flat parts of the basin it takes nearly direct paths; in stretched-out parts it zigzags. (More sophisticated optimisers &mdash; Newton's method, BFGS, Adam &mdash; correct for this by rescaling each direction by its curvature. They're worth knowing but not necessary here.)
+
+Reset and try again. The starting point is the same every time, so the trajectory is deterministic; nothing here is stochastic. We're doing **batch** gradient descent &mdash; using the full dataset to compute each gradient. With twenty-six points this is trivial. With a million points it would be expensive, and you'd switch to *stochastic* gradient descent: estimate the gradient from a small random sample of the data, take a noisier but cheaper step. The chapters on neural networks come back to this.
+
+For now, the point is that we've made the jump. We have an algorithm that takes data and labels and *produces a classifier*. We don't have to drag the boundary by hand. We just push the button.
+
+</Act>
