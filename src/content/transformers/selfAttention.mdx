@@ -1,0 +1,27 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="self-attention" eyebrow="Three · Query, key, value">
+
+# Three vectors per token, and one matrix to combine them
+
+Tap any of the five token chips on the left. The chip lights up vermilion; the small Q row underneath the chips highlights for that token; on the right, the row of the five-by-five attention matrix corresponding to that query lights up. The numbers in that row are how much the chosen token *attends to* each of the five tokens. They sum to one. The bars below the matrix show which value vectors get added together to produce the chosen token's output.
+
+This is the move at the heart of the transformer. Every token in the sentence produces three short vectors: a **query** Q, a **key** K, and a **value** V. The query says *what am I looking for?* The key says *what kind of token am I?* The value says *if you decide to attend to me, here is what I will contribute*. To compute what one token becomes after the attention layer, you take its query vector, compare it against every other token's key vector via a dot product, scale the result, softmax the scaled scores into a probability distribution over the input positions, and finally take a weighted average of all the value vectors using those probabilities as weights. The whole operation, for the entire sentence at once, is:
+
+$$
+\mathrm{Attention}(Q, K, V) \;=\; \mathrm{softmax}\!\left(\frac{Q K^{\top}}{\sqrt{d_k}}\right) V.
+$$
+
+This formula has surprising structure. The matrix Q has one row per token, each row of length *d<sub>k</sub>* (in our toy: 4; in real GPT-2: 64). Same for K. So *Q K<sup>T</sup>* is an *N* &times; *N* matrix &mdash; one score per (query token, key token) pair. The right pane shows that matrix for our five-token sentence. The softmax is applied row-wise: each query's row of scores becomes a probability distribution. Then we multiply by V (also *N* rows of length *d<sub>k</sub>*) and out comes an *N*-row matrix where each row is the *attention-weighted average of the value vectors*.
+
+The *&radic;d<sub>k</sub>* in the denominator is doing important work. The dot product *Q&middot;K* of two random *d<sub>k</sub>*-dimensional vectors with entries of unit variance scales like *&radic;d<sub>k</sub>*. If you let the dot products grow that large, the softmax will saturate &mdash; one input gets all the probability and the rest get nothing &mdash; and the gradient through the softmax dies. Dividing by *&radic;d<sub>k</sub>* normalises the variance of the dot products to roughly one, which keeps the softmax in a regime where it actually has gradients to learn from. This particular fix is in the 2017 paper as one of three or four small "tricks that turned out to matter."
+
+The three sets of vectors Q, K, V are not given to the model. They are **learned**. The model learns three matrices &mdash; *W<sub>Q</sub>*, *W<sub>K</sub>*, *W<sub>V</sub>*, each *d* &times; *d<sub>k</sub>* &mdash; and applies them to every token's input embedding to produce that token's query, key, and value. Same matrices at every position. Different matrices at different layers. The matrices start out random and are nudged by gradient descent during training to make the attention weights useful for whatever task the network is being trained on.
+
+What does *useful* mean? The picture on the right is hand-baked, but in a real trained model, attention patterns are interpretable. The attention pattern for the verb in *the cat sat on the mat* typically peaks on its subject *cat* and on the prepositional phrase target *mat*; the pattern for *the* peaks on whichever noun it modifies; the pattern for a pronoun like *it* peaks on whichever earlier noun it refers to. There is a small research literature on identifying which heads in BERT and GPT-2 do which jobs &mdash; coreference resolution, syntactic dependency tracking, lexical lookup. The interpretability is one of the most attractive properties of attention; you can *see* what the model is doing.
+
+What is also remarkable is what is *not* in this picture. There is no recurrence. There is no sequential pass over the tokens. Every query is compared to every key in parallel. The whole *N* &times; *N* matrix is computed in one matrix multiplication. The whole attention output is computed in another. On modern hardware this is essentially free up to the *N&sup2;* term that costs more as sentences get longer. The fact that attention is *parallel* across positions, where recurrence was *sequential*, is the reason the transformer trains an order of magnitude faster than the LSTM it replaced. You can multiply a five-thousand-by-five-thousand matrix faster than you can sequentially update a hidden state five thousand times. The architecture was built for the hardware.
+
+We have one head. The 2017 paper has eight. The next act explains why.
+
+</Act>

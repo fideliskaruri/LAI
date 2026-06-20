@@ -1,0 +1,28 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="positional-encoding" eyebrow="Two · Position as a wave">
+
+# A unique fingerprint at every slot
+
+Slide the vermilion marker on the left across the eight positions of the sentence. As you drag, the four waves on the right shift &mdash; not their shape, but the *point at which they get sampled*. Each position in the sentence corresponds to one vertical slice through the four waves. That stack of four numbers is the position's **positional encoding**, and it's about to be added, dimension by dimension, to the embedding vector you just built.
+
+This is the strangest piece of the entire transformer. You cannot just attach an integer index to each token saying "you are position three" &mdash; the model is geometry, not arithmetic, and the integer 3 has no natural meaning in a high-dimensional vector space. You also cannot ask the model to *learn* positional embeddings as if they were just more token embeddings &mdash; that works, and BERT and the original GPT did it that way, but it has a catch: the model has now seen a fixed maximum sentence length during training, and at inference time anything longer breaks. The 2017 paper proposed a different trick that *does* generalise to arbitrary lengths and that does not need to be learned at all. It is a fixed mathematical function. It is sines and cosines.
+
+For each dimension *i* of the model and each position *p* in the sentence, the positional encoding is:
+
+$$
+\mathrm{PE}(p, 2i) \;=\; \sin\bigl(p \,/\, 10000^{2i/d}\bigr), \qquad
+\mathrm{PE}(p, 2i+1) \;=\; \cos\bigl(p \,/\, 10000^{2i/d}\bigr).
+$$
+
+That is the whole formula. The even dimensions get sines; the odd dimensions get cosines. The frequency depends on the dimension index *i*. At *i = 0* the wavelength is **2&pi;**, so the wave wiggles fast across positions. At the highest *i*, the wavelength is **2&pi; &middot; 10000**, so the wave is almost flat across any practical sentence length. The right pane plots four of these waves &mdash; the high-frequency one at the top, the lowest-frequency one at the bottom &mdash; and shows where each one gets sampled at the position you have selected. Drag the position; the dots on the waves move; the four sampled values change.
+
+Why these specific waves? The 2017 paper gives one motivation and a deeper one. The stated motivation is that *relative position* between two tokens, *p* and *p+k*, ends up being a *linear function* of the encoding at *p*. Concretely, you can compute a linear transformation that takes PE(*p*) to PE(*p+k*), and that transformation depends only on *k*, not on *p*. So if a head wants to learn "attend to the token three to my left," it can express that as a fixed linear operation on the positional part of the input, which the linear projections Wq and Wk are well-equipped to do. The deeper motivation is that this construction creates a unique fingerprint at every position (no two positions share an encoding), and the fingerprints are smooth in position (nearby positions have similar fingerprints), and the encoding generalises to lengths the model never saw during training (because the formula is defined for any real-valued *p*). All three of those properties matter.
+
+The truly load-bearing trick is the next sentence: the positional encoding is *added* to the embedding vector, not concatenated. The model's input at position *p* with token id *t* is the eight-dimensional (or 768-dimensional, or 12,288-dimensional) vector you would get by adding the embedding of *t* to the positional encoding at *p*. The fact that addition works at all is surprising. It works because the embedding vectors are high-dimensional and the positional encodings have a small enough magnitude that they can perturb the embeddings without overwriting them. The attention machinery downstream can read out both the "what" and the "where" from the same vector. This compositional move &mdash; add position to content &mdash; is the architectural decision that lets the rest of the transformer be a *set* function in disguise: the model doesn't know about token order from any structural property of the architecture, only from the positional encodings glued onto the embeddings at the very bottom.
+
+A small modern note. Sinusoidal encodings, as drawn, were used in the 2017 paper and a few early successors. Most modern transformers since around 2020 use a different positional scheme: **rotary positional embeddings** (RoPE), proposed by Jianlin Su and collaborators in 2021. RoPE *rotates* the query and key vectors in two-dimensional subspaces by an amount proportional to position, instead of adding a fixed vector before the projections. It generalises to long contexts more gracefully and is what Llama, Mistral, and most current open models use. The sinusoidal encoding remains the conceptual ancestor and the one that's easiest to draw, which is why we're drawing it.
+
+What position has bought us is structure. The model now knows which token is *first* and which is *sixth*. We can finally introduce the move that gives the architecture its name: the way every token looks at every other token, decides who to listen to, and writes down what it heard.
+
+</Act>
