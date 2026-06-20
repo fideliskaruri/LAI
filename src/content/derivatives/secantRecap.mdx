@@ -1,0 +1,23 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="review-from-functions" eyebrow="Two · The move, recalled">
+
+# Where we left off
+
+This is the picture from the end of the last chapter. Same parabola, $f(x) = x^2$. Same two draggable points. The chord between them, when they're apart, has whatever slope rise-over-run says it has. As you pull B toward A, the chord rotates. The closer B gets to A, the more the chord stops looking like something that *cuts across* the curve and starts looking like something that *grazes* it.
+
+Pull B all the way to A. The two points merge. The chord becomes the tangent. The slope the canvas shows you is the slope of the curve *at A*.
+
+That number — whatever the slope of the secant approaches as the second point slides into the first — is what we're going to spend the next several pages naming, defining, and using. It has a name from Newton (*fluxion*), a notation from Leibniz (`dy/dx`), and a third name from a French-speaking Italian named Joseph-Louis Lagrange working a hundred and twenty years later, who put a little tick after the function name and called it the *prime*. We'll mostly use Lagrange's. It's the cleanest of the three for typing.
+
+But hold on. There's a real subtlety here, and it deserves the second of attention.
+
+What we just did — *bring B to A and see what the chord's slope becomes* — looks innocent. It is not. If you bring B exactly to A, you have one point, no chord, and a rise-over-run of `0/0`, which is meaningless. The whole point of calculus is to be careful about this. We don't ever *actually* set B equal to A. We let B *approach* A and ask what the slope is *approaching*. That's the *limit*. And if the secant's slope happens to approach a single number — most of the time it does — that number is the slope of the tangent.
+
+(For a beautifully behaved function like $x^2$, this is so docile that you barely notice the move. For weirder functions — corners, cusps, jumps — the limit doesn't exist and the derivative doesn't either. The function has to be *differentiable* at A for any of this to mean anything. The platform sticks to differentiable functions because that's where machine learning lives; the pathologies are real but they aren't the point.)
+
+So: same move, same panel, same parabola. Pull B to A. Watch the chord become a tangent. The badge in the corner will tell you when they've merged.
+
+Now we name what falls out.
+
+</Act>

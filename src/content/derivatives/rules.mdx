@@ -1,0 +1,35 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="rules" eyebrow="Four · A pattern, then a rule">
+
+# Power rule, sum rule, the rest
+
+Here is the great labour-saving trick of differential calculus: most of the time, you don't have to take a limit. You learn three or four patterns and you can crank out derivatives of almost everything you'll meet.
+
+The first pattern is the *power rule*. For any positive integer $n$,
+
+$$
+\frac{d}{dx}\, x^n = n \cdot x^{n-1}
+$$
+
+The exponent jumps in front as a multiplier, and the exponent itself shrinks by one. Pull the slider on the canvas through `n = 0, 1, 2, 3, 4`. Watch the row of the table highlight. Watch the small panel on the right: the derivative — vermilion — is always one degree gentler than the original function. The slope of a constant is zero. The slope of `x` is one. The slope of `x²` is `2x`. The slope of `x³` is `3x²`. It is the most reliably useful rule in calculus, and it covers any polynomial you'll ever take a derivative of in machine learning.
+
+Why does it work? You can prove it from the limit definition — write down `(x+h)ⁿ` using the binomial theorem and watch every term except the linear one drop out as $h \to 0$. (We'll spare ourselves the algebra; the canvas is the picture.) The rule also extends, with no modification, to negative integers, to fractions, and ultimately to *any* real exponent — but the proof gets trickier each step.
+
+(Newton noticed the pattern empirically before he knew how to justify it. He just wrote down what fell out for a few cases, saw the shape, and moved on. I find that comforting. He didn't know.)
+
+The second rule we'll lean on is the *sum rule*. The derivative of a sum is the sum of the derivatives:
+
+$$
+\frac{d}{dx}(f + g) = f' + g'
+$$
+
+Plain as day. The derivative of $x^3 + 2x$ is $3x^2 + 2$. No mystery.
+
+The third is the *constant multiple rule*: the derivative of `c · f(x)` is `c · f'(x)`. The constant rides along. Together with the power rule and the sum rule, you can now differentiate any polynomial you can write down.
+
+MML's chapter 5 lists about a dozen more rules — derivatives of trig functions, log, exponentials, the constant `e` and its derivative-of-itself eccentricity. We'll meet a few of them as we need them in later chapters. The three rules above carry you through most of supervised learning, all of linear regression, and the entire derivation of backpropagation. They do not change in form when you go to higher dimensions — they just get more index-y.
+
+There are two more rules in this chapter, and they need their own scenes because they're the ones that *don't* fit on a row of a table. The first is what to do when you compose functions. The second is what to do when you multiply them. Those are the chain rule and the product rule, and they're the next two acts.
+
+</Act>

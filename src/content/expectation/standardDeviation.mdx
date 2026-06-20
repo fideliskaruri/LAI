@@ -1,0 +1,25 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="standard-deviation" eyebrow="Five · σ">
+
+# Back to the right units
+
+Variance has a problem you might already feel without being able to name. If $X$ is measured in metres, the variance is in *square metres*. If $X$ is measured in dollars, the variance is in *dollars squared* — a unit that does not correspond to anything you can carry in your pocket. Compute the variance of a daily stock return and you'll get a number in (percentage-of-portfolio)$^2$, which means nothing to a human who wants to know how much they might lose tomorrow.
+
+The fix is, blissfully, just to take the square root. The *standard deviation* is
+
+$$
+\sigma = \sqrt{\mathrm{Var}[X]} = \sqrt{E[(X-\mu)^2]}.
+$$
+
+By construction $\sigma$ is in the same units as $X$. Metres if $X$ is in metres, dollars if $X$ is in dollars. That's why every calculator output, every spreadsheet column, every statistical software package reports $\sigma$ — not variance — when asked "how spread is the data." Variance is what you compute with; standard deviation is what you compare against the data itself.
+
+The visual on the right is the rest of the chapter's histogram with the standard deviation drawn as a horizontal vermilion bar centered on $\mu$ — a *width-bar*, extending one $\sigma$ to the left of the mean and one $\sigma$ to the right. The bar's units are pip-units, the same units as the outcomes. You can read off "a typical roll lands within $\sigma$ of the mean" by looking at the bar. Drag the histogram to make $\sigma$ grow or shrink and watch the width-bar respond directly.
+
+A useful piece of folklore, and a bit of preview: for many naturally-occurring distributions, about *two-thirds* of the probability mass lies within $\pm \sigma$ of the mean, and about *ninety-five percent* within $\pm 2\sigma$. The exact figures hold for the normal (Gaussian) distribution; they're approximate for other shapes; they're not even close for very skewed or heavy-tailed ones. But as a rule of thumb — "most things are within a couple of standard deviations of their mean" — it's astonishingly useful.
+
+The standard deviation is also what's hiding inside the standard error of the mean. The law of large numbers in the previous act told you the running sample mean $\bar{X}_n$ converges to $\mu$. The standard deviation of $\bar{X}_n$ — that is, the typical wobble of your estimate — is exactly $\sigma / \sqrt{n}$. So if a fair die has $\sigma \approx 1.71$ (which you can verify by dragging the bars back to a uniform distribution and reading the readout), then averaging $100$ rolls produces a sample mean whose typical deviation from $3.5$ is about $0.17$. Averaging $10{,}000$ rolls, about $0.017$. This is the engineering rule of thumb behind every "we need $N$ users in our A/B test" calculation.
+
+Mean, variance, standard deviation. These three numbers — $\mu$, $\sigma^2$, $\sigma$ — are the *summary statistics* MML §6.4 has in mind when it tells you what to remember about a distribution. They are the spine of statistics: the centre, the spread, and the spread in honest units.
+
+</Act>

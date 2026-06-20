@@ -1,0 +1,23 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="closing" eyebrow="Eight · The thread">
+
+# What the gradient becomes
+
+That arrow at the end of the last act — the vermilion one pointing uphill on the heatmap — is the thing every later chapter is going to be following.
+
+In *Optimization* (chapter 11), the picture inverts: we treat that arrow as a compass and walk in the *opposite* direction. The function we're descending is called a *loss*, and the goal is to find its minimum. Cauchy wrote that algorithm down in 1847, in a one-page note to the French Academy. Almost two centuries later it is still the heart of how every neural network gets trained.
+
+In *Linear regression* (chapter 10), we find the minimum of a loss without descending, because the algebra has a closed form — but the closed form falls out of *setting the derivative to zero*. The derivative we just defined.
+
+In *Logistic regression* (12), the *Perceptron* (13), and *Backpropagation* (18), the same gradient gets multiplied through layers of stacked functions by the chain rule we just built. The training algorithm is, mechanically, what we did with the two stacked machines — but with millions of machines, and the slopes propagated backwards from the loss.
+
+In *Convolutions* (19), *Attention* (21), and the *Transformers* of the modern frontier, the same picture stretches further. Gradients flowing through layers. Slopes telling weights how to nudge themselves down a loss landscape that nobody can draw in three dimensions because it lives in a hundred million.
+
+The chapter that did the rest of the work is this one. *Newton and Leibniz, separately, two-thirds of a century apart, took a chord, brought its two endpoints together, and named what fell out.* The limit. The derivative. A new function that takes the original's slope and serves it back. The rules that let us crank derivatives mechanically without re-deriving from the limit. The gradient that lifts the picture into many dimensions.
+
+That's the chapter. Newton didn't publish. Leibniz did. The history sorted them out eventually. The math doesn't care who got there first.
+
+Next we look at *Integrals* — the other half of the calculus, where you don't ask "what's the slope at this point" but "what's the total accumulation across this interval." The two halves turn out to be inverses of each other, in a result called the *Fundamental Theorem of Calculus* that connected the entire subject for the first time. We'll see it.
+
+</Act>

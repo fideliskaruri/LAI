@@ -1,0 +1,29 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="chain-rule" eyebrow="Five · Composition">
+
+# Slopes multiply
+
+Two machines, stacked. The top one — call it $g$ — takes $x$ and doubles it. The bottom — call it $f$ — takes whatever it's given and squares it. Together, they form a *composite*: $h(x) = f(g(x)) = (2x)^2 = 4x^2$.
+
+If you drag the input slider, both machines update. The top machine's output is $u = 2x$. The bottom machine takes $u$ and gives you $u^2$. The composite's slope, by direct algebra, is $h'(x) = 8x$. (You can check this with the power rule: $4x^2$ has derivative $8x$.)
+
+But the punchline isn't *that* slope. The punchline is *how it's built*.
+
+The top machine has its own slope: $g'(x) = 2$, the same everywhere. The bottom machine has its own slope, but the bottom machine sees $u$, not $x$, so its slope is $f'(u) = 2u$. When you nudge $x$ up by a tiny amount, $u$ goes up by twice that, and then $y$ goes up by $2u$ times *that*. The nudges *multiply*. That is the chain rule:
+
+$$
+\frac{d}{dx}\, f(g(x)) = f'(g(x)) \cdot g'(x)
+$$
+
+Look at the readouts. The slope of $g$ is $2$. The slope of $f$ at the current $u$ is $2u$, which is $2 \cdot 2x = 4x$. The product is $8x$. Move the input around and you'll see the composite slope smoothly equal the product of the two machine slopes, every time.
+
+(The chain rule is the deepest single rule in this chapter. Almost every other rule is a small consequence; almost every machine-learning derivation depends on it. *Backpropagation* — the training algorithm of every neural network we'll meet from chapter 18 onward — is, mechanically, the chain rule applied through many layers of stacked machines. When you hear someone say "the model trains by backprop," they mean: each layer has its own little slope, you multiply them through, and you find out how to nudge each weight to make the final loss go down. Same picture as this one. Just with more boxes.)
+
+There's a way to read the chain rule that I find more honest than the formula. Think about *units*. If $u$ goes up one unit per one unit of $x$, then $u$ changes twice as fast as $x$. If $y$ goes up four units per one unit of $u$, then $y$ changes four times as fast as $u$. So $y$ changes $4 \times 2 = 8$ times as fast as $x$. The rates multiply because the units multiply. You can do every chain-rule problem by squinting at units.
+
+Try the slider at $x = 0$. The bottom machine's slope is $f'(0) = 0$ — at the bottom of a parabola, the slope is flat. The top machine's slope is still $2$. The product is $0$. The composite has zero slope at $x = 0$ because $4x^2$ has its minimum there. Two non-zero machines composed can have zero output-slope, because one of them, at the operating point, has zero output-slope. This is what gradient-based optimization eats: layered systems where you can find out, by chain-ruling backwards, where each input should move to push the final answer somewhere useful.
+
+One more rule to go.
+
+</Act>

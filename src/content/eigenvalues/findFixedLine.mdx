@@ -22,4 +22,12 @@ What you're doing here by hand, a computer would do by solving an equation. In t
 
 (There's something almost physical about it. When I first played with one of these I sat for ten minutes just running my arrow around, watching for the lock-in to happen. It's a feeling, not a calculation. Hold onto it. The algebra later will be friendlier if you remember it.)
 
+A small thing worth pointing out, because it bothered me the first few times. The matrix M = [[2, 1], [1, 2]] looks like four numbers with no obvious structure. From inspection alone, you wouldn't guess that it has *any* directions it leaves alone, let alone that those directions are the ones at exactly forty-five degrees. The fact only becomes visible because you're sliding through every direction in the plane and watching for the one where the alignment locks in.
+
+That's the deeper move that's worth holding onto. Eigenvectors aren't *part of* a matrix. They aren't sitting in the entries waiting to be read off. They're a structural fact *about* the matrix that you only see when you ask a particular question — *which direction does this matrix leave alone?* — and let the answer fall out of the picture.
+
+Which means that for any matrix you'll meet later — a covariance matrix in PCA, a transition matrix in PageRank, a weight matrix in a neural network — the eigenvectors are a thing you go *look for*. They don't announce themselves. The whole intellectual move of "use the eigenbasis" is the realization that this hidden coordinate system exists, and that finding it is worth the effort because everything gets simpler in it.
+
+We'll write down how a computer finds them — without dragging arrows around — in the next act. There's a piece of algebra Cauchy figured out that turns the geometric "which direction locks in" question into a polynomial equation.
+
 </Act>

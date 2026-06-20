@@ -20,4 +20,8 @@ That's it. That's the whole transformation. The matrix that *looked* like four a
 
 You can take that idea straight to the bank. It's the move that makes PCA work, in a few acts. It's the move that makes the rotation matrices and Hessians and covariance matrices of machine learning tractable. The eigenvectors are a matrix's *natural* coordinate system. Everything else is the inconvenience of how someone happened to write it down.
 
+A small caveat that I want to flag now and not lie about. Not every matrix has perpendicular eigenvectors. Not every matrix has n distinct real eigenvalues. A rotation by ninety degrees, for instance, has *no* real eigenvectors at all — it bends every direction. Its eigenvalues are complex numbers, i and minus i. A shear matrix has one eigenvalue with two algebraically distinct copies but only one independent eigenvector geometrically — it's "defective" in the standard term, and computers have to be careful with it. For most matrices that come up in practice — symmetric ones, positive-definite ones, well-behaved-data matrices — none of these pathologies bite. But they exist.
+
+The reason we can wave at them in this chapter is that the matrix you're holding right now is symmetric. Real eigenvalues, perpendicular eigenvectors, a story that fits on one screen. When we get to the messier cases — in PCA, in optimization, in the recurrent dynamics of neural networks — we'll meet them properly. For now, two clean eigen-lines, perpendicular, with two clean eigenvalues. The picture you can drag.
+
 </Act>

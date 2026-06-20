@@ -1,0 +1,39 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="derivative-defined" eyebrow="Three · The limit, written down">
+
+# The derivative, defined
+
+We anchor a point on the parabola at $x = 1$. That's the point we want the slope of. Then we sit a sibling point a small distance $h$ to the right, at $x = 1 + h$. The two points have a chord between them. Its slope, as we said, is
+
+$$
+\frac{f(x+h) - f(x)}{h}
+$$
+
+A picture of the average rate of change between the two points. That ratio is *every Newton-Leibniz move at once*, written down algebraically.
+
+For our parabola at $x = 1$, the ratio works out to
+
+$$
+\frac{(1+h)^2 - 1}{h} = \frac{1 + 2h + h^2 - 1}{h} = \frac{2h + h^2}{h} = 2 + h
+$$
+
+So when $h$ is large, the secant slope is large too — the chord is steep. When $h$ is `0.1`, the slope is `2.1`. When $h$ is `0.01`, it's `2.01`. When $h$ is essentially zero, the slope is essentially `2`. Pull the scrubber. Watch the readout shrink toward 2.
+
+The slope *at* the point $x = 1$ — the slope of the tangent — is whatever this ratio is *approaching* as $h$ goes to zero. For our parabola, that's
+
+$$
+\lim_{h \to 0} \frac{f(x+h) - f(x)}{h} = f'(x)
+$$
+
+This expression is the definition of the derivative. It is the whole subject in two lines of algebra. Newton wrote it differently. Leibniz wrote it differently again. But this — the limit of the difference quotient — is the thing. Every other rule we're going to learn is a consequence of it.
+
+(I want to be clear about what "the limit" is doing for us. It is doing two jobs. First, it lets us write down what happens when $h = 0$ without actually dividing by zero. Second, it tells us that the answer is *robust* — if you sneak up on zero from the left side instead of the right side, you get the same thing. The slope at the point is a single number, not a pair of one-sided answers. For nice functions this is automatic. For nasty functions it's the line between "differentiable" and "not.")
+
+Try the scrubber at small values of $h$. You'll see the secant tip into the tangent. The dashed ghostly line in the background is the *true* tangent at $x = 1$, drawn for reference; as you shrink $h$, the vermilion chord rotates to lie on top of it. The numeric gap between the difference quotient and the limit value shrinks linearly with $h$, which is the cleanest possible visual signature of `2 + h → 2`.
+
+Now: this works for $x = 1$ on the parabola $x^2$ and gives us `2`. What if we wanted the slope at $x = 1.5$? Or at $x = -2$? You can do the same algebra and find — the slope of $x^2$ at the point $x$ is always $2x$. Plug in any $x$ you like. So $f'(x) = 2x$ for $f(x) = x^2$. That's a *new function*. It eats an $x$ and gives back the slope of $f$ at that $x$.
+
+What we want next is a way to do this without re-doing the algebra every time. We want *rules*.
+
+</Act>

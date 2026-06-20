@@ -1,0 +1,31 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="gradient-intro" eyebrow="Seven · A vector, now">
+
+# The gradient
+
+We've been doing one-variable derivatives the whole chapter. Functions that eat an $x$ and give back a $y$. The derivative $f'(x)$ was a number that told you the slope at the point.
+
+What if the function eats *two* inputs? Like $f(x, y) = x^2 + y^2$ — the height of a bowl. There isn't a single direction to walk in anymore. From any point, you can walk left, right, up, down, or diagonally. Each direction has its own slope. Some directions are uphill, some are downhill, some are flat.
+
+The natural thing to ask is: *of all the directions you could walk, which one goes uphill the fastest?* That direction, along with how steep the climb is in that direction, *is* the derivative in two dimensions. It's a *vector*. It has a direction and a magnitude. It is called the **gradient** of $f$, written $\nabla f$. (The triangle is read as "nabla" or just "gradient." It's the standard notation, written down by Hamilton — the Brougham Bridge guy from the Vectors chapter — in the 1830s.)
+
+For our bowl, $f(x, y) = x^2 + y^2$, the gradient is:
+
+$$
+\nabla f = \left(\frac{\partial f}{\partial x},\, \frac{\partial f}{\partial y}\right) = (2x,\, 2y)
+$$
+
+Those curly $\partial$'s are *partial* derivatives — Leibniz's $d$ adapted slightly to mean "the derivative of $f$ with respect to *this* variable, treating the others as constants." The partial of $x^2 + y^2$ with respect to $x$, holding $y$ fixed, is just $2x$. The partial with respect to $y$ is $2y$. So the gradient at the point $(x, y)$ is the vector $(2x, 2y)$.
+
+Drag the point on the heatmap. The vermilion arrow updates. It always points *away from the origin* — which makes sense, because the bowl's bottom is at the origin and "uphill" is "away from the bottom." The length of the arrow grows as you walk away from the origin, because the bowl is steeper out there.
+
+The faint dashed circles are *level curves* — the set of points where $f$ has a constant value. Notice that the gradient is always perpendicular to the level curve through your point. That's not a coincidence: walking along a level curve means the function doesn't change at all, so the direction of *fastest change* has to be the direction *across* the curve, perpendicular to it. This perpendicularity is the cleanest way to think about the gradient in any number of dimensions.
+
+(For our bowl, the level curves are circles centered at the origin. The gradient sticks straight out from the center. The whole picture is so symmetric that the gradient direction is basically "wherever you are, point away from the origin." In a less round function — a stretched ellipse, a tilted plane, a real loss landscape — the level curves are squiggly and the gradient direction is genuinely informative.)
+
+The reason we cared about all of this is the next chapter, *Optimization*. A loss function in machine learning is a function of many variables — every weight in the model, often millions of them. The gradient tells you, at any point in weight-space, which direction *increases* the loss fastest. The training algorithm is: take a step in the *opposite* direction. Repeat. The gradient is the compass needle that points uphill, and gradient descent is following the needle backwards until you hit a flat spot.
+
+The slope at a point, in one dimension, was a number. The gradient at a point, in many dimensions, is a vector. The move is the same.
+
+</Act>

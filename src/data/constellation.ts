@@ -21,7 +21,7 @@ export const topics: Topic[] = [
   { id: 'derivatives', number: 3, name: 'Derivatives', x: 380, y: 320, status: 'coming-soon', part: 'I', prereqs: ['functions'] },
   { id: 'integrals', number: 4, name: 'Integrals', x: 480, y: 390, status: 'coming-soon', part: 'I', prereqs: ['functions', 'derivatives'] },
   { id: 'matrices', number: 5, name: 'Matrices as transformations', x: 280, y: 590, status: 'available', part: 'I', prereqs: ['vectors'] },
-  { id: 'eigenvalues', number: 6, name: 'Eigenvalues', x: 410, y: 640, status: 'coming-soon', part: 'I', prereqs: ['matrices'] },
+  { id: 'eigenvalues', number: 6, name: 'Eigenvalues', x: 410, y: 640, status: 'available', part: 'I', prereqs: ['matrices'] },
   { id: 'probability', number: 7, name: 'Probability', x: 130, y: 680, status: 'available', part: 'I', prereqs: [] },
   { id: 'expectation', number: 8, name: 'Expectation & variance', x: 260, y: 720, status: 'coming-soon', part: 'I', prereqs: ['probability'] },
   { id: 'distributions', number: 9, name: 'Distributions', x: 400, y: 740, status: 'coming-soon', part: 'I', prereqs: ['probability', 'expectation', 'functions'] },

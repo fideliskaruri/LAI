@@ -1,0 +1,29 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="closing" eyebrow="Six · The same idea, three rooms">
+
+# Eigen-things are everywhere once you start looking
+
+Three panels on the left. They look like they have nothing to do with each other. They're all the same algebra in different clothes.
+
+*Panel one — PageRank.* The Google search engine was launched in 1998 by Larry Page and Sergey Brin, two graduate students at Stanford. The idea that distinguished it from the dozen other search engines of the time was almost obnoxiously simple. Treat the web as a directed graph; pages are nodes, links are edges. Pretend a random surfer is clicking around the graph forever, picking each next link uniformly at random. Ask: in the long run, what fraction of the time does the surfer spend on each page? That fraction is the page's importance.
+
+The fraction-of-time vector is the steady-state distribution of a Markov chain. The Markov chain has a transition matrix. The steady-state distribution is the eigenvector of that matrix with eigenvalue 1. Compute that one eigenvector for the entire web — which in 1998 meant about thirty million pages and was already a heroic engineering act — and you've ranked the internet.
+
+Brin and Page wrote up the technique in their 1998 paper, *The Anatomy of a Large-Scale Hypertextual Web Search Engine*. The whole company that followed, more or less, was a long argument about how to compute that eigenvector faster.
+
+*Panel two — vibration modes.* Pluck a guitar string. The shape of its vibration isn't arbitrary; it's a superposition of *standing waves*, each one a sine wave with nodes at the fixed endpoints. The first mode is a single hump; the second has one zero-crossing in the middle; the third has two. The reason these specific shapes show up and no others is that they're eigenvectors of the differential operator that governs the string. The frequencies — what we hear as the fundamental and its overtones — are the eigenvalues. The whole theory of musical instruments is the spectral theorem for a few specific symmetric operators.
+
+When NASA tests a satellite to make sure its solar panels won't fall off during launch, what the structural engineers are computing are the eigenvectors and eigenvalues of the satellite's stiffness matrix. The eigenvectors are the ways the satellite *wants* to vibrate. The eigenvalues are how fast.
+
+*Panel three — neural network weight matrices.* Every layer of a neural network is, near the basics, a matrix multiplication followed by a non-linear squash. The matrix maps the layer's input to its output. When you study a trained network's behavior — what it pays attention to, where it's about to break, why it's hard to train — one of the first things you do is look at the eigenvalues (or, slightly more carefully, the *singular values*) of its weight matrices.
+
+The biggest eigenvalue of a weight matrix tells you how much the layer can amplify a signal. If it's much bigger than one, training is unstable: small wiggles in the input blow up by the time they reach the output. If it's much smaller than one, training is sluggish: signals fade out. Almost every modern trick for training huge neural networks — layer normalization, weight initialization schemes, gradient clipping — is at heart a way to keep these eigenvalues in a narrow band.
+
+There are dozens more rooms. The PageRank one is the most famous in computing. The vibration one is the most ancient in physics. The neural network one is the most current. They all turn into `Mv = λv` once you squint.
+
+Which is why this chapter is short and the chapters that follow are long. The whole rest of the platform — PCA next, then linear regression, then optimization, then neural networks — is going to be different ways of applying this one idea to different kinds of data. We earned it here. Now we get to spend it.
+
+Next, the chapter on PCA, which is going to take the rotate-into-the-eigenbasis move we just played with and turn it into a real tool.
+
+</Act>

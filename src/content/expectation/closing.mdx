@@ -1,0 +1,29 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="closing" eyebrow="Six · A thread forward">
+
+# When the bars become a curve
+
+Here is where the eighth chapter has taken us.
+
+We started with the chevalier still losing — a question Probability didn't answer for him, even after we counted up his sample space. *How much should he have expected to lose?* The answer required a new operator, $E[\cdot]$, that turns the random thing into a single number: the weighted average of the outcomes. Huygens wrote it down in 1657 and almost the entire edifice of statistics rests on it.
+
+Then we got a gift. Expectation is linear, $E[X + Y] = E[X] + E[Y]$, no matter how $X$ and $Y$ are related. The gift compounds: any time you can express a complicated random thing as a sum of simpler random things, you can compute its expectation without ever writing the joint distribution. We'll lean on this constantly when we get to linear regression and to backpropagation.
+
+Then we proved the law of large numbers — Bernoulli's golden theorem, 1713 — which says the sample mean of independent draws converges to the expected value as the sample size grows. That theorem is why estimation works. It's also why we trust the answers our models give us when they've been trained on a lot of data: under the right conditions, more samples means more confidence.
+
+Then variance, $\mathrm{Var}[X] = E[(X-\mu)^2]$, which measures how *spread out* the distribution is. And finally the standard deviation $\sigma = \sqrt{\mathrm{Var}[X]}$, which puts the spread back in the same units as the variable so you can read it. Together, $\mu$ and $\sigma$ are the spine of every statistical summary you'll ever encounter.
+
+Now look at the picture on the right.
+
+On the left of the canvas is the same six-bar histogram we've been dragging. On the right is a continuous bell curve. They share their mean and their standard deviation — the same $\mu$, the same $\sigma$ — even though one has six bars and the other has infinitely many points along a smooth curve.
+
+That bell curve is the *normal distribution*, and it's only the most famous of a whole zoo of *continuous distributions* — Bernoulli, binomial, Poisson, exponential, beta, gamma, normal, log-normal — each suited to a different shape of randomness. We didn't need them yet. The discrete bars were enough to define expectation, variance, and standard deviation. But when we model continuous things — heights, temperatures, prices, errors in measurement — bars become curves, sums become integrals, and the same operators apply unchanged.
+
+The next chapter, *Distributions*, hands you the curves. The chevalier doesn't need to know about them; he's gambling with dice. But we'll need them by the time we get to linear regression, where the *residuals* — the gaps between what a model predicts and what actually happens — are modelled as a continuous distribution. And by the time we get to neural networks, where every weight is initialised by sampling from one.
+
+For now, you have $\mu$, you have $\sigma$, and you know what they mean. That's most of the way home.
+
+See you in chapter nine.
+
+</Act>

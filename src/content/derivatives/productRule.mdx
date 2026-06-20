@@ -1,0 +1,37 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="product-rule" eyebrow="Six · Expanding rectangles">
+
+# The area added on two sides
+
+Picture a rectangle with sides $u(t)$ and $v(t)$. Its area is $A(t) = u \cdot v$. As $t$ grows, both sides grow, and the rectangle gets bigger. The question is: *how fast is the area growing*?
+
+The naive guess — the product of the side-growth rates — is wrong. The correct answer is the *product rule*:
+
+$$
+\frac{d}{dt}(u \cdot v) = u \cdot \frac{dv}{dt} + v \cdot \frac{du}{dt}
+$$
+
+Read out loud: "the first times the rate of the second, plus the second times the rate of the first." It is one of the most useful identities in calculus, and the geometric picture on the canvas is, I think, by far the best way to see *why*.
+
+Drag the $t$ slider. Watch the rectangle grow.
+
+We've outlined the original rectangle at $t = 0$ in dashed ink. As $t$ increases, the new area added shows up in three pieces:
+
+- **A top strip**, $u \cdot dv$ wide-and-thin. This is the area gained because the *height* $v$ went up by $dv$.
+- **A side strip**, $v \cdot du$ tall-and-thin. This is the area gained because the *width* $u$ went up by $du$.
+- **A small corner cap**, $du \cdot dv$. This is the area gained because both sides went up — the bit *where the strips overlap*.
+
+The corner cap is the thing the naive guess gets wrong. If you tried to compute "the rate of area growth" by multiplying the two side rates, you'd be measuring something proportional to $du \cdot dv$ — that corner. But $du \cdot dv$ is *second-order small*: if $du$ and $dv$ are each, say, `0.01`, then the corner is `0.0001`, and it shrinks much faster than the strips. In the limit as $t$ changes infinitesimally, the corner vanishes and you're left with the two strips. *That's* the product rule.
+
+(I find this proof comforting because it's the only one I can do from memory at three in the morning. Two sides grow; the area gained is two strips plus a vanishingly small corner; the two strips are the rule. Newton's actual derivation, from his 1671 *Tractatus de Methodis Serierum et Fluxionum*, was almost exactly this picture, dashed off with the same casual confidence with which he'd drop a prism on a windowsill.)
+
+The number panel in the corner of the canvas decomposes the area change for you. The $u \cdot dv$ part and the $v \cdot du$ part add up to the *linear* term — the product rule itself. The $du \cdot dv$ part is the *cross* term, the corner. As $t$ becomes small, the cross term becomes negligible relative to the linear term. That ratio is the whole story.
+
+The product rule is responsible for every "weighted contribution" computation in machine learning. When you take the derivative of a model output that's the product of a weight and an input, the product rule says you get *two* terms: one tells you how to adjust the weight, one tells you how to adjust the input. Two rates, two responsibilities, one rectangle.
+
+Three rules. Power. Chain. Product. With those, plus the sum rule and the constant multiple rule, you can take the derivative of essentially any expression that shows up in this platform's first eighteen chapters.
+
+Now — what happens when there's more than one input variable?
+
+</Act>

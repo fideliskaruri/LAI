@@ -1,0 +1,35 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="variance-as-spread" eyebrow="Four · Spread">
+
+# How surprised should you be?
+
+Expectation tells you what to predict. Variance tells you how far off you'll usually be.
+
+Two distributions can share an expected value and behave nothing alike. Consider a fair coin that pays $\$50$ on heads and $-\$50$ on tails, versus a fair coin that pays $\$5000$ on heads and $-\$5000$ on tails. Both have $E[X] = 0$. You should be indifferent between them on average. But you would not actually be indifferent, because the second one can wipe out your savings on a single flip. The first is mostly noise around zero. The second is mostly *very large noise* around zero. The expected value alone doesn't see the difference.
+
+What we want is a number that measures how *spread out* the distribution is — how far from $\mu$ a typical sample tends to land. The natural first guess is "the average distance from the mean," $E[X - \mu]$. But a quiet algebraic accident wrecks this idea: the average of $X - \mu$ is always exactly zero. Positive deviations cancel negative ones. The mean is, almost by definition, the point about which the deviations balance.
+
+So we square the deviation before averaging. *Variance* is defined as
+
+$$
+\mathrm{Var}[X] = E[(X - \mu)^2].
+$$
+
+Squaring kills the sign. A deviation of $+3$ and a deviation of $-3$ both contribute $9$ to the average. Distributions with large typical deviations — in either direction — produce large variances; distributions concentrated tightly around $\mu$ produce tiny ones.
+
+Drag the bars in the canvas. When you bunch all the probability around one or two outcomes, the variance readout shrinks toward zero. When you push the mass out toward the extremes — say, $0.5$ probability on the $1$ and $0.5$ probability on the $6$ — the variance grows. The vermilion shading at the bottom is a rough visualisation of the *width* of the distribution; wider shading means more variance.
+
+A practical reason variance shows up everywhere: it's the thing that controls how fast the law-of-large-numbers averaging converges. The standard deviation of the sample mean $\bar{X}_n$ is $\sigma / \sqrt{n}$, where $\sigma = \sqrt{\mathrm{Var}[X]}$. Smaller variance means each new sample squeezes the estimate harder. The convergence rate is governed by the spread.
+
+There's also an algebraic identity worth memorising, because it gets used constantly:
+
+$$
+\mathrm{Var}[X] = E[X^2] - (E[X])^2.
+$$
+
+Expand $(X - \mu)^2 = X^2 - 2\mu X + \mu^2$, take expectations, use linearity and $E[\mu] = \mu$, simplify. This form is often easier to compute than the squared-deviation form, because $E[X^2]$ is just the weighted sum of the squared outcomes — no detour through $\mu$ for each term.
+
+A warning the chapter cannot avoid: variance is *not* linear. $\mathrm{Var}[X + Y]$ in general equals $\mathrm{Var}[X] + \mathrm{Var}[Y] + 2\,\mathrm{Cov}[X, Y]$, where the covariance term measures how $X$ and $Y$ move together. Independence makes the covariance zero, and *then* variance adds. But the unconditional rule that worked for expectation has no analogue here. Expectation is the easy one; variance has structure.
+
+</Act>

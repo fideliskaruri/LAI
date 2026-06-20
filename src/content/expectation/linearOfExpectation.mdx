@@ -30,4 +30,8 @@ This is the property that lets you reason about complicated probabilistic system
 
 I'll be honest: when I first learned this I assumed I was missing something. It cannot possibly be this clean. But it is. Probability has very few free gifts. Linearity of expectation is the most useful one.
 
+A standard exercise that gets across why this matters: imagine $n$ people each pick a hat at random from a pile of $n$ hats; how many people, on average, pick their own hat? The naive answer is "small if $n$ is large." The right answer is *exactly one*, regardless of $n$. The reason is linearity. Let $X_i$ be $1$ if person $i$ picks their own hat and $0$ otherwise. Then the total number of correct picks is $X_1 + X_2 + \cdots + X_n$. Each $X_i$ has expected value $1/n$ — there's a one-in-$n$ chance person $i$ gets their own hat. By linearity, the expected total is $n \cdot (1/n) = 1$. We never had to think about how the $X_i$'s are correlated — and they *are* correlated, because if person $1$ picks person $2$'s hat then person $2$ definitely doesn't get their own. Linearity walks past that thicket without slowing down.
+
+That's the trick to keep in your pocket. When a probability problem feels combinatorially scary, write it as a sum of indicator variables, take the expectation of each indicator (usually easy — it's just a probability), and sum. The dependence structure of the underlying events doesn't enter. You'll see this pattern again and again, all the way through to the analysis of randomised algorithms and the variance of stochastic gradient descent.
+
 </Act>

@@ -1,0 +1,27 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="pca-preview" eyebrow="Five · A glimpse of why we care">
+
+# The cloud has a long axis
+
+On the left, a cloud of two hundred and forty points. They're not scattered evenly — they're stretched along a tilted axis. You can see it by eye. There's a long direction, going from lower-left to upper-right, where most of the variation lives. And there's a short direction, perpendicular to it, where there's much less spread.
+
+The two vermilion arrows are along those directions. They're not drawn from inspection. They're computed from the data, by taking the eigenvectors of a specific matrix called the *covariance matrix*. The longer arrow is the eigenvector with the larger eigenvalue. The shorter arrow is the eigenvector with the smaller eigenvalue. The eigenvalues themselves are the variances along those two directions — how much spread there is along each.
+
+Press *Rotate into the eigenbasis*.
+
+The whole cloud swings into a new orientation. Now the long direction lines up with the screen's horizontal axis; the short direction lines up with the vertical. We haven't lost any information about the cloud — every point's distance to every other point is preserved, because rotation is rigid. We've just re-described the same data in *its* preferred coordinate system instead of the one we started in.
+
+That move — *find the eigenvectors of the covariance matrix and use them as your new axes* — is the entire content of Principal Component Analysis. PCA was invented by Karl Pearson in 1901, working on biometric data; he wrote a paper called *On Lines and Planes of Closest Fit to Systems of Points in Space*. Harold Hotelling rediscovered it independently in 1933 from the statistical side. It's been one of the workhorses of data analysis ever since.
+
+The reason it's so useful is that the eigenvalues tell you *which axes matter*. Look at the readout — the λ₁ is much bigger than the λ₂. The horizontal axis in the rotated picture contains most of the cloud's variance. The vertical axis contains a little. If you had to summarize the cloud with one number per point — to compress it from two dimensions to one — you'd throw away the vertical coordinate and keep the horizontal one. You'd lose a small fraction of the spread and capture almost all of it.
+
+That's dimensionality reduction. That's what every "embedding visualization" you've seen — t-SNE plots, UMAPs, PCAs of word vectors — is doing under the hood, in spirit. Picking the directions where the data lives and throwing away the directions where it doesn't.
+
+We'll come back to all of this in the PCA chapter, which is up next. The math will get a bit more careful — what exactly does "variance" mean as a matrix? How do you handle the case where you want more than two principal components? What if the data isn't centered? What about non-linear structure that no rotation can flatten?
+
+But the *insight* you should leave this chapter with is the one this picture makes plain. Data has a shape. The shape has natural axes. The natural axes are eigenvectors of the covariance matrix. The amount of spread along each axis is the corresponding eigenvalue. The whole geometric content of a dataset, projected to two dimensions, can be summarized by four numbers: two unit vectors and two scalars.
+
+That's a lot of mileage from one piece of nineteenth-century algebra.
+
+</Act>
