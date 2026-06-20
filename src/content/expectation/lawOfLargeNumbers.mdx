@@ -1,0 +1,33 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="law-of-large-numbers" eyebrow="Three · Bernoulli, 1713">
+
+# Roll long enough and the average will tell
+
+When you average a large enough number of rolls of a fair die, the average lands at $3.5$.
+
+That's not a wish. It's a theorem, and a famous one. Jakob Bernoulli, working in Basel in the years before his death in 1705, proved a version of it; his nephew Nicholas published it in 1713 as part of *Ars Conjectandi*, the same book that gave us the term "law of large numbers." Bernoulli called it his *theorema aureum* — the golden theorem — and he meant it. He'd been chasing the result for twenty years.
+
+Here's the statement, in modern phrasing. Let $X_1, X_2, X_3, \ldots$ be independent samples from the same distribution, each with expected value $\mu$. Form the running sample mean
+
+$$
+\bar{X}_n = \frac{X_1 + X_2 + \cdots + X_n}{n}.
+$$
+
+Then as $n$ grows large, $\bar{X}_n$ converges to $\mu$. In symbols: $\bar{X}_n \to \mu$ as $n \to \infty$.
+
+The canvas on the right is the picture. Click *Roll* to add a single roll; click *Auto-run* to fill up to the target $N$ on the slider. The horizontal vermilion line at $3.5$ is $\mu$ — the *true* expected value of the fair die, the thing you can compute on paper before rolling anything. The dark wobbling line is the running sample mean.
+
+Two things are worth absorbing as you watch it.
+
+The first is that the early wobbles are *wild*. With $n = 1$ the sample mean is whatever you rolled. With $n = 5$ it can sit at $2$ or at $5.4$ or anywhere in between. The variance of $\bar{X}_n$ shrinks like $1/n$, which means the *standard* deviation of $\bar{X}_n$ shrinks like $1/\sqrt{n}$ — slowly. To halve the wobble, you need four times the rolls. To shave it to a tenth, a hundred times the rolls. The convergence is real but it isn't fast.
+
+The second is that the running mean's *destiny* is unambiguous. It doesn't wander around $3.5$ forever. It locks onto it. There is no scenario, no matter how many rolls you do, where the sample mean of a long enough run drifts to $4$ and stays there. The geometry of the problem forbids it. That's the content of Bernoulli's theorem.
+
+This is why we trust statistical estimates at all. If you want to know the mean of some distribution and you can only sample it — say, the average lifetime of a brand of lightbulb, or the average click-through rate of an advert — the law of large numbers says you can estimate $\mu$ by averaging your samples, and the estimate gets arbitrarily close as the sample size grows. Without it, statistics is fortune-telling. With it, statistics is engineering.
+
+There's a subtle point worth flagging. The theorem says the *long-run* sample mean converges. It says nothing about *one particular* run being close to $\mu$ at any *particular* $n$. The line in the canvas wobbles even at $n = 200$. Convergence is a statement about the limit. In practice we use it as a guide — "more samples is better" — and the rate of convergence ($1/\sqrt{n}$, governed by the variance) becomes the next thing to ask about.
+
+Which is what the next act is for.
+
+</Act>

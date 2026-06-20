@@ -1,0 +1,33 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="linear-of-expectation" eyebrow="Two · Linearity">
+
+# The gift
+
+There's a property of expectation that I want to give you up front, before you have any reason to expect it, because the rest of probability and statistics rests on it.
+
+For *any* two random quantities $X$ and $Y$ — whatever they are, however they're related, even if the value of $X$ tells you something about $Y$ — the expected value of their sum equals the sum of their expected values:
+
+$$
+E[X + Y] = E[X] + E[Y].
+$$
+
+That's the *linearity of expectation*. It's the gift.
+
+You should pause on what's not being claimed. We're not saying $X$ and $Y$ are independent. We're not assuming anything about their joint distribution. We're not requiring that they live in the same world or measure the same thing. The two histograms in the canvas are *coupled* in some unspecified way — knowing $X$ might tell you everything about $Y$, or nothing. Drag bars on either side. The bottom ruler — $E[X+Y]$ — is *always* the top two rulers added together. Always. No exceptions.
+
+The reason this is shocking is that probability *itself* is not linear. $P(A \cup B) \neq P(A) + P(B)$ in general; you have to subtract the overlap. Likewise variance is not linear: $\mathrm{Var}[X+Y]$ depends on the covariance of $X$ and $Y$, which is messy. But expectation — expectation passes through addition like a knife through butter.
+
+The reason it works is, in a sense, beneath the dignity of a proof: expectation is a sum, and sums commute. Write it out for finite outcomes:
+
+$$
+E[X+Y] = \sum_{x,y} (x + y) \cdot p(x, y) = \sum_{x,y} x \cdot p(x, y) + \sum_{x,y} y \cdot p(x, y) = E[X] + E[Y].
+$$
+
+The middle step is just distributing a sum across an addition. The joint distribution $p(x, y)$ is whatever it is — independent, dependent, conditionally weird — and it doesn't matter, because the sum doesn't care.
+
+This is the property that lets you reason about complicated probabilistic systems. Want the expected total number of heads in $100$ flips of a biased coin with $P(\text{heads}) = 0.3$? Don't think about the binomial distribution. Just write $X_1 + X_2 + \cdots + X_{100}$ where each $X_i$ is $1$ for heads and $0$ for tails, take the expectation of the sum, and the answer falls out: $100 \times 0.3 = 30$. The fact that the flips are independent is irrelevant — even if they were perfectly correlated (every coin always came up the same as the last one), the expected count is still $30$.
+
+I'll be honest: when I first learned this I assumed I was missing something. It cannot possibly be this clean. But it is. Probability has very few free gifts. Linearity of expectation is the most useful one.
+
+</Act>

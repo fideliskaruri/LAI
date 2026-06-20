@@ -1,0 +1,45 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="characteristic-polynomial" eyebrow="Four · How to compute them">
+
+# det(M − λI) = 0
+
+So far we've found eigenvectors by hand — drag the arrow around until Mv lines up with v. That's a fine first move. It's not going to work in fifty dimensions.
+
+Here's the trick that does. Look at the equation that defines an eigenvector:
+
+`Mv = λv`
+
+Move everything to one side. `Mv − λv = 0`. Factor out the v — being careful, because λ is a scalar and M is a matrix, so we slip an identity matrix in to make the types match:
+
+`(M − λI) v = 0`
+
+This is the key move. We've turned the eigenvalue problem into the question: *for what λ does the matrix (M − λI) crush some non-zero vector v down to zero?*
+
+A matrix that crushes a non-zero vector down to zero is exactly a matrix whose determinant is zero. (Remember the closing of the matrices chapter — the determinant is the area of the image of the unit square, and if any non-zero v gets squished to zero, the whole image collapses to a line, area zero.)
+
+So we're looking for the values of λ that satisfy
+
+`det(M − λI) = 0`
+
+This is called the *characteristic equation* of M.
+
+Drag the slider on the left and watch what happens. The matrix `M − λI` lives in the corner. Its image of the unit square — the vermilion parallelogram — gets larger and smaller as λ changes. The little chart on the right plots det(M − λI) as a function of λ.
+
+At λ = 1 and λ = 3, the parallelogram collapses to a line. The determinant hits zero. Those are the eigenvalues.
+
+Worked out by hand for our M:
+
+`det(M − λI) = (2 − λ)(2 − λ) − 1 = λ² − 4λ + 3 = (λ − 1)(λ − 3)`
+
+The roots are 1 and 3. Exactly what we found by dragging.
+
+The characteristic equation is a polynomial in λ. For an n by n matrix, it's a polynomial of degree n. The fundamental theorem of algebra promises it has n roots if you allow complex numbers. So in principle, every matrix has *n* eigenvalues. (In practice some of those might be repeated, or might be a complex-conjugate pair that doesn't correspond to a real eigenvector. We won't fuss about it here.)
+
+For Cauchy in 1829, this was the equation he had to prove had real roots for the symmetric matrices of celestial mechanics. He did it by sandwiching the polynomial between two functions whose sign changes he could control. His argument was clever and a bit byzantine — modern textbooks use a different proof, due to Hilbert and others. The fact stands either way.
+
+Once you have the eigenvalues, getting the eigenvectors is easy. Plug each λ back into `(M − λI) v = 0` and solve the linear system for v. There's always at least one non-zero solution because we just guaranteed the matrix is singular. That's how every numerical package on your computer does it — except they're cleverer about the polynomial-root part, because finding roots of polynomials of high degree is its own nasty business. But the idea is the same.
+
+That's the algebra. Now we'll meet the most important place it shows up.
+
+</Act>

@@ -111,14 +111,12 @@ export function ProductRule() {
   // Strip A: the top strip — uT wide, dv tall, hugging the top of the rectangle.
   const stripTopX = RX
   const stripTopY = RY
-  const stripTopW = outerW
   const stripTopH = dv * UNIT
 
   // Strip B: the right strip — du wide, vT tall, hugging the right of the rectangle.
   const stripRightX = innerX + innerW
   const stripRightY = RY
   const stripRightW = du * UNIT
-  const stripRightH = outerH
 
   // Corner cap: where the two strips overlap (du·dv). We render it with a
   // distinct fill so the second-order term is visually called out.

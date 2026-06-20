@@ -40,7 +40,6 @@ const CURVE_PANEL_X = 320
 const CURVE_PANEL_Y = 160
 const CURVE_PANEL_W = 230
 const CURVE_PANEL_H = 220
-const CURVE_ORIGIN_X = CURVE_PANEL_X + CURVE_PANEL_W / 2
 const CURVE_ORIGIN_Y = CURVE_PANEL_Y + CURVE_PANEL_H - 40
 
 const ROWS: Array<{ n: number; f: string; fp: string }> = [

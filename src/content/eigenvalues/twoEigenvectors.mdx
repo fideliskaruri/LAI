@@ -1,0 +1,23 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="two-eigenvectors" eyebrow="Three · There are usually two">
+
+# A matrix lives on its eigen-lines
+
+Same matrix as before. This time both eigen-lines are drawn in faintly, so you can see they're really there before you go hunting. The forty-five degree line going up-right has λ = 3 — that's the *fast* direction; arrows along it get tripled. The forty-five degree line going down-right has λ = 1 — that's the *slow* direction; arrows along it don't change length at all.
+
+Drag the vermilion arrow toward each in turn. The line you're on lights up; the readout calls out the eigenvalue.
+
+Two facts to take from this. The first is that *there are two*. A 2 by 2 matrix typically has two eigen-directions, a 3 by 3 has three, an n by n has n. This is not a coincidence — it falls out of the algebra in the next act — but it's worth noticing as a fact about the picture first.
+
+The second is that these two directions are *perpendicular* to each other. The (1, 1) line meets the (1, −1) line at a right angle. That's not a property of every matrix's eigenvectors. It's a property of *symmetric* matrices, the ones with `M[i][j] = M[j][i]`. Our M is symmetric: the entry in row 1, column 2 is the same as the one in row 2, column 1. Both are 1.
+
+Cauchy's whole proof — the one in the title page from the cold open — was that for symmetric matrices not only are the eigenvalues real, the eigenvectors are mutually perpendicular. Real and perpendicular. The two properties that make eigenvectors *useful*.
+
+Why useful? Because once you have two perpendicular eigen-directions, you can describe what M does to *any* vector in one sentence. You break the vector into its component along the fast direction and its component along the slow direction. The fast component gets multiplied by 3. The slow component gets multiplied by 1. Put them back together. Done.
+
+That's it. That's the whole transformation. The matrix that *looked* like four arbitrary numbers — `[[2, 1], [1, 2]]` — is, on the inside, just *triple along one axis, no-op along the perpendicular axis*. The four numbers are how the same simple thing looks when written in the wrong coordinate system. In the right coordinates — the eigenvectors — it's just two scalars.
+
+You can take that idea straight to the bank. It's the move that makes PCA work, in a few acts. It's the move that makes the rotation matrices and Hessians and covariance matrices of machine learning tractable. The eigenvectors are a matrix's *natural* coordinate system. Everything else is the inconvenience of how someone happened to write it down.
+
+</Act>
