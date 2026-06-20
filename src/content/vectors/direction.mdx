@@ -1,0 +1,19 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="direction" eyebrow="Seven · Direction">
+
+# Pointing somewhere
+
+Magnitude tells you how big. Direction tells you which way.
+
+For a 2D vector, direction is a single angle — how far the arrow is rotated from the positive `x` axis, counterclockwise. The angle is usually called `θ` (theta), and you can read it off the components with a function called *arctan* (or `tan⁻¹` if you like).
+
+`arctan` is the function that asks: *what angle has this slope?* If `θ` is the angle, then `tan(θ) = y / x`. To go the other way — given the slope, find the angle — you use `arctan(y / x)`. Your calculator has a button.
+
+Drag the tip on the left. The arc sweeps. The angle updates.
+
+This is why navigators have cared about vectors for a thousand years. A ship's velocity is its speed (magnitude) and its bearing (direction). A wind. A current. The whole science of navigation is bookkeeping for combining vectors — adding the wind to the ship's velocity, adding the current. Stevin's chain proved the math; Gibbs gave it the notation that fits on a chalkboard.
+
+In 3D, direction needs *two* angles (latitude and longitude, more or less). In 1000D, direction is — well — a thousand numbers. We'll meet that.
+
+</Act>

@@ -2,15 +2,48 @@ import { MDXProvider } from '@mdx-js/react'
 import { Link } from 'react-router-dom'
 import { TopicPage, type ActDef } from '../../components/topic/TopicPage'
 import { Act } from '../../components/topic/Act'
-import { StevinWreath } from '../../playables/vectors/StevinWreath'
-import StevinProse from '../../content/vectors/stevin.mdx'
 
-// Phase 1: only the Stevin act is wired. The other acts get added in Phase 2.
+// Playables
+import { ColdOpenScene } from '../../playables/vectors/ColdOpenScene'
+import { StevinWreath } from '../../playables/vectors/StevinWreath'
+import { CoordinatePlane } from '../../playables/vectors/CoordinatePlane'
+import { DraggableArrow } from '../../playables/vectors/DraggableArrow'
+import { Parallelogram } from '../../playables/vectors/Parallelogram'
+import { ScalarMul } from '../../playables/vectors/ScalarMul'
+import { Magnitude } from '../../playables/vectors/Magnitude'
+import { Direction } from '../../playables/vectors/Direction'
+import { HamiltonBridge } from '../../playables/vectors/HamiltonBridge'
+import { NotationSplit } from '../../playables/vectors/NotationSplit'
+import { ClosingThread } from '../../playables/vectors/ClosingThread'
+
+// Prose
+import ColdOpenProse from '../../content/vectors/coldOpen.mdx'
+import StevinProse from '../../content/vectors/stevin.mdx'
+import DescartesProse from '../../content/vectors/descartes.mdx'
+import ArrowProse from '../../content/vectors/arrow.mdx'
+import AdditionProse from '../../content/vectors/addition.mdx'
+import ScalarProse from '../../content/vectors/scalar.mdx'
+import MagnitudeProse from '../../content/vectors/magnitude.mdx'
+import DirectionProse from '../../content/vectors/direction.mdx'
+import HamiltonProse from '../../content/vectors/hamilton.mdx'
+import GibbsProse from '../../content/vectors/gibbsResolution.mdx'
+import ClosingProse from '../../content/vectors/closing.mdx'
+
+// Phase 2: 11 of 12 acts. The nD leap (act 10) ships in Phase 3 with r3f.
 const acts: ActDef[] = [
+  { id: 'cold-open', label: 'The fight · 1893' },
   { id: 'stevin', label: 'Stevin · 1586' },
+  { id: 'descartes', label: 'Descartes · 1637' },
+  { id: 'arrow', label: 'From point to arrow' },
+  { id: 'addition', label: 'The parallelogram' },
+  { id: 'scalar', label: 'Scaling' },
+  { id: 'magnitude', label: 'Pythagoras' },
+  { id: 'direction', label: 'Direction' },
+  { id: 'hamilton', label: 'Hamilton · 1843' },
+  { id: 'gibbs-resolution', label: 'Gibbs · 1881' },
+  { id: 'closing', label: 'Stevin → king' },
 ]
 
-// MDX components in scope when prose renders.
 const mdxComponents = {
   Act,
   a: (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
@@ -34,15 +67,45 @@ export function Vectors() {
       acts={acts}
       canvas={(currentActId) => {
         switch (currentActId) {
+          case 'cold-open':
+            return <ColdOpenScene />
           case 'stevin':
             return <StevinWreath />
+          case 'descartes':
+            return <CoordinatePlane />
+          case 'arrow':
+            return <DraggableArrow />
+          case 'addition':
+            return <Parallelogram />
+          case 'scalar':
+            return <ScalarMul />
+          case 'magnitude':
+            return <Magnitude />
+          case 'direction':
+            return <Direction />
+          case 'hamilton':
+            return <HamiltonBridge />
+          case 'gibbs-resolution':
+            return <NotationSplit />
+          case 'closing':
+            return <ClosingThread />
           default:
-            return null
+            return <StevinWreath />
         }
       }}
     >
       <MDXProvider components={mdxComponents}>
+        <ColdOpenProse />
         <StevinProse />
+        <DescartesProse />
+        <ArrowProse />
+        <AdditionProse />
+        <ScalarProse />
+        <MagnitudeProse />
+        <DirectionProse />
+        <HamiltonProse />
+        <GibbsProse />
+        <ClosingProse />
       </MDXProvider>
     </TopicPage>
   )
