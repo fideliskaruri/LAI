@@ -22,6 +22,7 @@ import { Attention } from './routes/topics/Attention'
 import { Diffusion } from './routes/topics/Diffusion'
 import { Svm } from './routes/topics/Svm'
 import { Convolutions } from './routes/topics/Convolutions'
+import { Transformers } from './routes/topics/Transformers'
 import { Recall } from './routes/Recall'
 import { TestMDX } from './routes/__test/TestMDX'
 import { SplitCanvasTest } from './routes/__test/SplitCanvasTest'
@@ -53,6 +54,7 @@ export default function App() {
         <Route path="/attention" element={<Attention />} />
         <Route path="/diffusion" element={<Diffusion />} />
         <Route path="/svm" element={<Svm />} />
+        <Route path="/transformers" element={<Transformers />} />
         <Route path="/convolutions" element={<Convolutions />} />
         <Route path="/recall" element={<Recall />} />
         <Route path="/__test-mdx" element={<TestMDX />} />

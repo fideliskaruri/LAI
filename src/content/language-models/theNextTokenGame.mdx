@@ -1,0 +1,37 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="the-next-token-game" eyebrow="One · A factorisation">
+
+# Predict the next word. Repeat.
+
+Drag the vermilion slider on the left. The prompt is *the cat sat on the ___*, and on the right is a bar chart of the model's probability over a tiny five-word vocabulary: *mat, dog, end, hat, ball*. The slider is **temperature**. At low temperature the distribution is sharp &mdash; almost all the probability lands on *mat*, and the model is effectively predicting "mat" with certainty. At high temperature the distribution flattens out until all five candidates are roughly equiprobable. The underlying logits don't change; the temperature just rescales them before the softmax. Try the extremes. At *T = 0.3* the model is greedy and almost deterministic. At *T = 2.0* it would happily complete with "ball." That single dial &mdash; how steeply the distribution concentrates on its top candidate &mdash; is what people are tuning when they tweak a chatbot to be "more creative."
+
+Three things to take away from this picture. First, the whole content of a language model is right there in the bars. A language model is a function that takes a sequence of tokens as input and emits a probability distribution over the next token. That's all it does. Nothing else. When you generate text from one, you sample from the distribution, append the sampled token to the input, and feed the new sequence back in. The model doesn't have a goal, a plan, or a thought. It has, at each step, a probability distribution over a vocabulary of perhaps fifty thousand tokens, and it samples one. The architecture &mdash; transformer or otherwise &mdash; is the machinery for computing those probabilities. The temperature is the dial for how risk-tolerant the sampler is.
+
+Second, the *factorisation*. Why does this trivial-looking move &mdash; predict one token, then the next, then the next &mdash; suffice to represent any document at all? Because the joint probability of a document is, by the chain rule of probability, the product of conditional probabilities at every position:
+
+$$
+p(w_1, w_2, \ldots, w_T) \;=\; \prod_{t=1}^{T} p(w_t \mid w_1, \ldots, w_{t-1}).
+$$
+
+This identity is exact. There is no approximation in it. So if you can build a function that produces *p(w_t given the previous tokens)* well, you've implicitly described the joint distribution over *every possible document*. The "language model" job is to learn just this conditional, at every position. Once you have it, everything else &mdash; generation, scoring, ranking &mdash; falls out by repeated sampling or repeated evaluation of the product.
+
+Third, the softmax. The model doesn't directly produce probabilities; it produces unnormalised scores called *logits*, one per vocabulary entry. Whether you're using a transformer with billions of parameters or a 12-line Python script reading n-gram counts off disk, the last step is the same: take the logits, divide them by a temperature *T*, exponentiate, normalise. That last operation, which we've met before in the Attention chapter, is
+
+$$
+p_i \;=\; \frac{\exp(z_i / T)}{\sum_j \exp(z_j / T)}.
+$$
+
+At *T = 1* this is the standard softmax; at *T → 0* it becomes argmax, picking the single highest-logit token with probability 1; at *T → ∞* it becomes the uniform distribution over the vocabulary. The slider you're dragging is *T*. Everything you ever do with a language model &mdash; greedy decoding, beam search, nucleus sampling &mdash; is some variation on choosing where on this dial to sit and what to do with the distribution once you have it.
+
+A historical aside, because this is a thread we've been pulling all chapter. Claude Shannon, in 1948, defined the entropy of a discrete distribution as
+
+$$
+H \;=\; -\sum_i p_i \log_2 p_i.
+$$
+
+The number in the bottom-left corner of the right pane is that entropy. It tells you, in bits, how *uncertain* the model is right now. At *T = 0.3*, with all the probability on *mat*, the entropy is tiny &mdash; the model knows what comes next. At *T = 2.0*, with the distribution flattened, the entropy is large &mdash; the model is hedging across all five candidates. The point of pre-training, when we get to it next act, is to lower this entropy by a lot &mdash; the model goes from being uncertain about *every* prediction at every position to being calibrated, position by position, by reading the corpus. Shannon's entropy is the *loss the model is being trained to minimise*, summed up across the training data and divided by the number of tokens. The number, rendered in bits, is called *bits per token*; for the most powerful modern LMs on broad English text, it sits at around 2 bits per token, against the theoretical ceiling of around 1.2 bits/token. There is no obvious reason it should stop falling.
+
+In this act the logits are baked in; the model doesn't really exist. In the next act we ask where those logits came from.
+
+</Act>
