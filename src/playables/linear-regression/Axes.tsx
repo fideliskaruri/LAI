@@ -9,7 +9,7 @@ import {
   Y_MAX,
   dataToSvgX,
   dataToSvgY,
-} from './data'
+} from './dataset'
 
 /**
  * Shared axes + light grid for the 2D panes. The 2D look is intentionally

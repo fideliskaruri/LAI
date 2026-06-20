@@ -1,0 +1,27 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="closing" eyebrow="Nine · Where the formula runs out">
+
+# The chapter ends. The loss landscape begins.
+
+Three things happened in this chapter, and they happened in a specific order, and the order is the point.
+
+*One.* We named the gaps. The vertical distance between a data point and a line is a *residual*. Looking at residuals out loud &mdash; on a chart, with their signs, with a running total &mdash; converted a vague aesthetic question ("what's the best line?") into a concrete numerical one ("what minimises this sum?").
+
+*Two.* We chose to square. The reasons were partly practical (smooth functions have derivatives everywhere) and partly probabilistic (squaring is the right penalty if the noise is Gaussian, which is a story we'll meet in the Distributions chapter). The choice was load-bearing. It made the loss a parabola; it made the minimum unique; it made the minimum solvable in one line of algebra.
+
+*Three.* We wrote down the answer. **&beta;** = (**X**<sup>T</sup>**X**)<sup>&minus;1</sup>**X**<sup>T</sup>**y**. That's the formula Legendre published in 1805 and Gauss had been using since 1795 to track asteroids. It's the formula that lives, in some form, inside every regression call in every statistics package ever shipped.
+
+And then in the last act, we showed it has a price.
+
+The price is that the formula only exists because SSE happens to be quadratic. Almost no other loss function is. Classification loss isn't. Neural network training loss certainly isn't &mdash; it's a horrible non-convex landscape with millions of basins. The moment your model gets more complicated than a line, or your loss gets more complicated than a square, you can't write down where the minimum is. You have to *find* it &mdash; iteratively, step by step, gradient by gradient.
+
+That's the picture on the left of the closing card. A wavy 1-D slice through a hostile loss surface, with a vermilion dot somewhere on a slope and an arrow gesturing downhill. That's where every later chapter starts. And the technique &mdash; following the gradient downhill until you reach a basin &mdash; was first written down (in something close to its modern form) by Augustin-Louis Cauchy in 1847, eighteen years after his eigenvalue paper, in a memoir titled *Méthode générale pour la résolution des systèmes d'équations simultanées*. He published it as a numerical method for solving equations, didn't make a big deal of it, and went on to other things.
+
+We'll spend the next chapter on it. Cauchy's method &mdash; *gradient descent* &mdash; is the engine that runs everything from logistic regression to GPT. It's slower, less elegant, and far more general than the closed form we have here. The price you pay for being able to handle anything is that you can never write the answer down.
+
+For now, though, you have one beautiful special case. A line. A perpendicular drop. A closed-form answer. The simplest learning algorithm there is.
+
+Next, the chapter where there is no formula.
+
+</Act>

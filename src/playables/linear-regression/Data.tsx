@@ -1,6 +1,6 @@
 import { CanvasNarrative } from '../../components/topic/CanvasNarrative'
 import { PlotAxes, ScatterDots } from './Axes'
-import { POINTS, VIEW_W, VIEW_H, PLOT_X0, PLOT_X1, PLOT_Y0, PLOT_Y1 } from './data'
+import { POINTS, VIEW_W, VIEW_H, PLOT_X0, PLOT_X1, PLOT_Y0, PLOT_Y1 } from './dataset'
 
 /**
  * Act 2 — the data.

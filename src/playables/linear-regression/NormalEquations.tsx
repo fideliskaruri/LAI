@@ -14,7 +14,7 @@ import {
   dataToSvgY,
   OLS,
   sse,
-} from './data'
+} from './dataset'
 
 /**
  * Act 7 — Normal equations.

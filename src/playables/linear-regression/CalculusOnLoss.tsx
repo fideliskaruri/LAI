@@ -17,7 +17,7 @@ import {
   dataToSvgY,
   sse,
   OLS,
-} from './data'
+} from './dataset'
 
 /**
  * Act 6 — derivative-finds-min. Right pane: SSE as a function of slope —

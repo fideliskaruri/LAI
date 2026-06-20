@@ -17,7 +17,7 @@ import {
   Y_MAX,
   dataToSvgX,
   dataToSvgY,
-} from './data'
+} from './dataset'
 
 /**
  * Act 9 — Higher-degree polynomial fits.

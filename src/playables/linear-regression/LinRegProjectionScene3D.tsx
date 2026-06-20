@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, type ReactElement } from 'react'
 import { Canvas, useFrame, type RootState } from '@react-three/fiber'
 import * as THREE from 'three'
 
@@ -79,7 +79,7 @@ function ColumnSpacePlane() {
 
 function PlaneGrid() {
   // Build a grid of lines on the xz plane manually for tight control.
-  const lines: JSX.Element[] = []
+  const lines: ReactElement[] = []
   const STEP = 0.5
   const HALF = 2
   for (let i = -HALF; i <= HALF; i += STEP) {
@@ -175,7 +175,7 @@ function ResidualSegment({
   const dashLen = total / (N * 2 - 1)
   const up = new THREE.Vector3(0, 1, 0)
   const quat = new THREE.Quaternion().setFromUnitVectors(up, dir.clone().normalize())
-  const dashes: JSX.Element[] = []
+  const dashes: ReactElement[] = []
   for (let i = 0; i < N; i++) {
     const tStart = (i * 2 * dashLen) / total
     const tMid = ((i * 2 + 0.5) * dashLen) / total

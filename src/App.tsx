@@ -9,6 +9,7 @@ import { Expectation } from './routes/topics/Expectation'
 import { Distributions } from './routes/topics/Distributions'
 import { Matrices } from './routes/topics/Matrices'
 import { Eigenvalues } from './routes/topics/Eigenvalues'
+import { LinearRegression } from './routes/topics/LinearRegression'
 import { Pca } from './routes/topics/Pca'
 import { Clustering } from './routes/topics/Clustering'
 import { Recall } from './routes/Recall'
@@ -30,6 +31,7 @@ export default function App() {
         <Route path="/distributions" element={<Distributions />} />
         <Route path="/matrices" element={<Matrices />} />
         <Route path="/eigenvalues" element={<Eigenvalues />} />
+        <Route path="/linear-regression" element={<LinearRegression />} />
         <Route path="/pca" element={<Pca />} />
         <Route path="/clustering" element={<Clustering />} />
         <Route path="/recall" element={<Recall />} />

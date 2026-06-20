@@ -20,7 +20,7 @@ import {
   svgYToData,
   sumAbsResiduals,
   sse,
-} from './data'
+} from './dataset'
 
 /**
  * Shared state model for acts 3–5. Both panes co-mutate (PLAN §5.2 sync
@@ -279,7 +279,6 @@ export function FitLineRightPane({ state, variant, onChange, figNum }: RightProp
   // length proportional to the absolute residual (in data units). To keep
   // them visible they're rendered with low opacity fill.
   const showSquares = variant === 'toggle' && state.mode === 'sq'
-  const showBars = variant === 'bars' || (variant === 'toggle' && state.mode === 'abs')
 
   // Compute residuals per point
   const residuals = POINTS.map((p) => {

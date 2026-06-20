@@ -1,7 +1,7 @@
 import { lazy, Suspense, useRef } from 'react'
 import { useNearViewport } from '../../hooks/useNearViewport'
 import { CanvasNarrative } from '../../components/topic/CanvasNarrative'
-import { PLOT_X0, PLOT_X1, PLOT_Y0, PLOT_Y1, VIEW_H, VIEW_W, OLS } from './data'
+import { PLOT_X0, PLOT_X1, PLOT_Y0, PLOT_Y1, VIEW_H, VIEW_W, OLS } from './dataset'
 
 /**
  * Act 8 — Projection interpretation.
