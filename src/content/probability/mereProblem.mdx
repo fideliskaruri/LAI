@@ -1,0 +1,27 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="mere-problem" eyebrow="Three · Méré's bet, rolled out">
+
+# The bet that nearly broke a chevalier
+
+Here's de Méré's first bet, the one he actually won money on for years: roll one die, four times, and bet on getting at least one six.
+
+You can almost feel for it the way he must have. One die. Each roll, you've got a one-in-six chance of a six. You roll it four times. *Surely* the chance is somewhere near $4/6$, two-thirds? It feels like a good bet.
+
+It is a good bet — but not for the reason you'd guess. The slider above lets you walk through one roll, two rolls, three rolls, four. Watch the vermilion strip grow. The probability isn't $4/6$. It's $1 - (5/6)^4$, which works out to about $0.518$. Just over half. The bet wins about fifty-two times out of a hundred. Over a long evening of gambling, that's enough to drain whoever's playing against you.
+
+The reasoning is *not* "add up the chances of a six on each roll." Adding probabilities works for *mutually exclusive* events — events that can't both happen — and the rolls aren't exclusive. You could get a six on roll one *and* roll three. Adding $1/6 + 1/6 + 1/6 + 1/6$ would double-count those worlds.
+
+The trick is to flip the question. Instead of asking "what's the chance of *at least one* six?", ask "what's the chance of *no* sixes?" That's easier, because "no sixes" means *every roll* shows a non-six, and the rolls are independent. The chance of no six on one roll is $5/6$. The chance of four no-sixes in a row is $(5/6) \times (5/6) \times (5/6) \times (5/6) = (5/6)^4 \approx 0.482$. So the chance of *at least one* six is $1 - 0.482 = 0.518$. The bet wins.
+
+So far, the chevalier is right and the math agrees with him.
+
+Where he came unstuck — and this is the thing I always have to remind myself, because the story gets garbled in retellings — was a *second* version of the bet. *Two dice, rolled twenty-four times, betting on at least one double-six.* He reasoned by analogy. A double-six on one roll has probability $1/36$. Multiply by 24 rolls and you get $24/36 = 2/3$. Same as the first bet, scaled up. *Right?*
+
+Run the same trick. The chance of *no* double-six on one roll is $35/36$. The chance of twenty-four no-double-sixes in a row is $(35/36)^{24} \approx 0.509$. So the chance of at least one double-six is $1 - 0.509 = 0.491$. *Below* one half. The bet loses.
+
+He was losing because the numbers don't scale the way intuition wants them to. $(1 - 1/6)^4$ and $(1 - 1/36)^{24}$ are not the same expression. The "equivalent" bets aren't equivalent. Pascal worked this out for him in those summer letters to Fermat, and the chevalier — to his credit — stopped placing the bet.
+
+I love this story because the math is simple but the reasoning is exactly the kind of slip that nobody, including very smart people, catches by gut. We're going to have to be careful about exactly this kind of thing for the rest of the chapter.
+
+</Act>

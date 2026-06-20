@@ -1,0 +1,29 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="conditional" eyebrow="Four · Probability under a constraint">
+
+# When you're told something
+
+So far we've been computing probabilities the way Pascal would, with no extra information. Roll two dice. What's the chance of a seven? Six out of thirty-six.
+
+Now imagine a friend rolls the dice and peeks at them, then tells you: *the first die came up four*. They don't tell you the second. What's the chance the sum is seven *now*?
+
+This is what *conditional probability* answers. The constraint handle above the grid lets you set the first die. Drag it. Cells where the first die isn't four go pale — they're not in our world anymore. They're worlds where the constraint isn't satisfied; we know we're not in them. Among the six cells that remain, exactly one — $(4, 3)$ — has a sum of seven. So the conditional probability is one in six.
+
+That number happens to equal the *unconditional* probability of seven, which is why this particular example sets up the next act. But the procedure is general. *Conditional probability* is just "probability inside a smaller sample space." You shrink the denominator from thirty-six to six, and you count matching outcomes among the survivors.
+
+The textbook formula writes this as
+
+$$
+P(A \mid B) = \frac{P(A \cap B)}{P(B)}
+$$
+
+— probability of A *given* B equals probability of A *and* B, divided by probability of B. The grid shows you exactly that: the numerator is the count of cells in the highlighted intersection (just $(4,3)$, so one cell, probability $1/36$); the denominator is the count of cells in the constraint (six cells, probability $6/36$); the ratio is $1/6$.
+
+Drag the handle to other values. Set the constraint to $d_1 = 6$. Now the surviving sample space is the rightmost column. The one cell in it that sums to seven is $(6,1)$. Probability is again $1/6$. Set it to $d_1 = 1$ — the surviving column is the leftmost; the seven-cell is $(1,6)$; again $1/6$.
+
+It's tempting at this point to say "well, the conditional probability never moves, so the constraint doesn't matter." That's exactly what we'll say in the next act, but only after sharpening up *which* events we're talking about. *Sum equals seven* is independent of *first die equals four*; but *sum equals four*, given that the first die is six, is impossible. (Drag and try it. The denominator is six; the numerator is zero.) Conditioning *can* change probabilities, sometimes dramatically. We just happened to pick an event where it doesn't.
+
+The right way to think about all this — and I had to repeat this to myself a few times before it stuck — is that the conditional probability isn't really *new* probability. It's the same probability, computed inside a smaller world. We threw out the cells we now know we're not in. Then we counted the survivors.
+
+</Act>

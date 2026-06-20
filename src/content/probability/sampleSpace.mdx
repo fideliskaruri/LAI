@@ -1,0 +1,21 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="sample-space" eyebrow="One · Everything that could happen">
+
+# The grid of all possible worlds
+
+Roll two dice. What can happen?
+
+The first die can come up 1, 2, 3, 4, 5, or 6. So can the second. Each combination is its own little world: first die 1, second die 1. First die 1, second die 2. And so on. Six choices on each side, so six times six is thirty-six little worlds. We line them up as a grid and label every one of them with its *sum*, because the sum is what gamblers actually bet on.
+
+That set of thirty-six possibilities is the *sample space*. It's a beautiful word — Kolmogorov, who finally axiomatized this in 1933, calls it Ω in his book and we still use that symbol — but it just means: everything that could happen. Every world that's consistent with the dice being rolled.
+
+The diagonal where the sum is seven glows in vermilion. There are six of those — (1,6), (2,5), (3,4), (4,3), (5,2), (6,1) — and they happen to be the most common sum. Try clicking around the grid. You can land on any single cell and look at it. Each one is exactly as likely as any other, because the dice are fair and the rolls are independent: there's no reason for the world to prefer (2,5) over (3,3).
+
+Once you can see the grid, you can answer almost anything by counting. *What's the chance of rolling a seven?* Count the vermilion cells — six — and divide by all thirty-six. That's $6/36$, which is $1/6$. Roughly seventeen percent, written as the more concrete fraction "one in six." *What's the chance of doubles?* Count the diagonal: (1,1), (2,2), all the way to (6,6). Six cells. Also $1/6$.
+
+I find this strange every time I look at it. Doubles and sevens are equally likely — both one chance in six. Sevens *feel* more common because there are more *kinds* of sums that make them. But the grid doesn't lie. There are six cells in each event. Same odds.
+
+This is the whole engine of the chapter: probability is a *ratio of counts* over the sample space. Everything that follows is just learning to pick out the right counts for trickier questions.
+
+</Act>

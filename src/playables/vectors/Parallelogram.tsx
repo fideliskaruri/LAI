@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useDrag } from '@use-gesture/react'
 import { CanvasNarrative } from '../../components/topic/CanvasNarrative'
 import { useKeyNudge } from '../../hooks/useKeyNudge'
+import { clamp, MATH_X_MAX, MATH_X_MIN, MATH_Y_MAX, MATH_Y_MIN } from '../../lib/math'
 
 /**
  * Addition act: two arrows v and w, parallelogram completes itself.
@@ -44,6 +45,7 @@ export function Parallelogram() {
   const wRef = useRef<SVGGElement | null>(null)
   const [v, setV] = useState({ x: 3, y: 1 })
   const [w, setW] = useState({ x: 1, y: 2 })
+  const [dragging, setDragging] = useState(false)
   const startVRef = useRef<typeof v | null>(null)
   const startWRef = useRef<typeof w | null>(null)
 
@@ -53,15 +55,17 @@ export function Parallelogram() {
     return { sx: VIEW_W / rect.width, sy: VIEW_H / rect.height }
   }
 
-  const bindV = useDrag(({ first, movement: [mx, my] }) => {
+  const bindV = useDrag(({ first, down, movement: [mx, my] }) => {
     if (first) startVRef.current = { ...v }
+    setDragging(down)
     const start = startVRef.current
     if (!start) return
     const { sx, sy } = scale()
     setV({ x: start.x + (mx * sx) / UNIT, y: start.y - (my * sy) / UNIT })
   })
-  const bindW = useDrag(({ first, movement: [mx, my] }) => {
+  const bindW = useDrag(({ first, down, movement: [mx, my] }) => {
     if (first) startWRef.current = { ...w }
+    setDragging(down)
     const start = startWRef.current
     if (!start) return
     const { sx, sy } = scale()
@@ -76,13 +80,19 @@ export function Parallelogram() {
   useKeyNudge(
     vRef,
     useCallback((dx: number, dy: number) => {
-      setV((cur) => ({ x: cur.x + nudgeAmount(dx), y: cur.y + nudgeAmount(dy) }))
+      setV((cur) => ({
+        x: clamp(cur.x + nudgeAmount(dx), MATH_X_MIN, MATH_X_MAX),
+        y: clamp(cur.y + nudgeAmount(dy), MATH_Y_MIN, MATH_Y_MAX),
+      }))
     }, []),
   )
   useKeyNudge(
     wRef,
     useCallback((dx: number, dy: number) => {
-      setW((cur) => ({ x: cur.x + nudgeAmount(dx), y: cur.y + nudgeAmount(dy) }))
+      setW((cur) => ({
+        x: clamp(cur.x + nudgeAmount(dx), MATH_X_MIN, MATH_X_MAX),
+        y: clamp(cur.y + nudgeAmount(dy), MATH_Y_MIN, MATH_Y_MAX),
+      }))
     }, []),
   )
 
@@ -92,9 +102,19 @@ export function Parallelogram() {
   const W = { x: ORIGIN_X + w.x * UNIT, y: ORIGIN_Y - w.y * UNIT }
   const SUM = { x: ORIGIN_X + (v.x + w.x) * UNIT, y: ORIGIN_Y - (v.y + w.y) * UNIT }
 
-  // Degenerate test — parallel if cross product ~ 0
+  // Degenerate test — parallel if cross product ~ 0.
+  // Hysteresis: enter when |cross| < 0.08, exit only when |cross| > 0.15,
+  // so a tip dragged right along the boundary doesn't flutter the
+  // high-priority announcement on every other frame.
   const cross = v.x * w.y - v.y * w.x
-  const degenerate = Math.abs(cross) < 0.08
+  const absCross = Math.abs(cross)
+  const degenerateRef = useRef<boolean>(absCross < 0.08)
+  if (degenerateRef.current) {
+    if (absCross > 0.15) degenerateRef.current = false
+  } else {
+    if (absCross < 0.08) degenerateRef.current = true
+  }
+  const degenerate = degenerateRef.current
 
   const headV = arrowHead(O, V)
   const headW = arrowHead(O, W)
@@ -129,7 +149,7 @@ export function Parallelogram() {
 
   return (
     <figure className="w-full">
-      <CanvasNarrative text={narration.text} priority={narration.priority} />
+      <CanvasNarrative text={narration.text} priority={narration.priority} isInteracting={dragging} />
       <svg
         ref={svgRef}
         viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}

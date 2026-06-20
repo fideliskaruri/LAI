@@ -1,0 +1,19 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="pure-scale-and-shear" eyebrow="Five · Stretching and tilting">
+
+# Scale, shear
+
+Two more basic motions, each with its own slider.
+
+The first slider — *k* — is uniform scale. When *k* is 2, î doubles in length and so does ĵ; the whole grid stretches by a factor of two. When *k* is 0.5, everything halves. When *k* is negative, the plane flips through the origin. When *k* is zero, the whole plane crushes to a single point at the origin. (Try it. The arrows vanish; the readout marks the collapse.) A uniform scale is the simplest transformation that doesn't keep areas — areas grow as `k²`.
+
+The second slider — *s* — is *shear*. A shear is a strange motion: it leaves î completely alone, sitting where it was at (1, 0), but it tilts ĵ to the side. With *s* set to 0.5, ĵ goes from (0, 1) to (0.5, 1) — it slants to the right while staying the same vertical height. The grid gets *raked over* like wheat in a wind.
+
+Slide *s* and watch what happens to the unit square. It turns into a parallelogram. Crucially, its base and its height haven't changed — and the area of a parallelogram is base times height, regardless of how slanted it is. So a pure shear *does* preserve areas, even though it bends every shape inside the plane.
+
+(This is the move that runs the engineering of shear in materials science, the visual deformation of a font being italicised, and — eventually — the way a neural network deforms its input space layer by layer.)
+
+Try both sliders at once. Scale by 1.5, shear by 0.3. The matrix updates. The grid shows the combined effect. The pattern that emerges: any 2 by 2 matrix can be built from these elementary motions — rotations, scales, shears — composed together. That's a real theorem (the QR or SVD decomposition, depending on which book you read). For now it's enough to recognize that *every* matrix is some combination of these moves.
+
+</Act>

@@ -1,0 +1,19 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="random-init" eyebrow="Two · Start anywhere">
+
+# Three guesses on the plane
+
+We need to start somewhere. So: we start somewhere.
+
+On the left, three diamond-shaped marks have been dropped on the plane. These are our *centers* &mdash; our guesses at where the three clusters live. They are not in good places. They were placed by an indifferent random choice. In a real implementation you'd write `centroids = random.sample(points, k)` or something close to it; the spirit is the same. You guess, you don't worry about whether you guessed well, and you let the algorithm fix it for you.
+
+Each point on the plane has been quietly coloured by *the nearest center*. If a point is closer to the vermilion center than to either of the others, it's vermilion. The faint background tint shows the same idea spatially: each region of the plane is shaded by which center is closest to that region. Mathematicians call these regions *Voronoi cells* (after Georgy Voronoi, who wrote about them in 1908). Geographers have used the same construction since the cholera maps of the 1850s &mdash; "which water pump is closest to this address" is exactly the same question.
+
+Try it: drag any of the three centers.
+
+The colours follow you in real time. Move the vermilion center across the plane and watch a column of points flip from vermilion to blue. The boundaries are *exactly* the perpendicular bisectors between pairs of centers &mdash; nothing fancier than middle-school geometry once you write it out.
+
+So already, with no algorithm at all, just *be closest to a center*, we have a clustering. It's a *bad* clustering &mdash; the centers are in silly places, the cluster sizes are uneven, the colours don't line up with what your eye saw. But it is a clustering. The next two acts will turn it into a good one.
+
+</Act>

@@ -2,6 +2,7 @@ import { useCallback, useState, useRef } from 'react'
 import { useDrag } from '@use-gesture/react'
 import { CanvasNarrative } from '../../components/topic/CanvasNarrative'
 import { useKeyNudge } from '../../hooks/useKeyNudge'
+import { clamp, MATH_X_MAX, MATH_X_MIN, MATH_Y_MAX, MATH_Y_MIN } from '../../lib/math'
 
 /**
  * Descartes act: an empty coordinate plane. Click anywhere to drop a point;
@@ -36,6 +37,7 @@ export function CoordinatePlane() {
     sx: ORIGIN_X + 3 * UNIT,
     sy: ORIGIN_Y - 2 * UNIT,
   })
+  const [dragging, setDragging] = useState(false)
 
   const onCanvasClick = (e: React.MouseEvent<SVGSVGElement>) => {
     // Only if the click hit the background (not the point itself)
@@ -48,9 +50,10 @@ export function CoordinatePlane() {
   }
 
   const startPosRef = useRef<{ sx: number; sy: number } | null>(null)
-  const bindPoint = useDrag(({ first, movement: [mx, my] }) => {
+  const bindPoint = useDrag(({ first, down, movement: [mx, my] }) => {
     if (!point) return
     if (first) startPosRef.current = { sx: point.sx, sy: point.sy }
+    setDragging(down)
     const origin = startPosRef.current
     if (!origin) return
     const rect = svgRef.current?.getBoundingClientRect()
@@ -72,7 +75,10 @@ export function CoordinatePlane() {
         const dxPx = dx === 0 ? 0 : isShiftX ? Math.sign(dx) * 50 : Math.sign(dx) * 5
         // Up arrow → dy > 0 → screen y should decrease
         const dyPx = dy === 0 ? 0 : isShiftY ? -Math.sign(dy) * 50 : -Math.sign(dy) * 5
-        return { sx: cur.sx + dxPx, sy: cur.sy + dyPx }
+        // Clamp resulting math coords into the visible plane.
+        const nextSx = clamp(cur.sx + dxPx, ORIGIN_X + MATH_X_MIN * UNIT, ORIGIN_X + MATH_X_MAX * UNIT)
+        const nextSy = clamp(cur.sy + dyPx, ORIGIN_Y - MATH_Y_MAX * UNIT, ORIGIN_Y - MATH_Y_MIN * UNIT)
+        return { sx: nextSx, sy: nextSy }
       })
     }, []),
   )
@@ -84,6 +90,7 @@ export function CoordinatePlane() {
       {coords && (
         <CanvasNarrative
           text={`Point at coordinates (${coords.mx.toFixed(2)}, ${coords.my.toFixed(2)}).`}
+          isInteracting={dragging}
         />
       )}
       <svg

@@ -1,0 +1,27 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="the-problem" eyebrow="One · Points without labels">
+
+# Three clusters, no colours
+
+Look at the scatter on the left.
+
+How many groups do you see?
+
+You almost certainly answered *three* in something like a fifth of a second. There's a group bottom-left, a group at the top, a group bottom-right. You didn't have to think about it. The visual system of a human being is *built* to do this &mdash; segmenting a field of objects into pieces by proximity and similarity is one of the oldest jobs of vision, older than language, older than tool-making. The Gestalt psychologists called it *grouping by proximity* in 1923 and it was an old observation even then.
+
+Now imagine handing the same picture to a computer.
+
+The computer has thirty pairs of numbers. That's it. Thirty `(x, y)` tuples in a list. It has no eyes, no Gestalt principles, no concept of "obvious." It cannot just *look*.
+
+What would you tell it to do?
+
+You could tell it: *find the points that are close to each other and put them together.* That sounds right, but it isn't yet an algorithm. Close how? Compared to what? Where do you start?
+
+You could tell it: *here are some places where I think the centers of the clusters might be, now figure it out from there.* This is the move Lloyd made in 1957. It turns out to be enough.
+
+The next four acts walk through what that move looks like. We'll drop three guesses on the plane. We'll assign every point to its nearest guess. We'll move each guess to the middle of the points that picked it. Then we'll do it again. And again. Until nothing moves.
+
+The points have a name in the literature: *observations*. The guesses have a name too: *centroids*. We'll mostly say *centers* in this chapter and switch to centroid when the math wants the word.
+
+</Act>

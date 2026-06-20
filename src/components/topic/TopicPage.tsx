@@ -44,15 +44,24 @@ export function TopicPage({ topicId: _topicId, topicName, acts, canvas, children
   const currentActIndex = Math.max(0, acts.findIndex((a) => a.id === currentActId))
   const currentActNumber = currentActIndex + 1
 
-  // Overflow popover (PLAN §5.8) — local UI state only.
+  // Overflow popover (PLAN §5.8) — local UI state only. We keep a ref to the
+  // `⋯` trigger so HeaderPopover can restore focus to it on close (Escape,
+  // outside click, item activation) per the WAI-ARIA menu pattern.
   const [popoverOpen, setPopoverOpen] = useState(false)
+  const popoverTriggerRef = useRef<HTMLButtonElement | null>(null)
   // Toast for the Share action (PLAN §5.10). Held as state so the user gets
   // a visible "Link copied" pip near the anchor.
   const [shareToastVisible, setShareToastVisible] = useState(false)
   const shareToastTimer = useRef<number | null>(null)
-  // Reduced-motion override — local to the session per spec; resets on reload.
-  // We track this in React state so the popover item label can flip.
-  const [reducedMotionOverride, setReducedMotionOverride] = useState(false)
+  // Reduced-motion override — persists for the session on the <html> element.
+  // Initialize from the DOM (lazy initializer) so navigating away from /vectors
+  // and back doesn't desync the toggle's label from the actual data-attr.
+  // We intentionally do NOT clear the attribute on unmount: the override is
+  // session-scoped, and any new TopicPage mount must reflect the live DOM state.
+  const [reducedMotionOverride, setReducedMotionOverride] = useState<boolean>(() => {
+    if (typeof document === 'undefined') return false
+    return document.documentElement.dataset.reducedMotion === 'true'
+  })
 
   useEffect(() => {
     return () => {
@@ -123,6 +132,7 @@ export function TopicPage({ topicId: _topicId, topicName, acts, canvas, children
             on desktop; the popover itself drops to a bottom-sheet below 900px. */}
         <div className="relative pointer-events-auto">
           <button
+            ref={popoverTriggerRef}
             type="button"
             className="font-sans text-[18px] text-dim hover:text-vermilion px-2"
             aria-label="More options"
@@ -135,6 +145,7 @@ export function TopicPage({ topicId: _topicId, topicName, acts, canvas, children
           <HeaderPopover
             open={popoverOpen}
             onClose={() => setPopoverOpen(false)}
+            triggerRef={popoverTriggerRef}
             items={[
               {
                 icon: '↗',

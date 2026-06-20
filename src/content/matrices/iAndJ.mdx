@@ -1,0 +1,23 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="i-and-j" eyebrow="One · The two arrows">
+
+# î and ĵ
+
+Look at the plane on the left. Two short vermilion arrows sit at the origin. The one pointing right, one unit long, is called î (pronounced *eye-hat*). The one pointing up, also one unit long, is called ĵ (*jay-hat*). Together they're the *standard basis* — the standard pair of arrows we use as reference for everything else.
+
+Here's the trick that runs the rest of this chapter: every other point in the plane can be described as a combination of these two.
+
+Take the third arrow on the diagram — the longer one, pointing up and to the right. It ends at the point (3, 2). Which means: it's the same as walking three steps along î and then two steps along ĵ. Or as math people prefer to write it, it equals `3·î + 2·ĵ`.
+
+That's a *linear combination*. Multiply each basis vector by some number; add the results.
+
+If we changed the numbers — said *2·î + 4·ĵ* instead — we'd end up at a different point. But the recipe is the same kind of recipe. *Some of î, plus some of ĵ.*
+
+So the plane has this hidden structure. Every point is secretly an instruction: how much î, how much ĵ. The pair of numbers (3, 2) is the instruction for getting to that particular arrow's tip. Every other point you can name has a pair of numbers like this; the whole plane is, in this sense, just a giant lookup table from coordinate pairs to combinations of î and ĵ.
+
+The choice of which two arrows to call î and ĵ is, in principle, arbitrary. We've picked the obvious pair — right and up — because that's what makes the grid lines line up nicely with the page. But you could have picked any two arrows, as long as they didn't point in the same direction, and used those instead. The recipe would still work; you'd just be measuring in a different language.
+
+That's the part of the story that's familiar from a school geometry class. Here's the part that isn't, and it's the part Cayley was after: *what if we moved î and ĵ themselves?*
+
+</Act>

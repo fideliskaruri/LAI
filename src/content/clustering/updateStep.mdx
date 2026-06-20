@@ -1,0 +1,25 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="update-step" eyebrow="Four · Each king walks to the center of its kingdom">
+
+# The update step
+
+Press step again.
+
+The three centers just jumped. Each one moved to a new spot &mdash; specifically, to the *mean* of the points that belong to it. Add up all the `x` coordinates of the vermilion points and divide by how many there are. Add up all the `y` coordinates and divide by how many there are. That pair of numbers is the new vermilion center. Same for blue, same for olive.
+
+This is the *update step*. In the EM literature it's called the *maximization step*, but here it's just an average.
+
+> For every center $\boldsymbol{\mu}_k$, set $\boldsymbol{\mu}_k$ to the mean of the points assigned to it.
+
+Now keep pressing step. You're alternating between assigning points to their nearest center, then moving each center to the mean of its assigned points. Watch the counter: each pair of moves is *one Lloyd iteration*. Watch the *drift* readout: the total distance the centers moved on the last update. Each step it shrinks. Each step it shrinks. Each step it shrinks.
+
+When the drift goes essentially to zero, you've *converged*. The centers have settled in places where moving them wouldn't change anything &mdash; the points they would re-assign are still the points they already have, and the mean of those points is exactly where the center already sits. A fixed point.
+
+You can prove this loop *always* converges. Here's the argument in one breath: every step either lowers a quantity called the *inertia* (the sum of squared distances from each point to its assigned center) or leaves it unchanged. Inertia can't go below zero. There are only finitely many ways to partition thirty points into three groups. Therefore the process must stop.
+
+What you cannot prove is that the place it stops is the *best* place it could have stopped. That's the next act.
+
+Press "Run to convergence" to fast-forward. Watch what stillness looks like.
+
+</Act>

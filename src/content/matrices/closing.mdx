@@ -1,0 +1,25 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="closing" eyebrow="Six · The determinant, briefly">
+
+# The area of the parallelogram
+
+Look at the diagram on the left one more time. The dashed square at the origin is the unit square — the little patch of plane bounded by the original î and ĵ. The vermilion parallelogram is what that square becomes under the current matrix.
+
+That parallelogram has an area. As you drag î and ĵ, the area changes. The readout calls that area the *determinant*.
+
+There's nothing mysterious about it. The determinant of a 2 by 2 matrix is exactly the area of the parallelogram you get by transforming the unit square. If the matrix doubles every length, the area quadruples and the determinant is 4. If the matrix is a rotation, lengths and angles are preserved, the parallelogram is still a unit square, and the determinant is 1.
+
+If the determinant is *negative*, the matrix has flipped the plane — like turning a piece of paper face-down. The "area" picks up a sign to record that.
+
+And if the determinant is *zero* — try it; drag î onto ĵ — the parallelogram collapses to a line. The matrix has crushed the plane into a single dimension. It can't be undone; there's no way to recover where the original square came from.
+
+That's the trapdoor of linear algebra. Matrices with zero determinant are exactly the ones you can't *invert* — exactly the ones that lose information. The whole theory of when a linear system has a unique solution comes down to this one number.
+
+We're going to leave it here for now. But there's one more question hanging in the air, and it's the question Cauchy was asking thirty years before Cayley, in 1829: *are there any directions a given matrix doesn't bend*? Any arrows it just stretches without rotating?
+
+There are. They're called *eigenvectors*. They're how every machine that learns finds the axes that matter.
+
+That's the next chapter.
+
+</Act>

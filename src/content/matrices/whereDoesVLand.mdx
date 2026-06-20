@@ -1,0 +1,25 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="where-does-v-land" eyebrow="Three · Where does v land?">
+
+# v rides along
+
+I've added one more arrow to the scene — a vector v with the recipe `1.5·î + 2·ĵ`. The dashed ghost in the background shows where v *used to be* when î and ĵ were in their standard positions.
+
+Now drag î or ĵ. Notice that v moves too. It has to.
+
+Because v isn't really a point on the plane — v is *that recipe*. One-and-a-half steps along î, then two steps along ĵ. When you change what î and ĵ mean, the recipe still says the same thing, but the destination is somewhere new.
+
+Watch the readout. As you drag, you can see the calculation happening:
+
+`Mv = (m₀₀ · vₓ + m₀₁ · v_y, m₁₀ · vₓ + m₁₁ · v_y)`
+
+That long formula — which on first encounter looks like the kind of thing you'd memorize and resent — is actually saying something simple. The new position of v is *vₓ copies of the new î* plus *v_y copies of the new ĵ*. The first coordinate of the answer comes from the top row of the matrix; the second from the bottom row.
+
+That's matrix-vector multiplication. The only thing it does is play out the recipe under a new basis.
+
+So if you want to know what *any* matrix does to *any* vector, you don't need to compute. You just need to see where î goes (the matrix's left column), where ĵ goes (the right column), and follow the recipe. Everything else is downhill from there.
+
+(This is the move that lets you read a matrix as a *thing*. From here on, matrices won't be tables of numbers — they'll be motions you can recognize.)
+
+</Act>

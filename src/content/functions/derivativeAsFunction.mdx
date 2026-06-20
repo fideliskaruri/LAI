@@ -1,0 +1,31 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="derivative-as-function" eyebrow="Six · A new function falls out">
+
+# The slope is a function of its own
+
+There's the parabola, top panel. There's a draggable point on it, with a small vermilion tangent arrow at the point. Below it, an empty pair of axes — same x-axis, different y.
+
+Drag the point.
+
+As you move along the curve, the slope at each x is plotted, *down there*, on the bottom panel. The tangent arrow at the top is the slope; the dot on the bottom is the *value* of that slope. Move slowly enough and you'll see the bottom panel draw itself out as a perfectly straight line, climbing through the origin at forty-five degrees.
+
+That line is the function `f'(x) = 2x`. Pronounced "f prime of x." The little tick mark on the top of the `f` is the notation Lagrange settled on in the 1790s after a lot of competing conventions — Newton used dots, Leibniz used `dy/dx`, Lagrange used the prime. We use all three depending on context. The dy/dx form is the most expressive; the prime is the most compact.
+
+`f'` is called the *derivative* of `f`. It is a brand new function — a new machine. You feed it the same input you'd feed `f`, but instead of giving you `f`'s value at that point, it gives you `f`'s *slope* at that point.
+
+So for `f(x) = x²` we get `f'(x) = 2x`. The slope of `x²` at `x = 1` is `2`. At `x = 1.5` it's `3`. At `x = -2` it's `-4`. The slope of the parabola — viewed across all x's at once — is itself a *line*.
+
+(That's a clean little fact I find genuinely delightful. A parabola, which curves, has a derivative that doesn't. The "curvy-ness" lives entirely in the original function; the rate of change is plain old linear. Underneath every curve there's a simpler function describing how it's bending.)
+
+This move — *take a function, hand back its slope as a new function* — is the engine of calculus. The next chapter is about it almost exclusively. We'll do it for other functions, learn the rules that make it mechanical, and watch the surprising things that fall out. The derivative of a sine wave turns out to be a cosine wave. The derivative of `e^x` is itself, which is the strangest fact in math, and Euler discovered it. The derivative of a constant is zero, which is obvious as soon as you've thought about it for ten seconds.
+
+You came in worrying about how Galileo could measure speed at an instant. We can now answer him.
+
+If position is a function of time — `position(t)` — then its derivative `position'(t)` is the *speed* at time t. Not the average speed over an interval. *The speed right now.* The whole thing fell out of pulling two points together until they merged.
+
+Galileo never got to see this. He died in 1642, the same year Newton was born. The math he needed showed up about thirty years too late for him. But everything we do now in physics, in optimization, in training a neural network by following slopes downhill — all of it starts with the move you just made: drag B toward A; the secant becomes a tangent; the slope at a point exists; it changes with x; that change is itself a function; we call it the derivative; we go from there.
+
+Next chapter.
+
+</Act>

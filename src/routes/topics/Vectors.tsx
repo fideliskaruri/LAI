@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { TopicPage, type ActDef } from '../../components/topic/TopicPage'
 import { Act } from '../../components/topic/Act'
 import { ChapterFooter } from '../../components/topic/ChapterFooter'
+import { Recall } from '../../components/recall/RecallCard'
 
 // Playables
 import { ColdOpenScene } from '../../playables/vectors/ColdOpenScene'
@@ -53,6 +54,7 @@ const acts: ActDef[] = [
 
 const mdxComponents = {
   Act,
+  Recall,
   a: (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
     const href = props.href ?? ''
     if (href.startsWith('/')) {

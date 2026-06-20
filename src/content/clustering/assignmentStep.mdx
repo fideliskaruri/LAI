@@ -1,0 +1,23 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="assignment-step" eyebrow="Three · Each point joins its nearest king">
+
+# The assignment step
+
+Lloyd's algorithm has two moves. We are going to do them one at a time, painfully slowly, until they feel obvious. Press the step button on the left.
+
+What just happened: every point looked at the three centers, computed the distance to each one, picked the smallest, and joined that cluster. The vermilion lines you saw flash for a moment are *the actual decisions*. A line from each point to the center it picked. They fade because the moment doesn't last &mdash; once each point has a colour, you don't need to keep showing how it got chosen.
+
+This is the *assignment step*. Sometimes called the *expectation step* by analogy with the more general EM algorithm we'll meet next chapter. The mathematical statement is brief enough to fit in a single line:
+
+> For every point $\mathbf{x}_i$, set its label $c_i$ to the index of the closest center.
+
+In code that's a nested loop. For each point, scan the centers, track the minimum. Done. With thirty points and three centers, that's ninety distance computations &mdash; the kind of thing your laptop does in microseconds. With thirty million points and three thousand centers, the same operation needs a smarter data structure (k-d trees, mini-batches, GPU kernels), but the *idea* doesn't change.
+
+Notice what the assignment step did *not* do.
+
+It didn't move the centers. They're sitting in the same silly places we put them. All we did was paint the points. The points themselves are still where they were &mdash; this is data, it doesn't move &mdash; and the centers haven't responded yet. The centers are still wrong. They're just wrong-with-coloured-followers now instead of wrong-with-no-followers.
+
+That's the cliffhanger. The next act fixes it.
+
+</Act>

@@ -2,6 +2,7 @@ import { useCallback, useRef, useState } from 'react'
 import { useDrag } from '@use-gesture/react'
 import { CanvasNarrative } from '../../components/topic/CanvasNarrative'
 import { useKeyNudge } from '../../hooks/useKeyNudge'
+import { clamp, MATH_X_MAX, MATH_X_MIN, MATH_Y_MAX, MATH_Y_MIN } from '../../lib/math'
 
 /**
  * Arrow act: a single arrow rooted at a base. Drag the tip — components
@@ -36,6 +37,7 @@ export function DraggableArrow() {
   const [components, setComponents] = useState({ x: 3, y: 2 })
   // Which interaction was most recently active; drives narrative.
   const [lastTouched, setLastTouched] = useState<'tip' | 'shaft' | null>(null)
+  const [dragging, setDragging] = useState(false)
 
   const baseStart = useRef<typeof base | null>(null)
   const compStart = useRef<typeof components | null>(null)
@@ -47,11 +49,12 @@ export function DraggableArrow() {
   }
 
   // Drag the tip: update components
-  const bindTip = useDrag(({ first, movement: [mx, my] }) => {
+  const bindTip = useDrag(({ first, down, movement: [mx, my] }) => {
     if (first) {
       compStart.current = { ...components }
       setLastTouched('tip')
     }
+    setDragging(down)
     const start = compStart.current
     if (!start) return
     const { sx, sy } = scale()
@@ -62,11 +65,12 @@ export function DraggableArrow() {
   })
 
   // Drag the shaft: update base only (components frozen)
-  const bindShaft = useDrag(({ first, movement: [mx, my] }) => {
+  const bindShaft = useDrag(({ first, down, movement: [mx, my] }) => {
     if (first) {
       baseStart.current = { ...base }
       setLastTouched('shaft')
     }
+    setDragging(down)
     const start = baseStart.current
     if (!start) return
     const { sx, sy } = scale()
@@ -87,22 +91,37 @@ export function DraggableArrow() {
     tipRef,
     useCallback((dx: number, dy: number) => {
       setLastTouched('tip')
-      setComponents((cur) => ({
-        x: cur.x + nudgeAmount(dx),
-        y: cur.y + nudgeAmount(dy),
-      }))
-    }, []),
+      setComponents((cur) => {
+        const nextX = cur.x + nudgeAmount(dx)
+        const nextY = cur.y + nudgeAmount(dy)
+        // Tip = base + components must stay in visible plane. Clamp the tip
+        // position, then back-solve components from the current base.
+        const tipX = clamp(base.x + nextX, MATH_X_MIN, MATH_X_MAX)
+        const tipY = clamp(base.y + nextY, MATH_Y_MIN, MATH_Y_MAX)
+        return { x: tipX - base.x, y: tipY - base.y }
+      })
+    }, [base.x, base.y]),
   )
 
   useKeyNudge(
     shaftRef,
     useCallback((dx: number, dy: number) => {
       setLastTouched('shaft')
-      setBase((cur) => ({
-        x: cur.x + nudgeAmount(dx),
-        y: cur.y + nudgeAmount(dy),
-      }))
-    }, []),
+      setBase((cur) => {
+        const nextX = cur.x + nudgeAmount(dx)
+        const nextY = cur.y + nudgeAmount(dy)
+        // Translating the shaft moves both base and tip rigidly; both must
+        // stay on-canvas, so allowable base range tightens by the components.
+        const baseXMin = MATH_X_MIN - Math.min(0, components.x)
+        const baseXMax = MATH_X_MAX - Math.max(0, components.x)
+        const baseYMin = MATH_Y_MIN - Math.min(0, components.y)
+        const baseYMax = MATH_Y_MAX - Math.max(0, components.y)
+        return {
+          x: clamp(nextX, baseXMin, baseXMax),
+          y: clamp(nextY, baseYMin, baseYMax),
+        }
+      })
+    }, [components.x, components.y]),
   )
 
   // SVG coords for base + tip
@@ -134,7 +153,7 @@ export function DraggableArrow() {
 
   return (
     <figure className="w-full">
-      <CanvasNarrative text={narrationText} />
+      <CanvasNarrative text={narrationText} isInteracting={dragging} />
       <svg
         ref={svgRef}
         viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}

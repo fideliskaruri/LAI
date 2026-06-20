@@ -1,0 +1,23 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="cold-open" eyebrow="Zero · Lloyd · Bell Labs · 1957">
+
+# A memo nobody read for twenty-five years
+
+In the summer of 1957, a young mathematician at Bell Telephone Laboratories named Stuart Lloyd typed up a manuscript about telephones.
+
+The problem he was solving had nothing to do with what we now use his algorithm for. Bell Labs was building pulse-code modulation systems &mdash; the technology that would let the telephone network carry voice as digital samples. Each sample was a number, and each number had to be rounded to one of a small set of allowed levels so the line could carry it. *Quantization.* Lloyd's question: where should you put those allowed levels, to minimize the average rounding error?
+
+He worked out the answer. You put each level at the mean of all the signal samples closest to it. Then you re-assign every sample to its closest level. Then you move the levels again. You keep going until the levels stop moving.
+
+It worked beautifully. He wrote it up. He filed it as an internal memo, document MM-57-1127-12.
+
+And it sat there.
+
+Lloyd never got around to publishing. The memo circulated inside Bell Labs and got reprinted in academic libraries by people who heard about it from people who knew Lloyd. In 1965 Edward Forgy independently rediscovered the same algorithm in a biology paper. In 1967 James MacQueen independently rediscovered it again at Berkeley and coined the name *k-means*. Only in 1982, twenty-five years after Lloyd wrote it down, did *Lloyd's algorithm* finally appear in print &mdash; in the IEEE Transactions on Information Theory.
+
+By that point, half of statistics had been using it for fifteen years without knowing whose it was.
+
+What Lloyd invented for telephone signals turns out to be one of the most-used algorithms in all of data analysis. The thing on your left is its title page. The thing in the rest of this chapter is what it does.
+
+</Act>

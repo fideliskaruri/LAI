@@ -1,0 +1,25 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="slope" eyebrow="Three · The line and its slope">
+
+# A straight line, everywhere the same
+
+Here's a linear function: `f(x) = ½ x + 1`. It crosses the y-axis at one and goes up gently. Two dots on it. A chord between them.
+
+Drag either dot.
+
+Watch the readout. The chord's slope — *rise over run*, the vertical distance divided by the horizontal distance — stays put. It is always one half. No matter how far apart the dots are, no matter where on the line you slide them, the answer is the same number.
+
+This is the defining property of a linear function. *Constant slope.* Walk one unit to the right, you go up one half of a unit. Always. Every step is the same step.
+
+The number we keep computing — rise over run — has a few names. *Slope.* *Gradient*, in some textbooks. *Rate of change.* For a linear function it's all the same thing. We'll stick with "slope" for now and earn the other names later.
+
+A small thing worth noticing. The rise-over-run computation we just did is the *average* rate of change between two points. Average, here, because we only know the values at the endpoints — we're not asking what happens in between. But for a linear function the average is the same as the value at any single point, because the rate doesn't vary. The average and the instantaneous answer coincide, by accident of how a line is defined.
+
+That's not going to be true for anything else.
+
+Why care? Because *linear* is the most boring case, and it's also the case we understand best. Almost everything we'll do in machine learning starts by pretending things are linear (in a small neighborhood, at least) and then fixing the error. Linear regression literally fits a line to data. The first layer of a neural network is a linear function followed by a wiggle. Gradient descent walks downhill *as if the landscape were a plane locally*. The line is the thing we'll keep coming back to.
+
+But for now: a line has the same slope everywhere. Move the dots. Convince yourself. Then we'll bend the line into a curve and see what breaks.
+
+</Act>

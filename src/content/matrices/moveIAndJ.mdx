@@ -1,0 +1,21 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="move-i-and-j" eyebrow="Two · Move them">
+
+# The grid follows
+
+Grab one of the basis vectors on the left and drag it. Watch what happens to the whole plane.
+
+Every grid line bends to keep its relationship to the new î and ĵ. The transformed grid is what the original grid would have been, *if î and ĵ had always been there*.
+
+Now look at the four numbers in the top-left readout. As you drag, they update — they're the coordinates of the new î (left column) and the new ĵ (right column). Two columns of two numbers each. That's a 2 by 2 matrix.
+
+Here's the secret Cayley was sitting on: *that matrix is the transformation*. Not a description of it. Not a way of computing it. The matrix and the transformation are the same object, looked at from two different angles. The columns of the matrix are literally the new positions of î and ĵ.
+
+So when someone hands you a 2 by 2 matrix — any four numbers in a grid — they're handing you a deformation of the plane. The first column tells you where î went; the second column tells you where ĵ went. That's it. There's nothing else.
+
+Try dragging the two arrows on top of each other. Watch the grid collapse. The whole plane is being squashed onto a single line — which is to say, two basis vectors that point the same direction no longer span a plane, they only span a line. The matrix corresponding to that has a special property: its determinant is zero. We'll come back to that at the end.
+
+For now, just play. Get a feel for which numbers in the matrix correspond to which parts of the deformation.
+
+</Act>

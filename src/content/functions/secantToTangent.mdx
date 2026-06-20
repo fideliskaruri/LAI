@@ -1,0 +1,29 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="secant-to-tangent" eyebrow="Five · The trick">
+
+# Bring the points together
+
+The trick is this. We can't compute the slope at a single point. But we *can* compute the slope between two points. And if we make the two points closer and closer, the slope we compute should get closer and closer to *something*. Whatever it gets close to — call it the slope at the point.
+
+This is so much simpler than the priority fight between Newton and Leibniz might lead you to expect. It's also why both of them got there independently in less than ten years. Once you've seen it, it's hard to un-see it.
+
+On the canvas: point A is anchored. Point B is the one you pull.
+
+Drag B toward A.
+
+The chord — the line through both points, also called a *secant* — tilts. Its slope changes. As B gets closer to A, the chord lies almost along the curve at A. And just before B reaches A, the chord stops being something cutting across the curve and starts being something that *kisses* the curve at A and then runs off in both directions. That kissing line has a name: the *tangent*.
+
+(I keep wanting to write "kisses" because that's literally what the word *tangent* means. It comes from the Latin *tangere*, to touch. The tangent line is the touching line. A curve has a tangent at every point where it isn't doing something weird, and the slope of the tangent is *the* slope of the curve at that point.)
+
+If you pull B close enough to A, the panel snaps. The two points merge. The chord — now the tangent — extends across the panel and shows you the true slope at A. The badge in the corner reads CHORD → TANGENT.
+
+For our parabola, when A sits at `x = 1`, the slope is `2`. At `x = 1.5` it's `3`. At `x = -2` it's `-4`. Pull A around and the tangent slope changes; pull B around and the chord slope chases it.
+
+There's a pattern. The slope of `x²` at the point `x` always seems to be `2x`. Which is itself a function — a function that takes the same input and gives you back a different output. The slope at `x` is `2x`. This is the load you've been carrying since the cold open: we've turned *the slope* into a brand new function, and that function is the answer to the question Galileo couldn't answer.
+
+But before we name it, watch the move one more time. Pull B away from A. Pull it back. The chord rotates, settles, *becomes* the tangent. That motion — secant tipping into tangent as one point approaches the other — is what Newton called *the method of fluxions* and Leibniz called *the differential calculus*. We just call it the *limit*. Whatever the chord is approaching as the points come together is the answer.
+
+The two of them spent decades fighting about who'd thought of this first. They both did. They both saw the move. We can move on.
+
+</Act>

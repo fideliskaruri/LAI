@@ -1,0 +1,19 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="events" eyebrow="Two · Subsets that matter">
+
+# An event is a chosen subset
+
+Once you have the grid, you can pick any subset of cells you like and call it an *event*. That's all an event is. It isn't a happening — it's a chosen group of outcomes, the ones you've decided to lump together because they're relevant to your question.
+
+Try the tabs above the grid. "Sum equals seven" picks the diagonal. "First die is four" picks an entire column — six cells. "Both dice even" picks a 3×3 sub-grid in the corners where the rows and columns are 2, 4, 6. Each is a different question; each picks a different subset; each gets a different probability, computed the same way.
+
+Probability of an event is just *cells that match* divided by *total cells*. Six over thirty-six is one in six. Six over thirty-six again, for the column. Nine over thirty-six, or one in four, for "both even." The denominator never moves; only the numerator does. That stability is what makes the grid such a satisfying picture — you're not redoing the count of possibilities, you're just shading different regions.
+
+The historical word for "matching cells" is *favorable outcomes*, and the word for the rest is *unfavorable*. Pascal and Fermat used both, in French. I find the words a little judgmental — the dice don't care whether you're winning — but they've stuck around in textbooks for nearly four centuries, so I'll mention them and move on.
+
+What's powerful here is that we can describe almost any question by *naming a subset*. "First die is at least four, and second die is at most two." "The product is greater than ten." "Exactly one die shows an even number." Each of those is just a region of the grid you can highlight in your head and count. The cleverness moves from figuring out the answer to figuring out the right subset to look at.
+
+I want to flag one tiny philosophical thing. The grid only works because the cells are *equally likely*. If we'd weighted one die — if we'd been using a loaded die — the cells wouldn't all carry the same probability, and "count matching, divide by total" would break. We'd have to weight the count by each cell's probability. We'll see that move in the next chapter, when we talk about expectation. For now: fair dice, equal cells, count and divide.
+
+</Act>

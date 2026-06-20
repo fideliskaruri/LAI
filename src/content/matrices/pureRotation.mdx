@@ -1,0 +1,23 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="pure-rotation" eyebrow="Four · A pure rotation">
+
+# Spinning the plane
+
+Now let's look at one specific family of motions. We're going to lock î and ĵ together so that they always stay perpendicular and the same length — but allowed to swing as a rigid pair.
+
+That's a *rotation*. Push the slider on the left and watch the whole plane spin around the origin.
+
+A rotation by angle θ sends î — which started at (1, 0) — to the new position (cos θ, sin θ). And it sends ĵ — which started at (0, 1) — to (−sin θ, cos θ). Walking around a quarter-turn? cos 90° is 0; sin 90° is 1. So î lands at (0, 1) — exactly where ĵ used to be.
+
+Stack those two new positions as the columns of a matrix and you get the rotation matrix:
+
+`R(θ) = [[cos θ, −sin θ], [sin θ, cos θ]]`
+
+This formula gets handed to you in linear-algebra textbooks as if it fell out of the sky. It doesn't. It's just the answer to the question: *where did the basis vectors go?* The columns of the matrix are the new î and the new ĵ. The trigonometry shows up because rotating a unit vector around the origin is exactly the definition of cosine and sine.
+
+Drag the slider to ±90° or to 180°. Notice that at every cardinal angle, the matrix entries collapse to nice numbers — either zero, one, or negative one. The grid swings cleanly into its new alignment.
+
+The unit square — the little vermilion square fixed at the corner of the grid — keeps the same area as it rotates. That's the special thing about rotations: they don't stretch anything. Areas stay. The next act gives that up.
+
+</Act>

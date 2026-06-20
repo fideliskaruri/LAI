@@ -2,6 +2,7 @@ import { useCallback, useRef, useState } from 'react'
 import { useDrag } from '@use-gesture/react'
 import { CanvasNarrative } from '../../components/topic/CanvasNarrative'
 import { useKeyNudge } from '../../hooks/useKeyNudge'
+import { clamp, MATH_X_MAX, MATH_X_MIN, MATH_Y_MAX, MATH_Y_MIN } from '../../lib/math'
 
 /**
  * Magnitude act: an arrow + dashed right triangle below it (legs along the
@@ -25,10 +26,12 @@ export function Magnitude() {
   const svgRef = useRef<SVGSVGElement | null>(null)
   const tipRef = useRef<SVGGElement | null>(null)
   const [tip, setTip] = useState({ x: 3, y: 2 })
+  const [dragging, setDragging] = useState(false)
   const startRef = useRef<typeof tip | null>(null)
 
-  const bind = useDrag(({ first, movement: [mx, my] }) => {
+  const bind = useDrag(({ first, down, movement: [mx, my] }) => {
     if (first) startRef.current = { ...tip }
+    setDragging(down)
     const start = startRef.current
     if (!start) return
     const rect = svgRef.current?.getBoundingClientRect()
@@ -49,7 +52,10 @@ export function Magnitude() {
   useKeyNudge(
     tipRef,
     useCallback((dx: number, dy: number) => {
-      setTip((cur) => ({ x: cur.x + nudgeAmount(dx), y: cur.y + nudgeAmount(dy) }))
+      setTip((cur) => ({
+        x: clamp(cur.x + nudgeAmount(dx), MATH_X_MIN, MATH_X_MAX),
+        y: clamp(cur.y + nudgeAmount(dy), MATH_Y_MIN, MATH_Y_MAX),
+      }))
     }, []),
   )
 
@@ -73,6 +79,7 @@ export function Magnitude() {
     <figure className="w-full">
       <CanvasNarrative
         text={`Vector (${fmt(tip.x)}, ${fmt(tip.y)}). Magnitude ${mag.toFixed(2)}.`}
+        isInteracting={dragging}
       />
       <svg
         ref={svgRef}

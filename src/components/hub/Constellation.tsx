@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { topics, type Topic } from '../../data/constellation'
 import { Glyph } from './Glyph'
 import { EdgeLayer } from './EdgeLayer'
+import { DueIndicator } from '../recall/DueIndicator'
 
 const VIEW_W = 1280
 const VIEW_H = 800
@@ -13,18 +14,6 @@ interface StoredState {
   schema: 1
   lastVisited?: string
   completed?: string[]
-}
-
-function readStored(): StoredState | null {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    if (!raw) return null
-    const parsed = JSON.parse(raw) as Partial<StoredState>
-    if (parsed.schema !== 1) return null
-    return parsed as StoredState
-  } catch {
-    return null
-  }
 }
 
 function writeStored(state: StoredState) {
@@ -40,17 +29,28 @@ export function Constellation() {
   const [hoveredId, setHoveredId] = useState<string | null>(null)
   const [parallax, setParallax] = useState({ x: 0, y: 0 })
   const containerRef = useRef<HTMLDivElement>(null)
-  const prefersReducedMotion = useRef(false)
+  // Lazy initializer reads matchMedia synchronously at mount so the very first
+  // mousemove handler runs with the correct value — without this, the first
+  // paint always uses `false`, which leaks a frame of parallax to users who
+  // have prefers-reduced-motion ON.
+  const prefersReducedMotion = useRef<boolean>(
+    typeof window !== 'undefined' &&
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  )
   // Persistent — the only built chapter is Vectors; the pointer should always be on
   // until the user clicks it. No 8-second dismiss.
   const pointerVisible = true
 
-  // Reduced-motion check
+  // Keep the ref in sync if the OS preference changes mid-session.
   useEffect(() => {
-    if (window.matchMedia) {
-      const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return
+    const mq: MediaQueryList = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const onChange = () => {
       prefersReducedMotion.current = mq.matches
     }
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
   }, [])
 
   // Mouse parallax: glyphs drift ~6px opposite cursor
@@ -211,6 +211,17 @@ export function Constellation() {
       >
         Begin → Vectors
       </button>
+
+      {/* Spaced-review tray (FEATURES § Feature 1). Mirrors the "Begin → Vectors"
+          overlay pattern — absolutely positioned in viewport coords on the
+          right side, opposite the title block. Renders nothing if nothing
+          is due, so it doesn't compete with the first-visit invitation. */}
+      <div
+        className="absolute"
+        style={{ right: '60px', top: '56px' }}
+      >
+        <DueIndicator />
+      </div>
     </div>
   )
 }

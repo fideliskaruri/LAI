@@ -1,0 +1,33 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="independence" eyebrow="Five · When the filter doesn't matter">
+
+# Two events that don't talk to each other
+
+Two events are *independent* when knowing one happened doesn't change the probability of the other. That's the whole definition. It sounds slippery — it took me embarrassingly long to feel comfortable with — but the grid makes it concrete.
+
+The event we're watching now is "second die is even." Without any constraint, half the cells are even-second-die. That's the unconditional probability: $P(A) = 1/2$, or $0.50$.
+
+Drag the constraint above to filter on the first die. Set it to $d_1 = 3$. The surviving sample space is one column with six cells. Three of those cells have an even second die. Conditional probability $3/6 = 0.50$.
+
+Drag to $d_1 = 5$. Surviving sample space: a different column with six cells. Three of those cells have an even second die. Conditional probability $3/6 = 0.50$.
+
+Drag anywhere. The conditional probability of an even second die *never moves off* $0.50$. It doesn't matter what the first die did — the second die is its own thing. The filter doesn't tell you anything you didn't already know about the second die.
+
+When this happens — when $P(A \mid B) = P(A)$ — we say A and B are *independent*. The constraint $B$ doesn't change anything about $A$.
+
+This is *not* a mathematical curiosity. It's the structural property the whole apparatus of probability leans on. Independence is how we say "these two parts of the world aren't talking to each other." Independent dice. Independent coin flips. The chance of rain in Paris on Tuesday and the chance of rain in Tokyo on the same Tuesday — close enough to independent that pretending they are is the right modelling choice.
+
+The opposite case is *dependence*, and the dice grid has both kinds inside it. The events "first die is four" and "second die is even" are independent. The events "first die is four" and "sum is seven" are *also* independent (we saw that in the last act — the conditional was $1/6$, same as the unconditional). But "first die is six" and "sum is four" are *not* independent: the unconditional probability of $\text{sum} = 4$ is $3/36 = 1/12$, but the conditional probability given $d_1 = 6$ is *zero*. The constraint annihilated the event.
+
+The definition has a useful algebraic shape too. If $P(A \mid B) = P(A)$, then multiplying both sides by $P(B)$ gives
+
+$$
+P(A \cap B) = P(A) \cdot P(B).
+$$
+
+For independent events, the joint probability is just the product of the marginals. That product rule is why "multiply along the path" works for independent dice rolls and coin flips — and why it *doesn't* work for events that have any structural relationship.
+
+I want to flag a discipline that ML practitioners get wrong constantly, myself included: *check whether independence is actually plausible* before you assume it. Lots of models lean on the assumption to make the math tractable. Sometimes the assumption is fine. Sometimes it's a disaster waiting in production. Knowing the grid picture — *does the conditional really equal the unconditional?* — is the test in your head.
+
+</Act>

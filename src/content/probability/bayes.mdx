@@ -1,0 +1,35 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="bayes" eyebrow="Six · Switching the filter direction">
+
+# Bayes: a posthumous rule
+
+Thomas Bayes was a Presbyterian minister in Tunbridge Wells, England. He did mathematics for fun. He worked out a theorem about conditional probabilities and then, by all accounts, put it in a drawer and never published it. He died in 1761. His friend Richard Price found the paper while sorting through his estate, recognized it was important, and read it to the Royal Society in 1763. Bayes never knew his name would end up attached to one of the most consequential results in the history of inference.
+
+The result is short. If you know $P(A \mid B)$ — the probability of $A$ given $B$ — and you want $P(B \mid A)$, the probability of $B$ given $A$, you can swap the direction of the conditioning. The grid above lets you flip the switch and watch it happen.
+
+Here's the geometry of it. We have two events: $A$ is "first die is four" (a column), and $B$ is "sum is seven" (the long diagonal). They intersect in exactly one cell, $(4,3)$. The size of the intersection is what the *joint probability* $P(A \cap B)$ counts: one cell out of thirty-six, so $1/36 \approx 0.028$.
+
+Now: $P(A \mid B)$ is "given we're somewhere in the diagonal, what's the chance we're also in the column?" Six diagonal cells, one of them in the column, so $1/6 \approx 0.167$.
+
+And $P(B \mid A)$ is "given we're somewhere in the column, what's the chance we're also in the diagonal?" Six column cells, one of them in the diagonal, so $1/6 \approx 0.167$.
+
+The two conditionals happen to be equal in *this* example because $A$ and $B$ have the same number of cells. But in general they aren't. What's always true — and what Bayes wrote down — is that the joint probability is the same whichever way you slice it:
+
+$$
+P(A \cap B) \;=\; P(A \mid B) \cdot P(B) \;=\; P(B \mid A) \cdot P(A).
+$$
+
+Read it left-to-right as: the chance of both A and B happening equals the chance of A given B times the chance of B. Or, equivalently: the chance of both equals the chance of B given A times the chance of A. Two paths to the same cell. The grid shows you they're literally the same area.
+
+Rearranging gives the form everyone calls *Bayes' theorem*:
+
+$$
+P(A \mid B) \;=\; \frac{P(B \mid A) \cdot P(A)}{P(B)}.
+$$
+
+In words: if you know how often $B$ happens given $A$, and you know how often $A$ happens, and you know how often $B$ happens overall, you can flip the conditioning around. This is the engine of every spam filter, every medical-test reasoning problem, every Bayesian neural network in the literature. It's also the thing that's almost always misapplied in pop-science writing about "the probability you have a disease given a positive test." You need $P(\text{positive} \mid \text{disease})$, $P(\text{disease})$, and $P(\text{positive})$ — and the third one is the slippery one.
+
+We'll meet Bayes again — many times. It's the foundation of how we update beliefs in light of evidence. Every time someone says "given that the model predicted $X$, what's the probability it's right?", they are, knowingly or not, doing Bayes' theorem in their head.
+
+</Act>

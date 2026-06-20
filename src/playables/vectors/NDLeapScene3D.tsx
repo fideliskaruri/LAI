@@ -1,10 +1,5 @@
-// @ts-nocheck
-// PHASE 8: r3f JSX intrinsic types fight with TS strict + bundler module resolution
-// on this Windows junction setup. Working at dev runtime. Phase 9 polish: enable
-// proper types via /// <reference types="@react-three/fiber" /> after switching
-// from junctioned node_modules to a fresh install.
 import { useEffect, useRef } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
+import { Canvas, useFrame, type RootState } from '@react-three/fiber'
 import * as THREE from 'three'
 
 /**
@@ -117,11 +112,20 @@ function SlowOrbit() {
   // Track reduced-motion preference: OS-level via matchMedia, plus an
   // app-level override on <html data-reduced-motion="true"> set by the
   // overflow-menu toggle. Either one freezes the camera at a fixed angle.
-  const reducedMotionRef = useRef<boolean>(false)
+  //
+  // Lazy initializer reads matchMedia synchronously at mount so the first
+  // frame doesn't render the orbiting camera before useEffect fires —
+  // critical for vestibular-sensitive users with prefers-reduced-motion ON.
+  const reducedMotionRef = useRef<boolean>(
+    typeof window !== 'undefined' &&
+      (window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+        (typeof document !== 'undefined' &&
+          document.documentElement.dataset.reducedMotion === 'true'))
+  )
 
   useEffect(() => {
     if (typeof window === 'undefined') return
-    const mql = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const mql: MediaQueryList = window.matchMedia('(prefers-reduced-motion: reduce)')
 
     const compute = () => {
       const osPref = mql.matches
@@ -134,19 +138,10 @@ function SlowOrbit() {
     compute()
 
     const onChange = () => compute()
-    // Safari < 14 uses addListener/removeListener
-    if (mql.addEventListener) {
-      mql.addEventListener('change', onChange)
-    } else if ((mql as any).addListener) {
-      ;(mql as any).addListener(onChange)
-    }
+    mql.addEventListener('change', onChange)
 
     return () => {
-      if (mql.removeEventListener) {
-        mql.removeEventListener('change', onChange)
-      } else if ((mql as any).removeListener) {
-        ;(mql as any).removeListener(onChange)
-      }
+      mql.removeEventListener('change', onChange)
     }
   }, [])
 

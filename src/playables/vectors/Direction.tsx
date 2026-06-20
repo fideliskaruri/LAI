@@ -1,7 +1,8 @@
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useDrag } from '@use-gesture/react'
 import { CanvasNarrative } from '../../components/topic/CanvasNarrative'
 import { useKeyNudge } from '../../hooks/useKeyNudge'
+import { clamp, MATH_X_MAX, MATH_X_MIN, MATH_Y_MAX, MATH_Y_MIN } from '../../lib/math'
 
 /**
  * Direction act: an arrow + an arc sweeping from the positive-x axis
@@ -27,10 +28,12 @@ export function Direction() {
   const svgRef = useRef<SVGSVGElement | null>(null)
   const tipRef = useRef<SVGGElement | null>(null)
   const [tip, setTip] = useState({ x: 3, y: 2 })
+  const [dragging, setDragging] = useState(false)
   const startRef = useRef<typeof tip | null>(null)
 
-  const bind = useDrag(({ first, movement: [mx, my] }) => {
+  const bind = useDrag(({ first, down, movement: [mx, my] }) => {
     if (first) startRef.current = { ...tip }
+    setDragging(down)
     const start = startRef.current
     if (!start) return
     const rect = svgRef.current?.getBoundingClientRect()
@@ -51,16 +54,58 @@ export function Direction() {
   useKeyNudge(
     tipRef,
     useCallback((dx: number, dy: number) => {
-      setTip((cur) => ({ x: cur.x + nudgeAmount(dx), y: cur.y + nudgeAmount(dy) }))
+      setTip((cur) => ({
+        x: clamp(cur.x + nudgeAmount(dx), MATH_X_MIN, MATH_X_MAX),
+        y: clamp(cur.y + nudgeAmount(dy), MATH_Y_MIN, MATH_Y_MAX),
+      }))
     }, []),
   )
 
   const tipSvg = { x: ORIGIN_X + tip.x * UNIT, y: ORIGIN_Y - tip.y * UNIT }
   const mag = Math.sqrt(tip.x * tip.x + tip.y * tip.y)
-  // Standard math angle, atan2, normalized to [0, 2π)
-  let theta = Math.atan2(tip.y, tip.x)
-  if (theta < 0) theta += 2 * Math.PI
+  // Zero-vector singularity: below 0.1 the vector has no meaningful direction.
+  // Freeze θ at the last known good value so the readout doesn't whiplash as
+  // the user nudges through the origin, and suppress the arc/arrow/label.
+  const nearZero = mag < 0.1
+  // Standard math angle, atan2, normalized to [0, 2π).
+  let liveTheta = Math.atan2(tip.y, tip.x)
+  if (liveTheta < 0) liveTheta += 2 * Math.PI
+  const lastGoodThetaRef = useRef<number>(liveTheta)
+  if (!nearZero) lastGoodThetaRef.current = liveTheta
+  const theta = nearZero ? lastGoodThetaRef.current : liveTheta
   const thetaDeg = (theta * 180) / Math.PI
+
+  // Edge-detect entering / leaving the singularity so a screen reader hears
+  // a high-priority message, not just the stream of position updates.
+  const prevNearZeroRef = useRef<boolean>(nearZero)
+  const [narration, setNarration] = useState<{ text: string; priority: 'normal' | 'high' }>({
+    text: nearZero
+      ? 'Vector is at the origin — direction is undefined.'
+      : `Vector pointing at ${fmtDeg(thetaDeg)} degrees from positive x-axis. Magnitude ${mag.toFixed(2)}.`,
+    priority: 'normal',
+  })
+  useEffect(() => {
+    const prev = prevNearZeroRef.current
+    if (nearZero && !prev) {
+      setNarration({
+        text: 'Vector is at the origin — direction is undefined.',
+        priority: 'high',
+      })
+    } else if (!nearZero && prev) {
+      setNarration({
+        text: `Vector has a direction again — pointing at ${fmtDeg(thetaDeg)} degrees.`,
+        priority: 'high',
+      })
+    } else {
+      setNarration({
+        text: nearZero
+          ? 'Vector is at the origin — direction is undefined.'
+          : `Vector pointing at ${fmtDeg(thetaDeg)} degrees from positive x-axis. Magnitude ${mag.toFixed(2)}.`,
+        priority: 'normal',
+      })
+    }
+    prevNearZeroRef.current = nearZero
+  }, [nearZero, thetaDeg, mag])
 
   const ang = Math.atan2(tipSvg.y - ORIGIN_Y, tipSvg.x - ORIGIN_X)
   const headLen = 14
@@ -95,20 +140,26 @@ export function Direction() {
   return (
     <figure className="w-full">
       <CanvasNarrative
-        text={`Vector pointing at ${fmtDeg(thetaDeg)} degrees from positive x-axis. Magnitude ${mag.toFixed(2)}.`}
+        text={narration.text}
+        priority={narration.priority}
+        isInteracting={dragging}
       />
       <svg
         ref={svgRef}
         viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
         className="w-full h-auto"
         role="img"
-        aria-label={`A vector pointing at angle ${fmtDeg(thetaDeg)} degrees from the positive x axis. Drag the tip to change direction.`}
+        aria-label={
+          nearZero
+            ? 'A vector at the origin. Direction is undefined when the vector has no length. Drag the tip away from the origin to see an angle.'
+            : `A vector pointing at angle ${fmtDeg(thetaDeg)} degrees from the positive x axis. Drag the tip to change direction.`
+        }
       >
         <Grid />
         <Axes />
 
-        {/* Arc */}
-        {mag > 0.1 && (
+        {/* Arc + θ label — only when the vector has a defined direction */}
+        {!nearZero && (
           <>
             <path d={arcPath} fill="none" stroke="var(--color-vermilion)" strokeWidth="1.5" />
             <text
@@ -126,8 +177,8 @@ export function Direction() {
           </>
         )}
 
-        {/* Arrow */}
-        {mag > 0.05 && (
+        {/* Arrow — only when there's a meaningful direction to draw */}
+        {!nearZero && (
           <>
             <line x1={ORIGIN_X} y1={ORIGIN_Y} x2={tipSvg.x} y2={tipSvg.y} stroke="var(--color-graph-ink)" strokeWidth="2" />
             <polygon points={`${tipSvg.x},${tipSvg.y} ${headBase1.x},${headBase1.y} ${headBase2.x},${headBase2.y}`} fill="var(--color-graph-ink)" />
@@ -140,7 +191,11 @@ export function Direction() {
           ref={tipRef}
           tabIndex={0}
           role="button"
-          aria-label={`Vector tip. Currently pointing at ${fmtDeg(thetaDeg)} degrees, magnitude ${mag.toFixed(2)}. Arrow keys to nudge.`}
+          aria-label={
+            nearZero
+              ? 'Vector tip at the origin; direction is undefined. Arrow keys to nudge away from the origin.'
+              : `Vector tip. Currently pointing at ${fmtDeg(thetaDeg)} degrees, magnitude ${mag.toFixed(2)}. Arrow keys to nudge.`
+          }
           style={{ cursor: 'grab', touchAction: 'none' }}
           className="focus-visible:outline-none [&:focus-visible_circle:last-of-type]:stroke-vermilion-deep"
         >
@@ -153,15 +208,28 @@ export function Direction() {
           <text fontFamily="Inter, sans-serif" fontSize="10" letterSpacing="0.18em" fill="var(--color-dim)">
             DIRECTION
           </text>
-          <text y="22" fontFamily="JetBrains Mono, monospace" fontSize="16" fill="var(--color-ink)">
-            θ = {fmtDeg(thetaDeg)}°
-          </text>
-          <text y="42" fontFamily="JetBrains Mono, monospace" fontSize="13" fill="var(--color-dim)">
-            = {fmtRad(theta)} rad
-          </text>
-          <text y="62" fontFamily="JetBrains Mono, monospace" fontSize="11" fill="var(--color-dim)">
-            = arctan(y / x)
-          </text>
+          {nearZero ? (
+            <>
+              <text y="22" fontFamily="JetBrains Mono, monospace" fontSize="16" fill="var(--color-dim)">
+                θ = undefined
+              </text>
+              <text y="42" fontFamily="JetBrains Mono, monospace" fontSize="11" fill="var(--color-dim)">
+                vector is at the origin
+              </text>
+            </>
+          ) : (
+            <>
+              <text y="22" fontFamily="JetBrains Mono, monospace" fontSize="16" fill="var(--color-ink)">
+                θ = {fmtDeg(thetaDeg)}°
+              </text>
+              <text y="42" fontFamily="JetBrains Mono, monospace" fontSize="13" fill="var(--color-dim)">
+                = {fmtRad(theta)} rad
+              </text>
+              <text y="62" fontFamily="JetBrains Mono, monospace" fontSize="11" fill="var(--color-dim)">
+                = arctan(y / x)
+              </text>
+            </>
+          )}
         </g>
       </svg>
       <figcaption className="font-serif italic text-[13px] text-dim text-center mt-2">
