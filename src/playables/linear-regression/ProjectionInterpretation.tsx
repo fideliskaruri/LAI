@@ -158,18 +158,6 @@ export function RightPane() {
           Substitute r = y − Xβ. You get the normal equations.
         </text>
 
-        <text
-          x={PLOT_X1 - 16}
-          y={PLOT_Y1 - 16}
-          textAnchor="end"
-          fontFamily="Inter, sans-serif"
-          fontSize="10"
-          letterSpacing="0.18em"
-          fill="var(--color-dim)"
-        >
-          MML §9.4
-        </text>
-
         {/* Tiny readout */}
         <g transform={`translate(${PLOT_X0 + 18}, ${PLOT_Y1 - 110})`}>
           <text fontFamily="JetBrains Mono, monospace" fontSize="11" fill="var(--color-dim)">

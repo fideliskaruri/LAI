@@ -1,0 +1,33 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="closing" eyebrow="Six · Forward to attention">
+
+# Every word is a vector first
+
+So here's where we are.
+
+Take a sentence — any sentence. *the cat sat on mat*. Five tokens.
+
+Before a modern language model does *anything* with that sentence — before it predicts a next word, generates a response, classifies a sentiment, translates to another language — it does this first move: it looks up each word in an embedding table and replaces it with a vector. Five tokens become five columns of three hundred to four thousand numbers. The sentence, as far as the model is concerned, is now a small matrix of floats.
+
+That's what's on the canvas.
+
+The embedding table is the *first* parameter learned by a model. Often, it's the largest single block of parameters — fifty thousand words times a few thousand dimensions is hundreds of millions of weights, all of which are tuned during training. The chain of reasoning that produces a modern model's output starts at this lookup.
+
+Then the model does something this chapter hasn't shown you. It lets the vectors *talk to each other*.
+
+That's attention.
+
+In Chapter 21, we'll watch the vectors compare themselves to one another and decide which words in the sentence to pay attention to. In Chapter 22, we'll stack those attention layers into transformers. In Chapter 23, we'll see how a transformer scaled up on a trillion tokens of internet text becomes a language model that holds conversations.
+
+But none of it works without the move you just learned. *king* is a vector. *cat* is a vector. *mat* is a vector. Three hundred or three thousand numbers each, learned by Mikolov's recipe or a richer descendant, encoding semantic structure that the model never had to be told.
+
+Word vectors are the first move. The faint arrows in the picture, fanning out between the columns, are the next one.
+
+Onward.
+
+<Recall id="embeddings-mikolov-1" question="In what year, and in what venue, did Mikolov et al. publish the word2vec paper?" answer="January 2013, on arXiv. The full title is *Efficient Estimation of Word Representations in Vector Space*." />
+
+<Recall id="embeddings-firth-1" question="What is the distributional hypothesis, in one line?" answer="A word's meaning is captured by the contexts in which it appears — Firth, 1957: 'You shall know a word by the company it keeps.'" />
+
+</Act>

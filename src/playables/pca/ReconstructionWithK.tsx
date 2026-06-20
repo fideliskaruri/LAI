@@ -1,8 +1,10 @@
 import { useCallback, useMemo, useRef } from 'react'
-import { useDrag } from '@use-gesture/react'
 import { CanvasNarrative } from '../../components/topic/CanvasNarrative'
-import { useKeyNudge } from '../../hooks/useKeyNudge'
-import { covariance, eigenSym, makeCloud } from './cloud'
+import {
+  CANONICAL_EIG as eig,
+  CANONICAL_N as N,
+  CANONICAL_POINTS as points,
+} from './cloud'
 import type { SplitCanvasRenderProps } from '../../components/topic/TopicPageSplit'
 
 /**
@@ -25,55 +27,56 @@ const ORIGIN_X = 300
 const ORIGIN_Y = 240
 const UNIT = 60
 
-const SEED = 0xa901
-const N = 180
-
 const fmt = (n: number) => n.toFixed(2)
 
 function toSvg(mx: number, my: number) {
   return { x: ORIGIN_X + mx * UNIT, y: ORIGIN_Y - my * UNIT }
 }
 
-const points = makeCloud(N, SEED)
-const cov = covariance(points)
-const eig = eigenSym(cov.a, cov.b, cov.c)
+// Radio-pair geometry — for left pane.
+// k ∈ {1, 2} is a two-state choice; we render it as a radiogroup so SRs
+// announce "radio button, 1 of 2" rather than the misleading "slider".
+const RADIO_Y = VIEW_H - 60
+const RADIO_X_1 = 200
+const RADIO_X_2 = 400
 
-// Slider geometry — for left pane
-const SLIDER_Y = VIEW_H - 60
-const SLIDER_X_MIN = 200
-const SLIDER_X_MAX = 400
-
-function kToSliderX(k: 1 | 2) {
-  return k === 1 ? SLIDER_X_MIN : SLIDER_X_MAX
+function kToRadioX(k: 1 | 2) {
+  return k === 1 ? RADIO_X_1 : RADIO_X_2
 }
 
 export function ReconstructionLeftPane({ state, onChange }: SplitCanvasRenderProps) {
-  const svgRef = useRef<SVGSVGElement | null>(null)
-  const handleRef = useRef<SVGGElement | null>(null)
+  const radio1Ref = useRef<SVGGElement | null>(null)
+  const radio2Ref = useRef<SVGGElement | null>(null)
   const s = state as ReconstructionState
   const k = s.k
 
-  const bind = useDrag(({ xy: [px] }) => {
-    const rect = svgRef.current?.getBoundingClientRect()
-    if (!rect) return
-    const sx = VIEW_W / rect.width
-    const local = (px - rect.left) * sx
-    // Snap to nearest of the two slider stops
-    const midpoint = (SLIDER_X_MIN + SLIDER_X_MAX) / 2
-    const next: 1 | 2 = local < midpoint ? 1 : 2
-    if (next !== k) onChange({ k: next } as ReconstructionState)
-  })
+  const selectK = useCallback(
+    (next: 1 | 2) => {
+      if (next !== k) onChange({ k: next } as ReconstructionState)
+      // Move focus to the now-selected radio so AT keeps focus on the
+      // active option after Arrow navigation.
+      const target = next === 1 ? radio1Ref.current : radio2Ref.current
+      target?.focus()
+    },
+    [k, onChange],
+  )
 
-  useKeyNudge(
-    handleRef,
-    useCallback(
-      (dx: number) => {
-        if (dx === 0) return
-        const next: 1 | 2 = dx > 0 ? 2 : 1
-        if (next !== k) onChange({ k: next } as ReconstructionState)
-      },
-      [k, onChange],
-    ),
+  const onRadioKeyDown = useCallback(
+    (e: React.KeyboardEvent<SVGGElement>) => {
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault()
+        selectK(1)
+      } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault()
+        selectK(2)
+      } else if (e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault()
+        // Activate this radio — `this` element's data-k.
+        const dataK = (e.currentTarget.dataset.k === '2' ? 2 : 1) as 1 | 2
+        selectK(dataK)
+      }
+    },
+    [selectK],
   )
 
   // PC1 line — extended both ways
@@ -102,7 +105,6 @@ export function ReconstructionLeftPane({ state, onChange }: SplitCanvasRenderPro
         priority="normal"
       />
       <svg
-        ref={svgRef}
         viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
         className="w-full h-auto"
         role="img"
@@ -180,42 +182,71 @@ export function ReconstructionLeftPane({ state, onChange }: SplitCanvasRenderPro
           </text>
         </g>
 
-        {/* Slider */}
-        <g>
-          <line x1={SLIDER_X_MIN} y1={SLIDER_Y} x2={SLIDER_X_MAX} y2={SLIDER_Y} stroke="var(--color-graph-ink)" strokeWidth="1.2" />
-          {[1, 2].map((v) => (
-            <g key={v}>
-              <line x1={kToSliderX(v as 1 | 2)} y1={SLIDER_Y - 6} x2={kToSliderX(v as 1 | 2)} y2={SLIDER_Y + 6} stroke="var(--color-graph-ink)" strokeWidth="1" />
-              <text
-                x={kToSliderX(v as 1 | 2)}
-                y={SLIDER_Y + 22}
-                textAnchor="middle"
-                fontFamily="JetBrains Mono, monospace"
-                fontSize="11"
-                fill="var(--color-dim)"
-              >
-                {v}
-              </text>
-            </g>
-          ))}
-          <g
-            {...bind()}
-            ref={handleRef}
-            tabIndex={0}
-            role="slider"
-            aria-label={`Number of principal components kept. Current value ${k}. Arrow keys to switch between 1 and 2.`}
-            aria-valuemin={1}
-            aria-valuemax={2}
-            aria-valuenow={k}
-            style={{ cursor: 'grab', touchAction: 'none' }}
-            className="focus-visible:outline-none [&:focus-visible_circle:last-of-type]:stroke-vermilion-deep"
-          >
-            <circle cx={kToSliderX(k)} cy={SLIDER_Y} r="22" fill="transparent" />
-            <circle cx={kToSliderX(k)} cy={SLIDER_Y} r="8" fill="var(--color-vermilion)" stroke="var(--color-cream)" strokeWidth="2" />
-          </g>
-          <text x={SLIDER_X_MIN} y={SLIDER_Y - 18} fontFamily="Inter, sans-serif" fontSize="10" letterSpacing="0.18em" fill="var(--color-dim)">
-            DRAG  ·  ARROWS  ·  k
+        {/* Radiogroup — k ∈ {1, 2}. Two radios announce as
+            "radio button, 1 of 2" to AT, which is the correct semantic
+            for a two-state choice (vs. a slider's continuous range). */}
+        <g role="radiogroup" aria-label="Number of principal components to keep">
+          <text x={RADIO_X_1} y={RADIO_Y - 18} fontFamily="Inter, sans-serif" fontSize="10" letterSpacing="0.18em" fill="var(--color-dim)">
+            CLICK  ·  ARROWS  ·  k
           </text>
+          {/* connecting baseline between the two stops, decorative */}
+          <line
+            x1={RADIO_X_1}
+            y1={RADIO_Y}
+            x2={RADIO_X_2}
+            y2={RADIO_Y}
+            stroke="var(--color-graph-ink)"
+            strokeOpacity="0.35"
+            strokeWidth="1"
+            aria-hidden="true"
+          />
+          {/* Each radio: tick + label + focusable hit target */}
+          {([1, 2] as const).map((v) => {
+            const cx = kToRadioX(v)
+            const selected = k === v
+            const ref = v === 1 ? radio1Ref : radio2Ref
+            return (
+              <g
+                key={v}
+                ref={ref}
+                data-k={v}
+                role="radio"
+                aria-checked={selected}
+                aria-label={`Keep ${v} principal component${v === 1 ? '' : 's'}`}
+                tabIndex={selected ? 0 : -1}
+                onClick={() => selectK(v)}
+                onKeyDown={onRadioKeyDown}
+                style={{ cursor: 'pointer', touchAction: 'none' }}
+                className="focus-visible:outline-none [&:focus-visible_circle:last-of-type]:stroke-vermilion-deep"
+              >
+                {/* Hit target */}
+                <circle cx={cx} cy={RADIO_Y} r="22" fill="transparent" />
+                {/* Outer ring */}
+                <circle
+                  cx={cx}
+                  cy={RADIO_Y}
+                  r="10"
+                  fill="var(--color-cream)"
+                  stroke={selected ? 'var(--color-vermilion)' : 'var(--color-graph-ink)'}
+                  strokeWidth={selected ? 2 : 1.2}
+                />
+                {/* Inner dot — only when selected */}
+                {selected && (
+                  <circle cx={cx} cy={RADIO_Y} r="5" fill="var(--color-vermilion)" />
+                )}
+                <text
+                  x={cx}
+                  y={RADIO_Y + 28}
+                  textAnchor="middle"
+                  fontFamily="JetBrains Mono, monospace"
+                  fontSize="12"
+                  fill={selected ? 'var(--color-vermilion)' : 'var(--color-dim)'}
+                >
+                  k = {v}
+                </text>
+              </g>
+            )
+          })}
         </g>
       </svg>
       <figcaption className="font-serif italic text-[13px] text-dim text-center mt-2">

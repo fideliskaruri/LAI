@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactElement } from 'react'
+import { useEffect, useMemo, useRef, type ReactElement } from 'react'
 import { Canvas, useFrame, type RootState } from '@react-three/fiber'
 import * as THREE from 'three'
 
@@ -104,13 +104,28 @@ function Line({
   colour?: string
   opacity?: number
 }) {
-  const geom = new THREE.BufferGeometry().setFromPoints([a, b])
-  const mat = new THREE.LineBasicMaterial({
-    color: colour,
-    transparent: opacity < 1,
-    opacity,
-  })
-  return <primitive object={new THREE.Line(geom, mat)} />
+  // Memo geometry + material + the THREE.Line object itself on the endpoint
+  // coords + style. Without this the BufferGeometry and LineBasicMaterial
+  // would be reallocated on every render and the old ones would never be
+  // disposed → GPU memory leak. The intrinsic JSX `<line>` collides with
+  // React's SVG `line`, so we mount a memoised THREE.Line via <primitive>.
+  const line = useMemo(() => {
+    const geom = new THREE.BufferGeometry().setFromPoints([a, b])
+    const mat = new THREE.LineBasicMaterial({
+      color: colour,
+      transparent: opacity < 1,
+      opacity,
+    })
+    return new THREE.Line(geom, mat)
+  }, [a.x, a.y, a.z, b.x, b.y, b.z, colour, opacity])
+  useEffect(
+    () => () => {
+      line.geometry.dispose()
+      ;(line.material as THREE.Material).dispose()
+    },
+    [line],
+  )
+  return <primitive object={line} />
 }
 
 function Arrow({
@@ -126,32 +141,50 @@ function Arrow({
   label?: string
   thick?: number
 }) {
-  const fromV = new THREE.Vector3(...from)
-  const toV = new THREE.Vector3(...to)
-  const dir = new THREE.Vector3().subVectors(toV, fromV)
-  const length = dir.length()
-  const shaftLength = length * 0.86
-  const headLength = length * 0.14
-  const headRadius = thick * 3.4
-  const shaftPos = new THREE.Vector3()
-    .copy(fromV)
-    .add(dir.clone().normalize().multiplyScalar(shaftLength / 2))
-  const headPos = new THREE.Vector3()
-    .copy(fromV)
-    .add(dir.clone().normalize().multiplyScalar(shaftLength + headLength / 2))
-  const up = new THREE.Vector3(0, 1, 0)
-  const quat = new THREE.Quaternion().setFromUnitVectors(up, dir.clone().normalize())
+  // Memo the per-arrow math so we don't churn Vector3 / Quaternion objects
+  // on every render. r3f sees stable tuples / Quaternion refs and skips
+  // reconciliation work on the inner meshes.
+  const geom = useMemo(() => {
+    const fromV = new THREE.Vector3(...from)
+    const toV = new THREE.Vector3(...to)
+    const dir = new THREE.Vector3().subVectors(toV, fromV)
+    const length = dir.length()
+    const shaftLength = length * 0.86
+    const headLength = length * 0.14
+    const headRadius = thick * 3.4
+    const dirN = dir.clone().normalize()
+    const shaftPos = new THREE.Vector3()
+      .copy(fromV)
+      .add(dirN.clone().multiplyScalar(shaftLength / 2))
+      .toArray() as [number, number, number]
+    const headPos = new THREE.Vector3()
+      .copy(fromV)
+      .add(dirN.clone().multiplyScalar(shaftLength + headLength / 2))
+      .toArray() as [number, number, number]
+    const up = new THREE.Vector3(0, 1, 0)
+    const quat = new THREE.Quaternion().setFromUnitVectors(up, dirN)
+    return {
+      shaftPos,
+      headPos,
+      basePos: fromV.toArray() as [number, number, number],
+      quat,
+      shaftLength,
+      headLength,
+      headRadius,
+    }
+  }, [from[0], from[1], from[2], to[0], to[1], to[2], thick])
+
   return (
     <group>
-      <mesh position={shaftPos.toArray()} quaternion={quat}>
-        <cylinderGeometry args={[thick, thick, shaftLength, 12]} />
+      <mesh position={geom.shaftPos} quaternion={geom.quat}>
+        <cylinderGeometry args={[thick, thick, geom.shaftLength, 12]} />
         <meshStandardMaterial color={colour} />
       </mesh>
-      <mesh position={headPos.toArray()} quaternion={quat}>
-        <coneGeometry args={[headRadius, headLength, 16]} />
+      <mesh position={geom.headPos} quaternion={geom.quat}>
+        <coneGeometry args={[geom.headRadius, geom.headLength, 16]} />
         <meshStandardMaterial color={colour} />
       </mesh>
-      <mesh position={fromV.toArray()}>
+      <mesh position={geom.basePos}>
         <sphereGeometry args={[0.04, 12, 12]} />
         <meshStandardMaterial color="#1A1A1A" />
       </mesh>
@@ -166,29 +199,34 @@ function ResidualSegment({
   from: [number, number, number]
   to: [number, number, number]
 }) {
-  // Dashed via a stack of small cylinders along the segment.
-  const a = new THREE.Vector3(...from)
-  const b = new THREE.Vector3(...to)
-  const dir = new THREE.Vector3().subVectors(b, a)
-  const total = dir.length()
-  const N = 8
-  const dashLen = total / (N * 2 - 1)
-  const up = new THREE.Vector3(0, 1, 0)
-  const quat = new THREE.Quaternion().setFromUnitVectors(up, dir.clone().normalize())
-  const dashes: ReactElement[] = []
-  for (let i = 0; i < N; i++) {
-    const tStart = (i * 2 * dashLen) / total
-    const tMid = ((i * 2 + 0.5) * dashLen) / total
-    void tStart
-    const pos = new THREE.Vector3().copy(a).add(dir.clone().multiplyScalar(tMid))
-    dashes.push(
-      <mesh key={i} position={pos.toArray()} quaternion={quat}>
-        <cylinderGeometry args={[0.012, 0.012, dashLen, 8]} />
-        <meshStandardMaterial color="#C44536" transparent opacity={0.85} />
-      </mesh>,
-    )
-  }
-  return <group>{dashes}</group>
+  // Dashed via a stack of small cylinders along the segment. Memo the
+  // per-dash positions + the shared quaternion so we don't reallocate
+  // Vector3 / Quaternion objects every render.
+  const { dashes, quat, dashLen } = useMemo(() => {
+    const a = new THREE.Vector3(...from)
+    const b = new THREE.Vector3(...to)
+    const dir = new THREE.Vector3().subVectors(b, a)
+    const total = dir.length()
+    const N = 8
+    const dashLen = total / (N * 2 - 1)
+    const up = new THREE.Vector3(0, 1, 0)
+    const quat = new THREE.Quaternion().setFromUnitVectors(up, dir.clone().normalize())
+    const positions: Array<[number, number, number]> = []
+    for (let i = 0; i < N; i++) {
+      const tMid = ((i * 2 + 0.5) * dashLen) / total
+      const pos = new THREE.Vector3().copy(a).add(dir.clone().multiplyScalar(tMid))
+      positions.push(pos.toArray() as [number, number, number])
+    }
+    return { dashes: positions, quat, dashLen }
+  }, [from[0], from[1], from[2], to[0], to[1], to[2]])
+
+  const meshes: ReactElement[] = dashes.map((pos, i) => (
+    <mesh key={i} position={pos} quaternion={quat}>
+      <cylinderGeometry args={[0.012, 0.012, dashLen, 8]} />
+      <meshStandardMaterial color="#C44536" transparent opacity={0.85} />
+    </mesh>
+  ))
+  return <group>{meshes}</group>
 }
 
 function RightAngleTick({ position }: { position: [number, number, number] }) {
@@ -209,8 +247,10 @@ function RightAngleTick({ position }: { position: [number, number, number] }) {
 }
 
 function SlowOrbit() {
-  // Same reduced-motion-aware orbit as NDLeapScene3D — OS pref + the app's
-  // overflow-menu toggle both freeze the camera.
+  // Reduced-motion-aware orbit. OS pref (matchMedia) + the app's
+  // overflow-menu toggle (data-reduced-motion on <html>) both freeze the
+  // camera. The ref is the single source of truth that the 60Hz frame loop
+  // reads — never touch document/dataset inside useFrame.
   const reducedMotionRef = useRef<boolean>(
     typeof window !== 'undefined' &&
       (window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
@@ -219,26 +259,29 @@ function SlowOrbit() {
   )
 
   useEffect(() => {
-    if (typeof window === 'undefined') return
+    if (typeof window === 'undefined' || typeof document === 'undefined') return
     const mql = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const root = document.documentElement
     const compute = () => {
       const osPref = mql.matches
-      const appPref =
-        typeof document !== 'undefined' &&
-        document.documentElement.dataset.reducedMotion === 'true'
+      const appPref = root.dataset.reducedMotion === 'true'
       reducedMotionRef.current = osPref || appPref
     }
     compute()
-    const onChange = () => compute()
-    mql.addEventListener('change', onChange)
-    return () => mql.removeEventListener('change', onChange)
+    const onMql = () => compute()
+    mql.addEventListener('change', onMql)
+    // Watch <html>'s data-reduced-motion attribute so we don't have to read
+    // it inside useFrame.
+    const observer = new MutationObserver(() => compute())
+    observer.observe(root, { attributes: true, attributeFilter: ['data-reduced-motion'] })
+    return () => {
+      mql.removeEventListener('change', onMql)
+      observer.disconnect()
+    }
   }, [])
 
   useFrame(({ camera, clock }: RootState) => {
-    const appPref =
-      typeof document !== 'undefined' &&
-      document.documentElement.dataset.reducedMotion === 'true'
-    if (reducedMotionRef.current || appPref) {
+    if (reducedMotionRef.current) {
       camera.position.set(4, 3, 5)
       camera.lookAt(1.0, 0.6, 0.2)
       return

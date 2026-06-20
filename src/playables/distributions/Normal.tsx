@@ -327,29 +327,67 @@ export function Normal() {
           </g>
         </g>
 
-        {/* Density formula — bottom-right corner, italic */}
+        {/* Density formula — bottom-right corner, italic. Numerator
+            stacked over a fraction bar so the denominator σ√(2π) reads
+            as a single grouped quantity, not "(1/√(2π))·σ". */}
         <g transform="translate(380, 84)">
           <text fontFamily="Inter, sans-serif" fontSize="10" letterSpacing="0.18em" fill="var(--color-dim)">
             DENSITY
           </text>
+          {/* f(x) = */}
           <text
-            y={22}
+            x={0}
+            y={36}
             fontFamily="Source Serif 4, Georgia, serif"
             fontStyle="italic"
             fontSize="14"
             fill="var(--color-vermilion)"
           >
-            <tspan>f(x) = </tspan>
-            <tspan>(1/√(2π) σ)</tspan>
+            f(x) =
           </text>
+          {/* Numerator: 1 */}
           <text
-            y={42}
+            x={66}
+            y={28}
+            textAnchor="middle"
+            fontFamily="Source Serif 4, Georgia, serif"
+            fontStyle="italic"
+            fontSize="13"
+            fill="var(--color-vermilion)"
+          >
+            1
+          </text>
+          {/* Fraction bar */}
+          <line
+            x1={48}
+            y1={32}
+            x2={84}
+            y2={32}
+            stroke="var(--color-vermilion)"
+            strokeWidth="1"
+          />
+          {/* Denominator: σ√(2π) */}
+          <text
+            x={66}
+            y={46}
+            textAnchor="middle"
+            fontFamily="Source Serif 4, Georgia, serif"
+            fontStyle="italic"
+            fontSize="13"
+            fill="var(--color-vermilion)"
+          >
+            σ√(2π)
+          </text>
+          {/* × exp(...) trails to the right of the fraction */}
+          <text
+            x={92}
+            y={36}
             fontFamily="Source Serif 4, Georgia, serif"
             fontStyle="italic"
             fontSize="14"
             fill="var(--color-vermilion)"
           >
-            × exp(−(x−μ)² / 2σ²)
+            · exp(−(x−μ)² / 2σ²)
           </text>
         </g>
 

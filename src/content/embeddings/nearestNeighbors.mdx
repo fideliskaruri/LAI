@@ -1,0 +1,31 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="nearest-neighbors" eyebrow="Three · The geometry of meaning">
+
+# Clusters you didn't ask for
+
+Now you've trained a model. You have a vector for every word in the vocabulary. What does the space *look* like?
+
+The canvas shows you. I've taken thirty words and projected them down to two dimensions — using a method called t-SNE, which tries to preserve which points were close in the original 300-dimensional space. The 2D positions are a cartoon, but the *clusters* you see are real.
+
+Click any word.
+
+Click *king*. You light up *queen, prince, princess, man, duke* — the five other words in the model whose vectors are closest to *king*. Monarchy and the people who surround it.
+
+Click *paris*. You get *france, london, rome, berlin, england*. Capital cities and the countries they sit in. The model has learned something that looks a lot like geography — by reading text. Nobody told it Paris was in France. It just kept seeing them in the same sentences, and it placed them near each other.
+
+Click *dog*. You get *cat, puppy, kitten, wolf, horse*. The space of small mammals you might own, plus a few wild ones.
+
+Click *run*. You get *sprint, walk, fast, stroll, slow*. The space of locomotion, with adjectives mixed in — the model couldn't quite tell verbs from adverbs at this scale, because in text they keep close company.
+
+This is what people mean when they say embeddings capture *semantic structure*. It isn't perfect, and it isn't deep — the model doesn't *know* that Paris is in France in the way you do. It only knows that the contexts in which *paris* appears overlap heavily with the contexts in which *france* appears. But this turns out to be enough for an extraordinary amount of downstream work.
+
+Search engines use this. *Recommendation* systems use this. When you type "the city of lights" into a search bar and Google shows you Paris, it isn't pattern-matching the literal phrase. It's using a vector close to the one for "paris" — close in a space exactly like the one on your screen, just bigger.
+
+There's a deeper point here. The model never sees the *world*. It only sees text. And yet text contains so much structured information about the world — co-occurrences, dependencies, what tends to follow what — that just predicting the next word produces a geometry that *behaves like* knowledge.
+
+It's not knowledge. But it's enough to fool many tasks. And, in 2013, that was the shock.
+
+<Recall id="embeddings-distributional" question="What did John Firth say about words in 1957?" answer="You shall know a word by the company it keeps. This is the distributional hypothesis — that a word's meaning is captured by the contexts it appears in." />
+
+</Act>

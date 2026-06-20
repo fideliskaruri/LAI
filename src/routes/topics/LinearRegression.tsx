@@ -40,20 +40,22 @@ import ClosingProse from '../../content/linear-regression/closing.mdx'
  *
  * Per-act sync mode:
  *
- *   1  cold-open                  : independent  (both panes are static)
- *   2  data                       : independent  (left static scatter; right empty frame)
- *   3  draggable-line             : co-mutating  (drag on left + co-state for residual panel)
- *   4  residuals                  : co-mutating  (same line state drives bars on right)
- *   5  sum-of-squares             : co-mutating  (line state + mode toggle on right share one object)
- *   6  calculus-on-loss           : co-mutating  (slope handle on right updates line on left)
- *   7  normal-equations           : independent  (left = final fit; right = formula card)
- *   8  projection-interpretation  : independent  (left = 3D; right = symbol card)
- *   9  overfitting-teaser         : co-mutating  (degree slider on left + bar chart on right read the same state)
- *  10  closing                    : independent  (static; thread forward)
+ *   1  cold-open                  : independent       (both panes are static)
+ *   2  data                       : independent       (left static scatter; right empty frame)
+ *   3  draggable-line             : left-drives-right (drag on left; right is derived view)
+ *   4  residuals                  : left-drives-right (drag on left; bars on right derive)
+ *   5  sum-of-squares             : left-drives-right (drag on left; bars/squares on right derive)
+ *   6  calculus-on-loss           : co-mutating       (slope handle on right updates line on left — genuinely bidirectional)
+ *   7  normal-equations           : independent       (left = final fit; right = formula card)
+ *   8  projection-interpretation  : independent       (left = 3D; right = symbol card)
+ *   9  overfitting-teaser         : left-drives-right (degree slider on left; bar chart on right derives)
+ *  10  closing                    : independent       (static; thread forward)
  *
- * Most acts that DO have shared interactive state use co-mutating rather
- * than left-drives-right because each panel renders different *views* of
- * the same underlying object and a single dispatch is cleaner.
+ * Acts 3, 4, 5, 9: the interactive element lives on the LEFT and the right
+ * pane is a pure derived view. We use left-drives-right with an identity
+ * deriveRight so the two panes share state without each one writing back.
+ * Act 6 is the only genuinely co-mutating act — the slope handle on the
+ * right edits the same SlopeState the left's loss-curve marker reads.
  */
 
 const acts: SplitActDef[] = [
@@ -74,23 +76,26 @@ const acts: SplitActDef[] = [
   {
     id: 'draggable-line',
     label: 'Drag a line',
-    syncMode: 'co-mutating',
+    syncMode: 'left-drives-right',
     initialLeft: { ...INITIAL_LINE } as LineState,
     initialRight: { ...INITIAL_LINE } as LineState,
+    deriveRight: (l: unknown) => l as LineState,
   },
   {
     id: 'residuals',
     label: 'Residuals',
-    syncMode: 'co-mutating',
+    syncMode: 'left-drives-right',
     initialLeft: { ...INITIAL_LINE } as LineState,
     initialRight: { ...INITIAL_LINE } as LineState,
+    deriveRight: (l: unknown) => l as LineState,
   },
   {
     id: 'sum-of-squares',
     label: 'Σ|r| vs Σr²',
-    syncMode: 'co-mutating',
+    syncMode: 'left-drives-right',
     initialLeft: { ...INITIAL_LINE } as LineState,
     initialRight: { ...INITIAL_LINE } as LineState,
+    deriveRight: (l: unknown) => l as LineState,
   },
   {
     id: 'calculus-on-loss',
@@ -116,9 +121,10 @@ const acts: SplitActDef[] = [
   {
     id: 'overfitting-teaser',
     label: 'Degree slider',
-    syncMode: 'co-mutating',
+    syncMode: 'left-drives-right',
     initialLeft: { ...INITIAL_POLY } as PolyState,
     initialRight: { ...INITIAL_POLY } as PolyState,
+    deriveRight: (l: unknown) => l as PolyState,
   },
   {
     id: 'closing',

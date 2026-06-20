@@ -79,13 +79,15 @@ export function FitLineLeftPane({
 
   // Drag the line by either endpoint. Left endpoint changes intercept;
   // right endpoint changes the slope around the left endpoint.
+  // `down` threads useDrag's pressed flag through so CanvasNarrative can
+  // throttle narration to drag-end instead of firing every delta.
   const setEndpoints = useCallback(
-    (yLeft: number, yRight: number) => {
+    (yLeft: number, yRight: number, down: boolean) => {
       const yL = Math.max(Y_MIN - 8, Math.min(Y_MAX + 8, yLeft))
       const yR = Math.max(Y_MIN - 8, Math.min(Y_MAX + 8, yRight))
       const slope = (yR - yL) / (X_MAX - X_MIN)
       const intercept = yL - slope * X_MIN
-      onChange({ ...state, slope, intercept, interacting: true })
+      onChange({ ...state, slope, intercept, interacting: down })
     },
     [state, onChange],
   )
@@ -99,26 +101,24 @@ export function FitLineLeftPane({
   const yLeft = lineYAt(state, X_MIN)
   const yRight = lineYAt(state, X_MAX)
 
-  const bindLeft = useDrag(({ first, last, movement: [, my] }) => {
+  const bindLeft = useDrag(({ down, first, movement: [, my] }) => {
     if (first) startStateRef.current = state
     const start = startStateRef.current
     if (!start) return
     const { sy } = scale()
     const startYL = lineYAt(start, X_MIN)
     const newYL = startYL - (my * sy) / ((PLOT_Y1 - PLOT_Y0) / (Y_MAX - Y_MIN))
-    setEndpoints(newYL, lineYAt(start, X_MAX))
-    if (last) onChange({ ...state, slope: state.slope, intercept: state.intercept, interacting: false })
+    setEndpoints(newYL, lineYAt(start, X_MAX), down)
   })
 
-  const bindRight = useDrag(({ first, last, movement: [, my] }) => {
+  const bindRight = useDrag(({ down, first, movement: [, my] }) => {
     if (first) startStateRef.current = state
     const start = startStateRef.current
     if (!start) return
     const { sy } = scale()
     const startYR = lineYAt(start, X_MAX)
     const newYR = startYR - (my * sy) / ((PLOT_Y1 - PLOT_Y0) / (Y_MAX - Y_MIN))
-    setEndpoints(lineYAt(start, X_MIN), newYR)
-    if (last) onChange({ ...state, slope: state.slope, intercept: state.intercept, interacting: false })
+    setEndpoints(lineYAt(start, X_MIN), newYR, down)
   })
 
   // Keyboard: arrows nudge that endpoint by 0.5 data-y; Shift+arrow by 5.
@@ -129,7 +129,7 @@ export function FitLineLeftPane({
         if (dy === 0) return
         const step = Math.abs(dy) >= 10 ? 5 : 0.5
         const dir = Math.sign(dy)
-        setEndpoints(lineYAt(state, X_MIN) + dir * step, lineYAt(state, X_MAX))
+        setEndpoints(lineYAt(state, X_MIN) + dir * step, lineYAt(state, X_MAX), false)
       },
       [state, setEndpoints],
     ),
@@ -141,7 +141,7 @@ export function FitLineLeftPane({
         if (dy === 0) return
         const step = Math.abs(dy) >= 10 ? 5 : 0.5
         const dir = Math.sign(dy)
-        setEndpoints(lineYAt(state, X_MIN), lineYAt(state, X_MAX) + dir * step)
+        setEndpoints(lineYAt(state, X_MIN), lineYAt(state, X_MAX) + dir * step, false)
       },
       [state, setEndpoints],
     ),

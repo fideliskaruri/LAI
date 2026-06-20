@@ -1,0 +1,25 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="cold-open" eyebrow="Zero · Mikolov · 2013">
+
+# The moment that broke
+
+For most of the history of language technology, a word was an integer.
+
+You took your vocabulary — fifty thousand words, say — and you handed each one a slot. *the* was slot 1. *cat* was slot 4,212. *king* was slot 18,447. To represent a sentence, you wrote down a sequence of integers. To represent a *meaning*, you mostly couldn't.
+
+There were attempts. In 1992 at IBM, Peter Brown and colleagues built a system called *Brown clustering*: an algorithm that grouped words into clusters by how they were used. *king*, *queen*, *prince* would end up in the same cluster — a tiny bit of meaning, encoded as a shared cluster ID. That's what the notebook page on the left is sketching.
+
+In 2003, Yoshua Bengio published *A Neural Probabilistic Language Model*. He proposed something quietly radical: instead of giving each word a slot or a cluster, *give each word a vector*. Train it. Let the geometry encode the meaning. The idea worked — Bengio's model beat the state of the art — but it was expensive to train and didn't catch.
+
+Ten years later, in January 2013, Tomas Mikolov, Kai Chen, Greg Corrado, and Jeffrey Dean posted a paper to arXiv. They called it *Efficient Estimation of Word Representations in Vector Space*. They had taken Bengio's idea, stripped out the most expensive parts, and trained word vectors on six billion words of news text — fast enough to be practical.
+
+That's the title page on the right. The yellow line at the bottom is the equation that shocked everyone.
+
+What Mikolov noticed — what nobody had quite seen before — was that the vectors his model learned had *structure*. You could subtract *man* from *king*, add *woman*, and the closest vector in the table was *queen*. You could subtract *france* from *paris*, add *england*, and the closest vector was *london*. You could add and subtract words like Hamilton's arrows.
+
+A word, after Mikolov, was no longer a slot. It was a point in three hundred dimensions, with a direction and a length. Vectors had eaten language.
+
+We spend the rest of this chapter figuring out how.
+
+</Act>

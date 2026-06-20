@@ -1,0 +1,27 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="the-actual-dimensions" eyebrow="Five · The real object">
+
+# Three hundred numbers
+
+I have been showing you, for the last few acts, pictures of words on a 2D plane. That has been a useful lie.
+
+The actual object inside a trained word2vec model is on the canvas now: a column of three hundred floating-point numbers. The first twelve are listed. There are 288 more below. That column *is* the word *king*, as far as the model is concerned. Everything you've seen — the clusters, the analogies, the parallelograms — was projected down from this.
+
+Why three hundred? It's an empirical choice. Mikolov tried 50, 100, 300, 600. He found that 300 was a sweet spot for the analogy benchmark — enough room to capture distinctions, not so much that training became unstable or slow. Modern transformer embeddings are larger — 768 for BERT, 4,096 for the largest GPT models — but the principle is the same. A word is a vector in a few hundred to a few thousand dimensions.
+
+Look at the numbers themselves.
+
+`0.341`. `−0.118`. `0.776`. None of them mean anything on their own. The first component isn't the "royal" dimension; the second isn't the "male" dimension. The axes the model invents for itself are not the axes a human would invent. They are, in the jargon, *entangled* — every concept you care about is smeared across many components, and every component participates in many concepts.
+
+This is part of why interpretability research is hard. You can take a sentence, run it through a model, watch the vectors fly around, and have very little idea what any individual number is doing. The vector as a *whole* behaves sensibly. The individual numbers do not, in any clean way, behave at all.
+
+There's a deeper consequence. The model learned this geometry from text. It will reflect that text. If the training corpus says *nurse* near *she* and *doctor* near *he*, the resulting vectors will inherit that. People have done the experiment. *Doctor − man + woman* in the original Google News word2vec returns *nurse*. *Programmer − man + woman* returns *homemaker*. These are not bugs in the algorithm; they are the algorithm working exactly as designed, on a corpus that contained the bias.
+
+So the geometry is doing several things at once. It captures structure that's useful — synonyms, analogies, geography, grammar. It captures structure that's harmful — the statistical residue of how the training corpus talked about people. And it captures all of it in a way that is hard for a human to inspect, one number at a time.
+
+The vector on your screen is the unit of meaning that the next half of this book — attention, transformers, language models, modern AI — operates on. Every word, before anything else happens to it in a modern model, becomes a column of numbers exactly like this one.
+
+We can finally close the chapter.
+
+</Act>

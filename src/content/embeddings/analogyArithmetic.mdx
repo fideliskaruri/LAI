@@ -1,0 +1,29 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="analogy-arithmetic" eyebrow="Four · Arithmetic on words">
+
+# A is to B as C is to what
+
+Pick three words on the canvas. The model computes *A minus B plus C* and looks for the word in the vocabulary whose vector is closest to the result.
+
+Try the default: *king − man + woman*. The result lights up: *queen*.
+
+Try the second preset: *paris − france + england*. The result: *london*.
+
+This is what stopped people in their tracks in 2013. You can read the equation as an analogy. *Paris is to France as London is to England.* The model never learned that as a sentence. It learned, separately, that *paris* and *france* go together, and that *london* and *england* go together, and the geometry of the two relationships turned out to be the same direction in space. So subtract the second pair from one side of the analogy, add the first pair from the other, and you arrive at the missing corner of the parallelogram.
+
+Try *walk − slow + fast*. You get *run*. The same parallelogram, but now between adjectives and verbs. The model has discovered that the difference between *walk* and *run* is geometrically similar to the difference between *slow* and *fast* — the *intensity* axis.
+
+A few things to notice as you play.
+
+**Not every triple works.** The model is good at well-attested analogies that show up often in text. It's worse at obscure ones, and it's notoriously bad at some — pronouns, function words, anything where the syntax dominates the semantics. The dropdown in the canvas only includes a handful of words that are known to behave; if your combination falls outside the lookup table, you get a graceful failure.
+
+**The result is *near*, not exact.** When you do the arithmetic on real word2vec vectors, you get a 300-dimensional vector that doesn't usually match any word's vector exactly. The reported answer is the *nearest* word — the one whose vector has the smallest distance to your result. Sometimes the answer is *queen*. Sometimes it's *king* itself, because *king* is suspiciously close to its own neighborhood. The standard convention, in the original paper, is to exclude the input words from the search.
+
+**The arithmetic isn't magic.** It works because the embedding space, by training, ended up roughly *linear* in the things you care about. Subtracting one vector from another picks out the difference between them; adding it onto a third word translates that third word along the same axis. When the axis is meaningful — gender, royalty, country-capital, comparative degree — the answer is meaningful too. When the axis is noise, you get nonsense.
+
+In 2013, this felt like magic anyway. A neural network trained on raw text, with no labels, had learned representations on which simple vector arithmetic answered analogy questions. The paper's *Table 8* — a list of analogies the model got right — went viral inside the field.
+
+We're now, ten years later, used to this. But it's worth pausing for a second to feel how strange it is.
+
+</Act>

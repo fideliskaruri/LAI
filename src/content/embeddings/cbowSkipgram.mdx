@@ -1,0 +1,29 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="cbow-skipgram" eyebrow="Two · How they're learned">
+
+# A child reading
+
+The trick is so simple it sounds like a joke.
+
+Mikolov's recipe: take a giant pile of text. Slide a window of, say, seven words across it. For each window, look at the word in the middle and the six words around it. Train a tiny neural network to predict one from the other.
+
+That's it.
+
+There are two flavours, and you can flip between them on the canvas. **CBOW** — *continuous bag of words* — takes the six context words and tries to predict the center word. *the quick brown ___ jumps over the* → fox. **Skip-gram** runs the other direction: take the center word *fox* and try to predict each of the surrounding words.
+
+Either way, the network has a hidden layer with, say, three hundred neurons. The values of those neurons, for a given input word, become that word's vector. The training adjusts the weights — the connections going in and out of the hidden layer — so that the network gets better and better at predicting context from word, or word from context.
+
+Why does this produce meaningful vectors?
+
+Because words that *appear in similar contexts* end up needing similar internal representations to do the prediction. The model sees "the king sat on the throne" and "the queen sat on the throne" and "the prince sat on the throne". To predict the surrounding words correctly, the hidden layer learns to give *king*, *queen*, and *prince* nearby positions in the 300-dimensional space — because they're nearly interchangeable.
+
+Linguists have a name for this from the 1950s: the *distributional hypothesis*, attributed to John Firth. "You shall know a word by the company it keeps." Mikolov turned the slogan into an algorithm.
+
+A child learning a language does something not entirely different. Nobody opens up a dictionary and tells a two-year-old what *dog* means. They see *dog* used a thousand times, in a thousand contexts, and they fit it into a slot. The slot is, more or less, a region in some kind of mental embedding space. The model is doing a stripped-down version of that.
+
+The remarkable thing is how *much* of language this turns out to capture. Just from predicting nearby words. No grammar rules. No dictionary. No supervision. Six billion words of Google News and three hundred dimensions.
+
+Try toggling between CBOW and Skip-gram. The two recipes give slightly different vectors — Skip-gram tends to be better for rare words, CBOW is faster — but the basic story is the same. Predict context. Adjust weights. Read the hidden layer as your vector.
+
+</Act>

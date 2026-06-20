@@ -56,7 +56,9 @@ import ClosingProse from '../../content/pca/closing.mdx'
 const acts: SplitActDef[] = [
   {
     id: 'cold-open',
-    label: 'Pearson · 1901',
+    // Eyebrow inside the playable carries the 1901 dateline; act label
+    // drops the year to avoid duplicating it in the rail.
+    label: 'Pearson · London',
     syncMode: 'independent',
     initialLeft: {},
     initialRight: {},
@@ -72,8 +74,10 @@ const acts: SplitActDef[] = [
     id: 'find-the-axis',
     label: 'Find one',
     syncMode: 'left-drives-right',
-    initialLeft: { theta: Math.PI / 8 } as FindTheAxisState,
-    initialRight: { theta: Math.PI / 8 } as FindTheAxisState,
+    // Start the handle horizontal (θ = 0), well away from the answer near
+    // 45°, so the reader earns the lock by actively swinging.
+    initialLeft: { theta: 0 } as FindTheAxisState,
+    initialRight: { theta: 0 } as FindTheAxisState,
     deriveRight: (l) => l as FindTheAxisState,
   },
   {

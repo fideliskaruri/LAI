@@ -114,3 +114,14 @@ export function projectedVariance(
   const uy = Math.sin(theta)
   return cov.a * ux * ux + 2 * cov.b * ux * uy + cov.c * uy * uy
 }
+
+/**
+ * Canonical PCA cloud — the one every PCA act draws against. Computed
+ * once at module load so the eigendecomposition isn't repeated on every
+ * render across the chapter's playables.
+ */
+export const CANONICAL_SEED = 0xa901
+export const CANONICAL_N = 180
+export const CANONICAL_POINTS: Pt[] = makeCloud(CANONICAL_N, CANONICAL_SEED)
+export const CANONICAL_COV = covariance(CANONICAL_POINTS)
+export const CANONICAL_EIG = eigenSym(CANONICAL_COV.a, CANONICAL_COV.b, CANONICAL_COV.c)

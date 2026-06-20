@@ -1,0 +1,27 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="cold-open" eyebrow="Zero · Paris · Cauchy · 1847">
+
+# Two and a half pages
+
+It's the autumn of 1847 and the French Academy of Sciences is meeting in Paris, as it has every Monday for two and a half centuries. The presiding mathematician, Augustin-Louis Cauchy, is sixty years old and has been quietly cranking out fundamental papers for thirty years. On October 18th he stands up and reads a short note. *Méthode générale pour la résolution des systèmes d'équations simultanées* — a general method for the solution of systems of simultaneous equations. It runs to two and a half pages.
+
+The note proposes a procedure that today we call *gradient descent*. Pick a starting point. Compute the gradient — the direction the function climbs fastest. Walk a small step in the opposite direction. Repeat. When you can no longer go down, you've found a minimum.
+
+Cauchy was not, in 1847, trying to invent a foundation for machine learning. He was trying to solve a problem in *celestial mechanics* — specifically a system of nonlinear equations arising in the orbital theory of a small body, which the closed-form algebra of the day could not crack. He'd tried Newton's method, the standard tool, and it kept diverging on this particular problem. So he tried something else: instead of solving the equations directly, *minimize the sum of their squared residuals.* That sum, as a function of the parameters, was a surface — and Cauchy's idea was to walk downhill on it.
+
+It worked. He got an answer. He filed the paper. He moved on.
+
+It would not become important for another hundred years.
+
+(I find that part hard to sit with. The most-used algorithm in modern AI — the thing that trains every neural network on the planet — was written down in 1847 as a workaround for a celestial-mechanics problem. By the time it became important, the man who'd written it had been dead for a century. He never knew. The math doesn't care.)
+
+There is something almost embarrassingly simple about gradient descent once you've seen the picture. It is: *walk downhill.* That's it. The whole subject we're about to study is the consequence of writing that sentence down rigorously and then asking what happens when you try to make it work in millions of dimensions, on landscapes you cannot draw, with noisy estimates of the gradient, with billions of parameters, on hardware that costs more than a small country.
+
+We'll spend the rest of this chapter building intuition for what changes as the landscape gets harder. A clean convex bowl with a single minimum. A stretched canyon where naïve descent zig-zags. A non-convex surface with multiple basins and saddle points. A 3D rendering of the bowl-with-two-basins so we can see what 'finding a minimum' actually looks like in a picture we can rotate.
+
+We'll close with a thread back to *Linear regression* (chapter 10), which was the last topic we did. That chapter ended with a closed-form solution — `β = (XᵀX)⁻¹Xᵀy` — falling out of the algebra. We left it as if Gauss had simply solved the problem and gone home. The truth is that Gauss's loss surface is a *single convex bowl* — and that is exactly why he could solve it. For every other model we'll see in this platform, no closed form exists. We climb.
+
+The climb is what this chapter is about.
+
+</Act>

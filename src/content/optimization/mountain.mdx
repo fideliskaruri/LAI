@@ -1,0 +1,27 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="mountain" eyebrow="One · The picture, from above">
+
+# Walking downhill
+
+Here is the canonical picture. The surface $f(x, y) = x^2 + y^2$ — a paraboloid bowl. Seen from above, it is a heatmap: pale at the bottom (the origin), saturated vermilion at the edges (where the function is large). The level curves are perfect circles.
+
+There's a ball somewhere up the side of the bowl. Click *step*. The ball moves in the direction *opposite* the gradient at its current position — straight toward the origin, which is downhill. Click again. Another step. The trajectory accumulates as a dashed trail.
+
+Algebraically: at the point $(x, y)$, the gradient is $\nabla f = (2x, 2y)$. (We did this in Derivatives. The gradient points uphill, perpendicular to the level curve.) One step of gradient descent updates
+
+$$
+(x, y) \;\leftarrow\; (x, y) \;-\; \eta \,\nabla f \;=\; \big((1 - 2\eta)\,x,\; (1 - 2\eta)\,y\big)
+$$
+
+for some small step size $\eta$. Every step shrinks the position by the same factor along each axis. The ball spirals — or, here, marches straight — toward the minimum. With a tiny $\eta$ the steps are gentle and many; with a large $\eta$ the steps are bold and few. We'll play with that next.
+
+For now the point is the *move*. Compute the gradient. Step against it. Repeat. That is the whole thing.
+
+The reason this matters — the reason it's not a parlour trick — is that the same rule works in any number of dimensions. The picture in our heads gives out somewhere around three. The math doesn't. A loss function for a neural network is a function of (say) ten million weights, and the gradient of that function is the ten-million-dimensional vector $\nabla L$. We can't draw the surface. We can still compute the gradient. We can still step against it. That is what training a network is.
+
+(There is something humbling about this. The picture you can see is the same picture that's running, secretly, in the dark, when a graphics card spends six weeks training a frontier model. The dimensions explode; the move stays the same. A small change in each coordinate, in the direction the loss decreases fastest. Repeat ten million times. The model gets better.)
+
+The bowl in front of you is the friendliest possible loss function. Convex, symmetric, one minimum, smooth everywhere. We start here so the move is uncluttered. Real loss landscapes are stranger and we'll meet them in turn. But the picture in two dimensions is the same picture as in two thousand, and watching the ball find the bottom of *this* bowl — by the rule of stepping against the gradient — is the picture you should keep in your head when you read about backpropagation, optimizers, training schedules, all of it.
+
+</Act>

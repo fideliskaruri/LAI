@@ -1,0 +1,29 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="the-promise" eyebrow="One · The promise">
+
+# King minus man plus woman
+
+Look at the four points on the canvas.
+
+*man* sits down and to the left. *woman* sits a little above and to the right of *man*. *king* sits over to the right, at about the same height as *man*. *queen* sits above *king*, displaced from it by exactly the same amount that *woman* is displaced from *man*.
+
+The arrow from *man* to *woman* is, geometrically, the same as the arrow from *king* to *queen*. That arrow has a name in the prose of the model: it is the *gender* direction. Not because anyone told the model what gender is — nobody did — but because, after training on enough text, that direction in space happens to be where the gender of a word ended up living.
+
+There is a second direction. The arrow from *man* to *king* — the dashed black arrow — is the same as the arrow from *woman* to *queen*. That's the *royalty* direction. Same story: nobody marked it; it emerged.
+
+Now do the arithmetic.
+
+Start at *king*. Subtract the *man* vector — that's the vector pointing from the origin to *man*. The result is *king − man*. Add the *woman* vector. What you've done geometrically is: take the position of *king*, remove its "maleness", add some "femaleness". You should end up somewhere near *queen*.
+
+And you do.
+
+This is what Mikolov demonstrated in the paper. It worked for hundreds of analogies. *Tokyo* to *japan* the way *paris* to *france*. *Walking* to *walked* the way *swimming* to *swam*. *Bigger* to *biggest* the way *smaller* to *smallest*. The vectors had picked up grammar, geography, gender, comparative-degree, and a hundred other things — all without anyone naming them.
+
+I want to be careful here. The picture on the canvas is a 2D cartoon. Real word vectors live in three hundred dimensions or more, and the relationships are messier. *king − man + woman* doesn't land *exactly* on *queen* — it lands near it. *Queen* is the nearest word in the vocabulary, but it's not a perfect match. The interesting fact is that *queen* is even close.
+
+So: how does a model trained on raw text — no labels, no dictionary, no human telling it what *king* means — end up putting *king* and *queen* in the right geometric relationship?
+
+That's the next act.
+
+</Act>

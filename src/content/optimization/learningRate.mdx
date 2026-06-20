@@ -1,0 +1,31 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="learning-rate" eyebrow="Two · How big a step">
+
+# The step size
+
+The previous act took fixed-size steps and let the ball converge. Try a slider for the step size $\eta$ (it's called the *learning rate*, by old convention from the perceptron papers of the late 1950s). Same bowl, same starting point, same twenty steps — but the *trajectory* changes shape.
+
+At $\eta = 0.05$ the ball crawls. Twenty steps barely closes a third of the distance. With a smaller $\eta$ you'd want a thousand steps. Stable, slow, safe.
+
+At $\eta = 0.3$ the ball arrives in three or four steps and parks at the origin. This is roughly the *Goldilocks zone* for this particular bowl.
+
+At $\eta = 0.5$ exactly, something magical happens: the recurrence is $x \leftarrow (1 - 2 \cdot 0.5) x = 0$, and the ball *snaps* to the minimum in a single step. This is closed-form-like behaviour, achievable only because the bowl is symmetric and we know the exact step that lands.
+
+At $\eta = 0.7$ the ball overshoots — it walks past the minimum, lands on the *other* side of the bowl, has to walk back, overshoots again, oscillates. Inelegant but converges.
+
+At $\eta \geq 1$ the ball *diverges*. Each step is so large that the new position is farther from the minimum than the old one. The trajectory spirals outward. The clipping mask on the heatmap is doing real work to keep the picture intact; the math has long since left the building.
+
+What's going on, algebraically? The recurrence
+
+$$
+x \;\leftarrow\; (1 - 2\eta)\,x
+$$
+
+is a *linear* recursion whose multiplier is $1 - 2\eta$. If $|1 - 2\eta| < 1$ — i.e. $0 < \eta < 1$ — every step shrinks $x$ and the iteration converges. If $|1 - 2\eta| \geq 1$, it doesn't. The boundary at $\eta = 1$ is where the picture turns into a fixed-amplitude oscillation; past it, divergence. So gradient descent on this bowl is *stable* exactly when $\eta < 1/L$, where $L = 2$ is the second derivative of $f$. We meet $L$ again in any real treatment of optimization theory; here we just notice that there *is* a number above which descent breaks.
+
+(In a real training run you do not get to know $L$ in advance. You guess a learning rate, watch the loss curve, and if it diverges you cut $\eta$ in half and try again. Half the time of practical model engineering is doing this for unfamiliar architectures. There are clever methods — *line search*, adaptive learning rates, the Adam optimizer's per-parameter step sizes — and we'll point at some of them in later chapters. The principle is the same: too small is slow, too large is divergent, the right size is found by trial and intuition.)
+
+The lesson for now: the *step size matters*. It's not a tuning knob you set and forget; it changes the entire character of the trajectory. The next act looks at what changes when the bowl stops being symmetric.
+
+</Act>

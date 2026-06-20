@@ -12,6 +12,7 @@ import { Eigenvalues } from './routes/topics/Eigenvalues'
 import { LinearRegression } from './routes/topics/LinearRegression'
 import { Pca } from './routes/topics/Pca'
 import { Clustering } from './routes/topics/Clustering'
+import { Embeddings } from './routes/topics/Embeddings'
 import { Recall } from './routes/Recall'
 import { TestMDX } from './routes/__test/TestMDX'
 import { SplitCanvasTest } from './routes/__test/SplitCanvasTest'
@@ -34,6 +35,7 @@ export default function App() {
         <Route path="/linear-regression" element={<LinearRegression />} />
         <Route path="/pca" element={<Pca />} />
         <Route path="/clustering" element={<Clustering />} />
+        <Route path="/embeddings" element={<Embeddings />} />
         <Route path="/recall" element={<Recall />} />
         <Route path="/__test-mdx" element={<TestMDX />} />
         <Route path="/__split-canvas-test" element={<SplitCanvasTest />} />

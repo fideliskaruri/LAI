@@ -1,6 +1,12 @@
 import { useMemo } from 'react'
 import { CanvasNarrative } from '../../components/topic/CanvasNarrative'
-import { covariance, eigenSym, makeCloud, projectedVariance } from './cloud'
+import {
+  CANONICAL_COV as cov,
+  CANONICAL_EIG as eig,
+  CANONICAL_N as N,
+  CANONICAL_POINTS as points,
+  projectedVariance,
+} from './cloud'
 
 /**
  * Act 3 — both principal axes, side by side with their variances. Static
@@ -16,9 +22,6 @@ const VIEW_H = 480
 const ORIGIN_X = 300
 const ORIGIN_Y = 240
 const UNIT = 60
-
-const SEED = 0xa901
-const N = 180
 
 const fmt = (n: number) => n.toFixed(2)
 
@@ -41,10 +44,6 @@ function arrowHead(from: { x: number; y: number }, to: { x: number; y: number })
     },
   }
 }
-
-const points = makeCloud(N, SEED)
-const cov = covariance(points)
-const eig = eigenSym(cov.a, cov.b, cov.c)
 
 export function Pc1AndPc2LeftPane() {
   const ARROW_SCALE = 1.7
