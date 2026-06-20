@@ -14,6 +14,7 @@ import { Magnitude } from '../../playables/vectors/Magnitude'
 import { Direction } from '../../playables/vectors/Direction'
 import { HamiltonBridge } from '../../playables/vectors/HamiltonBridge'
 import { NotationSplit } from '../../playables/vectors/NotationSplit'
+import { NDLeap, type NDState } from '../../playables/vectors/NDLeap'
 import { ClosingThread } from '../../playables/vectors/ClosingThread'
 
 // Prose
@@ -27,9 +28,10 @@ import MagnitudeProse from '../../content/vectors/magnitude.mdx'
 import DirectionProse from '../../content/vectors/direction.mdx'
 import HamiltonProse from '../../content/vectors/hamilton.mdx'
 import GibbsProse from '../../content/vectors/gibbsResolution.mdx'
+import NDProse from '../../content/vectors/nD.mdx'
 import ClosingProse from '../../content/vectors/closing.mdx'
 
-// Phase 2: 11 of 12 acts. The nD leap (act 10) ships in Phase 3 with r3f.
+// Phase 3: all 15 acts (nD leap split into 4 sub-acts).
 const acts: ActDef[] = [
   { id: 'cold-open', label: 'The fight · 1893' },
   { id: 'stevin', label: 'Stevin · 1586' },
@@ -41,6 +43,10 @@ const acts: ActDef[] = [
   { id: 'direction', label: 'Direction' },
   { id: 'hamilton', label: 'Hamilton · 1843' },
   { id: 'gibbs-resolution', label: 'Gibbs · 1881' },
+  { id: 'nd-1', label: 'nD · 2D' },
+  { id: 'nd-2', label: 'nD · 3D' },
+  { id: 'nd-3', label: 'nD · axes fade' },
+  { id: 'nd-4', label: 'nD · numbers' },
   { id: 'closing', label: 'Stevin → king' },
 ]
 
@@ -87,6 +93,11 @@ export function Vectors() {
             return <HamiltonBridge />
           case 'gibbs-resolution':
             return <NotationSplit />
+          case 'nd-1':
+          case 'nd-2':
+          case 'nd-3':
+          case 'nd-4':
+            return <NDLeap state={currentActId as NDState} />
           case 'closing':
             return <ClosingThread />
           default:
@@ -105,6 +116,7 @@ export function Vectors() {
         <DirectionProse />
         <HamiltonProse />
         <GibbsProse />
+        <NDProse />
         <ClosingProse />
       </MDXProvider>
     </TopicPage>
