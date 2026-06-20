@@ -1,0 +1,35 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="reward-model" eyebrow="Four · A judge learns to judge">
+
+# A small network learns the contractors' taste
+
+Press the **Step** button on the left. Each press feeds the reward model one comparison from the pile and updates its weights. Two responses, *A* and *B*. The reward model assigns a scalar number &mdash; let's call it `r(A)` and `r(B)` &mdash; to each. The trick is in how the model is taught what those numbers should mean.
+
+The model isn't given absolute scores. It is given the contractor's binary preference. If the contractor said "*A is better than B*," the reward model is asked to adjust so that `r(A) > r(B)`. By how much? The formula at the bottom of the card answers that question:
+
+$$
+P(A \succ B) = \sigma\!\left(r(A) - r(B)\right)
+$$
+
+That `σ` is the logistic sigmoid we built two chapters ago, in *Logistic Regression*. The same curve, the same shape, the same job. If the difference `r(A) − r(B)` is large and positive, the sigmoid is near one &mdash; the model is *certain* A is better. If the difference is large and negative, it's near zero &mdash; certain B is better. If the difference is around zero, the sigmoid is around one-half &mdash; the model is uncertain.
+
+This recipe has a name: the **Bradley-Terry model**, named after Ralph A. Bradley and Milton E. Terry, who proposed it in a 1952 paper in *Biometrika* on ranking baseball teams from pairwise game outcomes. The mathematics of "*team X has a strength score; the probability X beats team Y is sigmoid of strength-X minus strength-Y*" is identical to the mathematics of "*reply X has a quality score; the probability X is preferred over Y is sigmoid of quality-X minus quality-Y*." Bradley and Terry knew nothing about language models. The seventy-year gap is a small reminder that statistics is patient.
+
+The training itself is just *logistic regression*, also a chapter we already did. The loss function for one comparison is
+
+$$
+\mathcal{L} = -\log \sigma(r(\text{preferred}) - r(\text{other}))
+$$
+
+which, when the preferred score is much higher, is close to zero (sigmoid is near one; log is near zero) and, when the model has it wrong, is very large (sigmoid is near zero; log is very negative). Standard backpropagation against this loss nudges the reward model's weights so that its predictions agree with the contractor's clicks on this pair. Then we move to the next pair. Then the next. Tens of thousands of times. Press the **Step** button on the left a few more times.
+
+On the right is the diagnostic that tells us if it's working. Each dot is one reply from a *held-out* set the reward model never saw. The dot's horizontal position is the *contractor's* rank of that reply (averaged across several contractors, normalised). Its vertical position is the *reward model's* score. If the model has learned to score the way the contractors score, the dots line up along the diagonal &mdash; high-quality replies get high scores, low-quality ones get low scores. At the start of training the cloud is shapeless; the model has random weights and its scores have no relationship to human preference. As you click step, the cloud tightens. By full training the cloud lies in a thin band around the diagonal.
+
+A subtlety worth flagging. The reward model is a smaller, separate model from the policy &mdash; the model you actually talk to. It is typically built by taking the same transformer architecture, removing the final word-prediction head, and replacing it with a single scalar output: *given this prompt and this response, output one number*. The model is initialised from the SFT weights of the previous act and then fine-tuned on the preference pairs. The reward model is, in a real sense, *a learned simulation of the contractor*. When it's good, the model can stand in for the contractor for as many comparisons as you like, infinitely fast, with no labour cost. That's how RLHF scales beyond the budget of a contractor team. You hire a few hundred contractors, you collect a few tens of thousands of comparisons, you train a reward model that approximates their judgement, and then you use the reward model to score *millions* of new replies the contractors never saw.
+
+This is also where the most famous failure modes of RLHF live, and they're worth flagging before we go on. The reward model is *learned*. It is not a flawless judge. Its taste was set by a finite set of contractors on a finite set of comparisons in a finite slice of time. It has *blind spots* &mdash; types of replies the contractors never compared, where the model has no opinion. It has *systematic biases* &mdash; if the contractors tended to prefer slightly longer replies (they did, mildly), the reward model will too, and the policy trained against it will become slightly verbose. And it has the *exploitation* problem we'll meet in the next act: if you optimise hard enough against any imperfect reward model, the policy finds the reward model's mistakes and exploits them, producing replies that score absurdly high but read as nonsense. This is *reward hacking*, and PPO has a built-in answer to it. The answer is a leash, and we'll meet it next.
+
+For now: train the reward model. Press the button. Watch the cloud tighten. We have a judge.
+
+</Act>

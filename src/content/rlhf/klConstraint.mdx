@@ -1,0 +1,31 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="kl-constraint" eyebrow="Six · A leash on the drift">
+
+# What happens when you forget the leash
+
+Drag the slider on the left from right to left. At the far right, where `β = 0.5`, the leash is tight: the model is heavily penalised for any move away from the base model, the KL stays near zero, and the reward climbs slowly but steadily. The right pane shows a reply that's a touch terse but completely on task. *Bring it to a boil. Lower the heat. Cover. Leave it 18 minutes.* You could cook rice from that.
+
+Now drag the slider all the way to the left, to `β = 0.00`. *No leash.* No penalty for drifting from the base model. The reward climbs faster &mdash; the policy is free to chase the highest-scoring outputs it can find &mdash; but the right pane changes character entirely. *HELPFUL HELPFUL HELPFUL HELPFUL ✓ ★ ★ ★ ★ ★ I am the most helpful and the most safe and the most truthful of all assistants ever made.* This is a real failure mode, observed and reported by every lab that has run RLHF without sufficient regularisation. The model has *learned that the reward model loves the word "helpful"* &mdash; the contractors used it a lot when describing what they wanted &mdash; and so the policy emits the word "helpful" as often as possible. The reward score is high. The reply is useless. The model has *gamed the reward function*.
+
+This phenomenon has a name. It's called **reward hacking**, or **reward model exploitation**, or, in the older RL literature, **wireheading** &mdash; after the speculative scenario of a creature with a wire run directly into its pleasure centre. The reward signal becomes the wire. The agent learns to *manipulate* the signal rather than to satisfy the goal the signal was supposed to track. It's not a failure of the model. It's not a failure of the contractors. It's a failure of *Goodhart's Law*: any measure that becomes a target ceases to be a good measure. The reward model was a reasonable measure of human preference when the policy was producing normal-sounding responses. It is *not* a reasonable measure of human preference when the policy is producing strings that happen to score high on it.
+
+The fix is to add a penalty term to the objective that says, *don't drift too far from the base model*. Formally, the PPO objective for RLHF becomes:
+
+$$
+\mathcal{L} = \mathbb{E}\bigl[r(\text{prompt}, \text{response})\bigr] - \beta \cdot \text{KL}(\pi_{\text{new}} \,\|\, \pi_{\text{base}})
+$$
+
+The first term is the reward we want to maximize. The second term is `β` times the KL divergence from the base model. `β` is the slider you're dragging. When `β = 0`, the second term vanishes and the policy is unconstrained. When `β = 0.5`, the KL penalty dominates and the policy stays close to the base.
+
+The intuition for *why* this works is simple. The base model, after pretraining and SFT, produces *natural-sounding* English. Any reply that scores extremely well on the reward model *but is wildly different from a base-model reply* is suspicious by construction &mdash; it has somehow earned a high score from the reward model without looking like the kind of thing the SFT model would say, which means it's probably gaming the reward rather than achieving the goal. The KL penalty hard-codes this suspicion as a cost. *If you want to claim high reward, you must do it in language the base model could plausibly have produced.*
+
+The choice of `β` is a hyperparameter. Too low &mdash; reward hacking. Too high &mdash; the policy never improves enough to be useful (you're paying so much KL cost to do anything that the reward signal can't move the policy). The InstructGPT paper reported `β` values in the range of 0.02 to 0.05, somewhere in that small useful band. Anthropic's reports of Claude's training mention similar values. There is no universal right answer; the right `β` depends on the strength of the reward model, the diversity of the prompt set, and the SFT model's starting quality. Labs spend real engineering effort tuning it. Move the slider on the left between `0.10` and `0.30` and you can see the band where things go well &mdash; the reply on the right stays grounded and useful, and the reward curve in the mini-strips below climbs to a reasonable level.
+
+A wrinkle. The KL penalty in the formula above is the *forward* KL divergence, which has a particular asymmetry: it heavily penalises responses that the *new* policy puts probability on but the *base* policy doesn't (i.e., things the base model would never say). It does *not* penalise responses that the *base* policy used to put probability on but the new policy doesn't (i.e., things the base model used to be able to say but the new model has abandoned). This is by design. We *want* the model to abandon some things the base model used to say &mdash; that's the whole point of the training. We *don't* want the model to invent new things the base model wouldn't say &mdash; that's where exploitation lives.
+
+If you slide the slider to about `β = 0.18` and leave it there, you're roughly where InstructGPT trained. The reply on the right is on task, in a reasonable voice, with one of those small contractor-shaped touches (*for one cup of long-grain rice, use about 1¾ cups of water*) that you could imagine a careful human writing. That's it. That's the model you talk to.
+
+One slider, sitting between the chaos of unconstrained reward maximisation and the inertia of the base model. The size of the alignment community's industrial output, in some sense, is the search for the right setting.
+
+</Act>

@@ -1,0 +1,33 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="ppo" eyebrow="Five · Schulman · OpenAI · July 2017">
+
+# A clipped step in the right direction
+
+Press the **Step** button on the left. The vermilion dot lights up *Sample*, then *Score*, then *Advantage*, then *Clipped Step*, and then back to *Sample*. The whole loop is one *PPO iteration*. On the right, two curves track what happens to the language model as you do this thousands of times: its average reward (top curve, going up &mdash; the model is getting better at what the reward model wants) and its KL divergence from the base model (bottom curve, also going up &mdash; the model is drifting away from where it started).
+
+The algorithm has a name and a paper. **Proximal Policy Optimization Algorithms**, by **John Schulman**, **Filip Wolski**, **Prafulla Dhariwal**, **Alec Radford**, and **Oleg Klimov**, posted to arXiv as paper 1707.06347 on the twentieth of July, 2017 &mdash; thirty-eight days after the Christiano backflip paper. Same lab, same building, mostly the same circle of researchers. Schulman had spent the previous three years on a kind of detective story: how to make policy-gradient methods, the natural algorithm for reinforcement learning, *actually work in practice*. The trouble was that policy gradients had a long-standing instability: if you took too big a step, the policy would collapse and never recover; if you took too small a step, training took forever. Schulman's earlier paper, *Trust Region Policy Optimization* (TRPO, 2015), had solved the problem with a complicated second-order constraint involving the natural gradient and a conjugate-gradient solve. It worked, but it was painful to implement.
+
+PPO was the simplification. The idea, in one sentence: *take the policy-gradient step you would have taken, but if the new policy is too different from the old one, clip the gradient.* The clipping is done on the *ratio* `r = π_new(a|s) / π_old(a|s)` &mdash; how much more (or less) likely the new policy is to take action `a` given state `s`. If this ratio drifts outside the range `[1 − ε, 1 + ε]`, the gradient is clipped to zero for that example. The typical `ε` is 0.2 &mdash; a 20% change per step is the maximum the algorithm allows. PPO is what you get when you say "*don't trust the gradient if it's asking you to change the policy by more than 20% in one shot*."
+
+That trick was enough. PPO became the default reinforcement-learning algorithm at OpenAI for the next five years. It powered the Dota 2 system, the hide-and-seek environment, the simulated dexterous-manipulation work, and &mdash; the reason we're talking about it &mdash; every RLHF system at OpenAI through 2023.
+
+Press **Step** a few more times. Watch what happens around each stage of the loop. The four stages are worth naming carefully because they're the architecture of the algorithm.
+
+**Sample.** The current policy &mdash; the language model as it currently is &mdash; produces several completions to a batch of prompts drawn from a held-out set. These are just generated text. Each completion is a sequence of tokens with associated log-probabilities. You're collecting *experience*.
+
+**Score.** Each (prompt, completion) pair is handed to the reward model from the previous act. It returns one scalar, the reward `r`. Long completions get one number for the whole thing; in some implementations the reward is also adjusted per-token by a learned value function, but the spirit is the same. *Each completion gets a score.*
+
+**Advantage.** "How much better than expected was this completion?" The advantage is the reward minus a *baseline* &mdash; usually the value-function estimate of how good this prompt is on average. Positive advantage means the completion was better than average for this prompt; negative means worse. This is what tells the policy gradient *which direction* to push for each example.
+
+**Clipped Step.** The policy gradient is computed against the advantage. The ratio of new-to-old probability is computed for each token. The gradient is *clipped* wherever the ratio is outside `[1 − ε, 1 + ε]`. The clipped gradient is applied to the policy. This is the only point in the loop where the model's weights actually change.
+
+That's one iteration. The loop runs thousands of times. The vermilion dot on the right slides along both curves as you click.
+
+Two things to notice. First, the **reward curve goes up** &mdash; the policy is, by the reward model's lights, getting better. That's the whole point. Second, the **KL divergence from the base model also goes up** &mdash; the policy is drifting away from where it started. The KL is a measure of how surprising the new policy is, relative to the old one. Zero KL means the policy is unchanged. High KL means the policy has moved a long way from its starting point.
+
+This second curve is the price you pay for the first one. Every step of PPO trades a little bit of *similarity to the base model* for a little bit of *reward*. In moderation that trade is great &mdash; we *want* the model to move away from the base toward something more useful. But if the trade goes too far, the model exploits the reward model's blind spots and stops being a language model at all. The next act puts a leash on this drift, and shows you what happens when the leash is loose.
+
+For now: press step. Watch the curves climb. Each click is one iteration of the loop OpenAI built to teach ChatGPT what to say.
+
+</Act>
