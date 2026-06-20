@@ -3,8 +3,10 @@ import { Hub } from './routes/Hub'
 import { Vectors } from './routes/topics/Vectors'
 import { Functions } from './routes/topics/Functions'
 import { Derivatives } from './routes/topics/Derivatives'
+import { Integrals } from './routes/topics/Integrals'
 import { Probability } from './routes/topics/Probability'
 import { Expectation } from './routes/topics/Expectation'
+import { Distributions } from './routes/topics/Distributions'
 import { Matrices } from './routes/topics/Matrices'
 import { Eigenvalues } from './routes/topics/Eigenvalues'
 import { Pca } from './routes/topics/Pca'
@@ -22,8 +24,10 @@ export default function App() {
         <Route path="/vectors" element={<Vectors />} />
         <Route path="/functions" element={<Functions />} />
         <Route path="/derivatives" element={<Derivatives />} />
+        <Route path="/integrals" element={<Integrals />} />
         <Route path="/probability" element={<Probability />} />
         <Route path="/expectation" element={<Expectation />} />
+        <Route path="/distributions" element={<Distributions />} />
         <Route path="/matrices" element={<Matrices />} />
         <Route path="/eigenvalues" element={<Eigenvalues />} />
         <Route path="/pca" element={<Pca />} />

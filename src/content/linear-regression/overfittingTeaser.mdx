@@ -1,0 +1,31 @@
+import { Act } from '../../components/topic/Act'
+
+<Act id="overfitting-teaser" eyebrow="Eight · A glimpse of what goes wrong">
+
+# What if I let the line be curvier?
+
+Here's a thought experiment that's going to keep coming up for the rest of the platform.
+
+So far the model has been linear: $\hat{y} = \beta_0 + \beta_1 x$. Two parameters. One slope. Whatever pattern is in the data, the line either captures it or it doesn't, and that's that. What if we relaxed the constraint? Let the model be a polynomial &mdash; not just a line, but a curve. Degree 2 is a parabola. Degree 3 is a curve with one bend, possibly an S-shape. Degree 10 is a wild thing that can pass through almost any twelve points.
+
+The slider on the left controls the degree. Drag it from 1 to 10 and watch.
+
+At degree 1, you get the same line we've been working with.
+
+At degree 2, the curve gains a single bend. It fits the data *slightly* better &mdash; the bars on the residual panel that we drew in earlier acts are slightly shorter. The bar chart on the right shows the training error dropping a little.
+
+By degree 5 or 6, the curve has started visibly bending through clusters of points. The training error is much smaller. The fit looks good, in the sense that it's hugging the data more closely.
+
+By degree 10, the curve does something weird. It passes through almost every point exactly, but it does so by wiggling. Between the points, it shoots off in directions the data has nothing to say about. The training error is *almost zero* &mdash; the bar chart on the right has shrunk down to a sliver. Yet if I gave you a *new* person's height and asked you to predict their weight, you'd refuse to use the degree-10 model. It's obviously wrong, even though the error on the data we showed it is essentially nil.
+
+This is *overfitting*. It's the central, recurring problem of machine learning. A model with enough flexibility can memorise the training data perfectly and still be useless on data it hasn't seen.
+
+Two things to register.
+
+First, the bar chart on the right is *misleading*. It shows training error decreasing monotonically with degree, which makes it look like more flexibility is always better. It isn't &mdash; we just can't see the failure on the chart, because the chart only measures performance on the data we trained on. To see the failure you need *held-out* data: new (height, weight) pairs the model hasn't been allowed to memorise. We aren't going to draw that chart here &mdash; it's a whole topic in itself &mdash; but it would have a different shape: training error keeps falling, but *test* error *rises* once the model gets flexible enough to fit the noise instead of the signal. The point of best generalisation is somewhere in the middle, not at the extreme.
+
+Second, the *reason* a degree-10 model overfits is that it has eleven adjustable parameters (one per power, plus the constant) and we gave it only twelve data points. There's almost no room left for it to be wrong; with twelve constraints and eleven freedoms it can essentially pass through every point. With more data, the same model would have more constraints to honour and couldn't wiggle so freely. With less flexibility, even few constraints would be sharp. The trade-off &mdash; model capacity vs. data quantity &mdash; is what *regularization*, *cross-validation*, and the broader theory of *generalisation* are all about. They live in later chapters, none of them in this one.
+
+The reason I'm raising it now is to make the next chapter's pitch land. Linear regression has a closed-form solution and a clean geometric story. The moment we make the model curvier &mdash; or higher-dimensional, or use a different loss &mdash; the closed-form story breaks. There's no formula. We need iteration. That's optimization. We're one act away.
+
+</Act>
