@@ -1,3 +1,5 @@
+import { CanvasNarrative } from '../../components/topic/CanvasNarrative'
+
 /**
  * Cold-open: a stylized fragment of an 1893 issue of Nature magazine.
  * No interaction. Abstract — wavy lines stand in for body text; two passages
@@ -12,6 +14,10 @@ export function ColdOpenScene() {
 
   return (
     <figure className="w-full">
+      <CanvasNarrative
+        text="A stylized fragment of an 1893 issue of Nature magazine. Two passages, highlighted in vermilion, mark the polemic between Tait and Gibbs about quaternions versus vectors."
+        priority="normal"
+      />
       <svg
         viewBox="0 0 600 480"
         className="w-full h-auto"

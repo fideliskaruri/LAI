@@ -2,6 +2,7 @@ import { MDXProvider } from '@mdx-js/react'
 import { Link } from 'react-router-dom'
 import { TopicPage, type ActDef } from '../../components/topic/TopicPage'
 import { Act } from '../../components/topic/Act'
+import { ChapterFooter } from '../../components/topic/ChapterFooter'
 
 // Playables
 import { ColdOpenScene } from '../../playables/vectors/ColdOpenScene'
@@ -119,6 +120,14 @@ export function Vectors() {
         <NDProse />
         <ClosingProse />
       </MDXProvider>
+      <ChapterFooter
+        chapterNum={1}
+        totalChapters={26}
+        topicName="Vectors"
+        nextTopicId="functions"
+        nextTopicName="Functions and change"
+        nextStatus="coming-soon"
+      />
     </TopicPage>
   )
 }

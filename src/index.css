@@ -49,6 +49,37 @@ body {
   color: var(--color-cream);
 }
 
+@keyframes glyph-pulse {
+  0%, 100% {
+    r: 9;
+    fill-opacity: 0.22;
+  }
+  50% {
+    r: 14;
+    fill-opacity: 0.05;
+  }
+}
+
+.glyph-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: glyph-pulse 2.4s ease-in-out infinite;
+}
+
+/* Reduced motion: respect the OS setting AND the local `data-reduced-motion`
+   toggle from the header overflow menu (PLAN §5.8). The comma-separated
+   selector list unifies both triggers into a single rule. */
+@media (prefers-reduced-motion: reduce) {
+  .glyph-pulse {
+    animation: none;
+  }
+}
+
+html[data-reduced-motion="true"] .glyph-pulse,
+html[data-reduced-motion="true"] .glyph-pulse:hover {
+  animation: none;
+}
+
 .dropcap::first-letter {
   font-family: var(--font-serif);
   font-weight: 600;
@@ -69,4 +100,13 @@ body {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+html[data-reduced-motion="true"] *,
+html[data-reduced-motion="true"] *::before,
+html[data-reduced-motion="true"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
 }

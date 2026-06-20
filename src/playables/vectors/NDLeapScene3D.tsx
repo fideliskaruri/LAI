@@ -3,6 +3,7 @@
 // on this Windows junction setup. Working at dev runtime. Phase 9 polish: enable
 // proper types via /// <reference types="@react-three/fiber" /> after switching
 // from junctioned node_modules to a fresh install.
+import { useEffect, useRef } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
@@ -113,7 +114,54 @@ function Arrow({ from, to }: { from: [number, number, number]; to: [number, numb
 }
 
 function SlowOrbit() {
+  // Track reduced-motion preference: OS-level via matchMedia, plus an
+  // app-level override on <html data-reduced-motion="true"> set by the
+  // overflow-menu toggle. Either one freezes the camera at a fixed angle.
+  const reducedMotionRef = useRef<boolean>(false)
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const mql = window.matchMedia('(prefers-reduced-motion: reduce)')
+
+    const compute = () => {
+      const osPref = mql.matches
+      const appPref =
+        typeof document !== 'undefined' &&
+        document.documentElement.dataset.reducedMotion === 'true'
+      reducedMotionRef.current = osPref || appPref
+    }
+
+    compute()
+
+    const onChange = () => compute()
+    // Safari < 14 uses addListener/removeListener
+    if (mql.addEventListener) {
+      mql.addEventListener('change', onChange)
+    } else if ((mql as any).addListener) {
+      ;(mql as any).addListener(onChange)
+    }
+
+    return () => {
+      if (mql.removeEventListener) {
+        mql.removeEventListener('change', onChange)
+      } else if ((mql as any).removeListener) {
+        ;(mql as any).removeListener(onChange)
+      }
+    }
+  }, [])
+
   useFrame(({ camera, clock }: RootState) => {
+    // Re-check the app-level override each frame in case it toggles without
+    // a matchMedia event; cheap dataset read.
+    const appPref =
+      typeof document !== 'undefined' &&
+      document.documentElement.dataset.reducedMotion === 'true'
+    if (reducedMotionRef.current || appPref) {
+      // Idempotent: snap to the natural viewing angle and bail.
+      camera.position.set(4, 3, 5)
+      camera.lookAt(0, 0, 0)
+      return
+    }
     const t = clock.getElapsedTime()
     const r = 6
     camera.position.x = Math.cos(t * 0.15) * r

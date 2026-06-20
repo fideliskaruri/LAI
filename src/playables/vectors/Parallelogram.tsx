@@ -1,10 +1,17 @@
-import { useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useDrag } from '@use-gesture/react'
+import { CanvasNarrative } from '../../components/topic/CanvasNarrative'
+import { useKeyNudge } from '../../hooks/useKeyNudge'
 
 /**
  * Addition act: two arrows v and w, parallelogram completes itself.
  * Sum v+w drawn as the diagonal. When v ∥ w, the parallelogram collapses
  * to a line — the degenerate case the prose catches.
+ *
+ * Phase 5 accessibility: both tips (v, w) are tab-focusable; arrow keys
+ * nudge by 0.1 math-units, Shift+arrow by 1. A CanvasNarrative announces
+ * the degenerate transition at high priority, otherwise reads the three
+ * coordinate triples.
  */
 
 const VIEW_W = 600
@@ -33,6 +40,8 @@ function arrowHead(from: { x: number; y: number }, to: { x: number; y: number })
 
 export function Parallelogram() {
   const svgRef = useRef<SVGSVGElement | null>(null)
+  const vRef = useRef<SVGGElement | null>(null)
+  const wRef = useRef<SVGGElement | null>(null)
   const [v, setV] = useState({ x: 3, y: 1 })
   const [w, setW] = useState({ x: 1, y: 2 })
   const startVRef = useRef<typeof v | null>(null)
@@ -59,6 +68,24 @@ export function Parallelogram() {
     setW({ x: start.x + (mx * sx) / UNIT, y: start.y - (my * sy) / UNIT })
   })
 
+  // Keyboard nudge — 0.1 unit / 1 unit Shift
+  const nudgeAmount = (d: number) => {
+    if (d === 0) return 0
+    return Math.abs(d) >= 10 ? Math.sign(d) * 1 : Math.sign(d) * 0.1
+  }
+  useKeyNudge(
+    vRef,
+    useCallback((dx: number, dy: number) => {
+      setV((cur) => ({ x: cur.x + nudgeAmount(dx), y: cur.y + nudgeAmount(dy) }))
+    }, []),
+  )
+  useKeyNudge(
+    wRef,
+    useCallback((dx: number, dy: number) => {
+      setW((cur) => ({ x: cur.x + nudgeAmount(dx), y: cur.y + nudgeAmount(dy) }))
+    }, []),
+  )
+
   // SVG positions
   const O = { x: ORIGIN_X, y: ORIGIN_Y }
   const V = { x: ORIGIN_X + v.x * UNIT, y: ORIGIN_Y - v.y * UNIT }
@@ -73,8 +100,36 @@ export function Parallelogram() {
   const headW = arrowHead(O, W)
   const headSum = arrowHead(O, SUM)
 
+  // Edge-detect degenerate transitions so we can fire high-priority narration.
+  const [narration, setNarration] = useState<{ text: string; priority: 'normal' | 'high' }>({
+    text: `v at (${fmt(v.x)}, ${fmt(v.y)}); w at (${fmt(w.x)}, ${fmt(w.y)}); sum at (${fmt(v.x + w.x)}, ${fmt(v.y + w.y)}).`,
+    priority: 'normal',
+  })
+  const prevDegenerateRef = useRef<boolean>(degenerate)
+  useEffect(() => {
+    const prev = prevDegenerateRef.current
+    if (degenerate && !prev) {
+      setNarration({
+        text: 'Vectors are now parallel. The parallelogram has collapsed into a line.',
+        priority: 'high',
+      })
+    } else if (!degenerate && prev) {
+      setNarration({
+        text: 'Parallelogram is well-formed again.',
+        priority: 'high',
+      })
+    } else {
+      setNarration({
+        text: `v at (${fmt(v.x)}, ${fmt(v.y)}); w at (${fmt(w.x)}, ${fmt(w.y)}); sum at (${fmt(v.x + w.x)}, ${fmt(v.y + w.y)}).`,
+        priority: 'normal',
+      })
+    }
+    prevDegenerateRef.current = degenerate
+  }, [degenerate, v.x, v.y, w.x, w.y])
+
   return (
     <figure className="w-full">
+      <CanvasNarrative text={narration.text} priority={narration.priority} />
       <svg
         ref={svgRef}
         viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
@@ -108,11 +163,27 @@ export function Parallelogram() {
         <polygon points={`${SUM.x},${SUM.y} ${headSum.p1.x},${headSum.p1.y} ${headSum.p2.x},${headSum.p2.y}`} fill="var(--color-vermilion)" />
 
         {/* Tip handles */}
-        <g {...bindV()} style={{ cursor: 'grab', touchAction: 'none' }}>
+        <g
+          {...bindV()}
+          ref={vRef}
+          tabIndex={0}
+          role="button"
+          aria-label={`Vector v tip. Currently ${fmt(v.x)}, ${fmt(v.y)}. Arrow keys to nudge.`}
+          style={{ cursor: 'grab', touchAction: 'none' }}
+          className="focus-visible:outline-none [&:focus-visible_circle:last-of-type]:stroke-vermilion-deep"
+        >
           <circle cx={V.x} cy={V.y} r="22" fill="transparent" />
           <circle cx={V.x} cy={V.y} r="6" fill="var(--color-cream)" stroke="var(--color-graph-ink)" strokeWidth="2" />
         </g>
-        <g {...bindW()} style={{ cursor: 'grab', touchAction: 'none' }}>
+        <g
+          {...bindW()}
+          ref={wRef}
+          tabIndex={0}
+          role="button"
+          aria-label={`Vector w tip. Currently ${fmt(w.x)}, ${fmt(w.y)}. Arrow keys to nudge.`}
+          style={{ cursor: 'grab', touchAction: 'none' }}
+          className="focus-visible:outline-none [&:focus-visible_circle:last-of-type]:stroke-vermilion-deep"
+        >
           <circle cx={W.x} cy={W.y} r="22" fill="transparent" />
           <circle cx={W.x} cy={W.y} r="6" fill="var(--color-cream)" stroke="var(--color-graph-ink)" strokeWidth="2" />
         </g>

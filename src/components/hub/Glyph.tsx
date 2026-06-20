@@ -36,15 +36,29 @@ export function Glyph({ topic, isHovered, onHover, onSelect }: GlyphProps) {
       tabIndex={isAvailable ? 0 : -1}
       role={isAvailable ? 'link' : 'presentation'}
       aria-label={isAvailable ? `${topic.name} — open chapter` : `${topic.name} — coming soon`}
-      style={{ cursor: isAvailable ? 'pointer' : 'default' }}
-      className="outline-none focus-visible:[&_circle:first-of-type]:fill-[var(--color-vermilion)] focus-visible:[&_circle:first-of-type]:fill-opacity-25"
+      style={{
+        cursor: isAvailable ? 'pointer' : 'default',
+        opacity: isAvailable ? 1 : 0.6,
+      }}
+      className="outline-none focus-visible:[&_circle.glyph-dot]:fill-[var(--color-vermilion)]"
     >
-      {/* Hover/focus halo */}
+      {/* Pulsing halo — only on the available (vermilion) glyph */}
+      {isAvailable && (
+        <circle
+          className="glyph-pulse"
+          cx={topic.x}
+          cy={topic.y}
+          r="9"
+          fill="var(--color-vermilion)"
+          fillOpacity={0.22}
+        />
+      )}
+      {/* Hover/focus halo — only available glyphs get this */}
       {isAvailable && (
         <circle
           cx={topic.x}
           cy={topic.y}
-          r="14"
+          r="16"
           fill={isHovered ? 'var(--color-vermilion)' : 'transparent'}
           fillOpacity={isHovered ? 0.15 : 0}
           style={{ transition: 'fill-opacity 150ms ease-out' }}
@@ -52,14 +66,15 @@ export function Glyph({ topic, isHovered, onHover, onSelect }: GlyphProps) {
       )}
       {/* Dot */}
       <circle
+        className="glyph-dot"
         cx={topic.x}
         cy={topic.y}
-        r={isAvailable ? 5 : 3.5}
+        r={isAvailable ? 8 : 3.5}
         fill={dotFill}
       />
       {/* Label */}
       <text
-        x={topic.x + 12}
+        x={topic.x + (isAvailable ? 15 : 12)}
         y={topic.y + 5}
         fontFamily="Source Serif 4, Georgia, serif"
         fontSize="14"

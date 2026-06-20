@@ -1,3 +1,5 @@
+import { CanvasNarrative } from '../../components/topic/CanvasNarrative'
+
 /**
  * A stylized sketch of Brougham Bridge, Dublin, October 16 1843.
  * The carved equation i² = j² = k² = ijk = −1 sits on a plaque on the stone.
@@ -9,6 +11,10 @@ export function HamiltonBridge() {
 
   return (
     <figure className="w-full">
+      <CanvasNarrative
+        text="Brougham Bridge in Dublin. On a plaque carved into the stone: i squared equals j squared equals k squared equals i j k equals minus one. The equation Hamilton carved on October 16, 1843."
+        priority="normal"
+      />
       <svg
         viewBox="0 0 600 480"
         className="w-full h-auto"

@@ -1,5 +1,6 @@
 import { lazy, Suspense, useRef } from 'react'
 import { useNearViewport } from '../../hooks/useNearViewport'
+import { CanvasNarrative } from '../../components/topic/CanvasNarrative'
 
 // 3D content is code-split — only fetched when the user actually approaches the nD act.
 const NDLeapScene3D = lazy(() => import('./NDLeapScene3D'))
@@ -13,12 +14,20 @@ interface NDLeapProps {
 // A real word2vec-shaped vector for 'king' (truncated to 8 dims for display).
 const KING_NUMBERS = ['0.341', '−0.118', '0.776', '0.045', '−0.502', '0.193', '0.022', '0.667']
 
+const NARRATION: Record<NDState, string> = {
+  'nd-1': 'A 2D coordinate plane with a single vermilion arrow pointing into the first quadrant.',
+  'nd-2': 'A 3D coordinate space, three axes drawn, with a vermilion arrow pointing into the space. The camera slowly orbits.',
+  'nd-3': 'The 3D axes have faded. A column of five decimal numbers fades in on the right of the canvas.',
+  'nd-4': 'Only the column of numbers remains. The picture has run out of room.',
+}
+
 export function NDLeap({ state }: NDLeapProps) {
   const ref = useRef<HTMLDivElement>(null)
   const near = useNearViewport<HTMLDivElement>(ref)
 
   return (
     <figure ref={ref} className="w-full">
+      <CanvasNarrative text={NARRATION[state]} priority="high" />
       {state === 'nd-1' && <NDLeap2D />}
 
       {(state === 'nd-2' || state === 'nd-3') && (

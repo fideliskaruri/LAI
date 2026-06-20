@@ -1,53 +1,71 @@
 # learn-ai
 
-An interactive web book teaching AI/ML from first principles through scroll-driven playgrounds. Each topic is one page; the canvas is pinned, the prose narrates beside it, the canvas mutates as you scroll. The history of who discovered each idea is woven in as marginalia — Stevin's chain, Descartes's coordinates, Hamilton's bridge, Gibbs's notation.
+An interactive web book teaching AI/ML from first principles through scroll-driven playgrounds. Each topic is one page: canvas pinned on the left, prose narrating on the right, canvas mutating as you scroll. The history of who discovered each idea is woven in as marginalia — Stevin's chain, Descartes's coordinates, Hamilton's bridge, Gibbs's notation.
 
-The plan lives at [`PLAN.md`](./PLAN.md). The reference text for the math is *Mathematics for Machine Learning* (Deisenroth/Faisal/Ong, [mml-book.com](https://mml-book.com)).
+The plan lives in [`PLAN.md`](./PLAN.md). The mathematical reference is *Mathematics for Machine Learning* (Deisenroth/Faisal/Ong, [mml-book.com](https://mml-book.com)).
 
-## What's here
+## Run it
 
-M1 of the plan, complete. **Vectors** ships as one fully-built topic with all 15 acts:
+```powershell
+npm install     # only on a fresh clone
+npm run dev     # http://localhost:5173
+```
+
+## What's built
+
+**M1 of the plan: Vectors as a complete chapter.** 15 acts, ~10 playables, full a11y wiring, mobile fallback, screen-reader narrative, end-of-chapter closer.
+
+### Routes
+
+| URL | What it is |
+|---|---|
+| `/` | The constellation hub. 26 topic glyphs; **Vectors** is the only active one (vermilion, pulsing). Hover any glyph to see its dependency edges. Use the persistent "Begin → Vectors" link if the metaphor isn't obvious. |
+| `/vectors` | The full Vectors chapter — scroll from cold-open to closing. 15 acts; "Act N of 15" updates as you go; the `⋯` overflow menu has a share-link copier and a reduced-motion preview. |
+| `/__split-canvas-test` | Internal proof of the split-canvas template. Four sync modes (independent / left-drives-right / right-drives-left / co-mutating). Used to validate the template before LinReg/PCA/etc consume it. |
+| `/__test-mdx` | Day-one smoke test: MDX + KaTeX + embedded React component + react-router internal link. If this renders, all four integrations are wired. |
+
+### Vectors — the 15 acts
 
 | # | Act | Playable |
 |---|---|---|
-| 0 | The 1893 fight in *Nature* | static SVG page-fragment mockup |
-| 1 | Stevin's wreath of spheres (1586) | wedge + 14-bead draggable chain |
-| 2 | Descartes & Pappus (1637) | empty plane, click to drop point, drag |
-| 3 | Point → arrow | draggable tip + translation-invariant shaft |
-| 4 | The parallelogram | two vectors v, w + sum diagonal + degenerate catch |
-| 5 | Scalar multiplication | slider −2 to +2, flips at −1, vanishes at 0 |
-| 6 | Pythagoras's magnitude | arrow + dashed right triangle |
+| 0 | The 1893 fight in *Nature* | static SVG of a journal page fragment |
+| 1 | Stevin's wreath of spheres (1586) | wedge + 14-bead chain; drag any bead |
+| 2 | Descartes & Pappus (1637) | empty plane; click to drop a point, drag |
+| 3 | Point → arrow | drag the tip (changes components) vs drag the shaft (translation invariance) |
+| 4 | The parallelogram | two vectors; parallelogram completes itself; degenerate-case prose-catch |
+| 5 | Scalar multiplication | slider −2 to +2; flips at −1, vanishes at 0 |
+| 6 | Pythagoras's magnitude | arrow + dashed right triangle + live `|v|` readout |
 | 7 | Direction | arrow + angle arc + degrees/radians readout |
-| 8 | Hamilton at Brougham Bridge (1843) | stylized bridge sketch + the carved equation |
-| 9 | Gibbs / Tait notation split | two-column hover-link translator |
-| 10–13 | nD leap (2D → 3D → axes fade → numbers) | react-three-fiber lazy-loaded |
-| 14 | Stevin's chain → king as embedding | static visual |
+| 8 | Hamilton at Brougham Bridge (1843) | stylized bridge sketch + the carved `i² = j² = k² = ijk = −1` |
+| 9 | Gibbs / Tait notation split | two columns; hover any row, the matching translation highlights |
+| 10–13 | nD leap (2D → 3D → axes fade → numbers) | react-three-fiber, lazy-loaded; camera auto-orbits under no-reduced-motion |
+| 14 | Stevin's chain → king as embedding | static visual; ties the chapter back to word2vec |
 
-Plus the hub (constellation of 26 topics, only Vectors active), the split-canvas template (built, not yet consumed — proves the abstraction for LinReg/PCA/Attention etc), accessibility primitives (`CanvasNarrative`, `useKeyNudge`), mobile fallback, Playwright smoke tests, GitHub Actions CI with Lighthouse, Cloudflare Pages config.
+Every playable is keyboard-navigable (Tab to focus a handle, arrow keys to nudge, Shift+arrow for larger steps) and has a `CanvasNarrative` live-region that announces state changes to screen readers.
 
-## How to navigate the worktrees
+### Constellation hub
 
-Each phase of M1 lives in its own git worktree so you can test them independently. From `D:\code\`:
+Twenty-six topics positioned in a 1280×800 SVG, hand-tuned to suggest the dependency flow: foundations bottom-left, modern AI top-right. Vectors is the only one with content; the other 25 are dimmed to 60% opacity to signal "not yet." Hovering any topic fades in its prereqs (back-edges, dashed vermilion) and dependents (forward-edges, dim grey). Mouse parallax drifts glyphs ~12px opposite the cursor, killed under `prefers-reduced-motion`.
 
-| Worktree | What it adds | Test |
-|---|---|---|
-| `learn-ai-phase-1` | TopicPage shell + scroll/hash hooks + Stevin's wreath end-to-end | `cd ...phase-1; npm run dev` → `/vectors` |
-| `learn-ai-phase-2` | Full Vectors chapter (11 acts: cold-open → closing, except #nD) | same |
-| `learn-ai-phase-3` | nD leap with react-three-fiber (4 sub-acts, lazy-loaded 3D scene) | same; scroll to nd-1 → nd-4 |
-| `learn-ai-phase-4` | Split-canvas template + `/__split-canvas-test` page for all 4 sync modes | `npm run dev` → `/__split-canvas-test` |
-| `learn-ai-phase-5` | `CanvasNarrative` + `useKeyNudge`. ScalarMul wired as the example | tab into scalar slider, arrow keys |
-| `learn-ai-phase-6` | Constellation hub with all 26 topic glyphs + dependency edges on hover | `/` (root) |
-| `learn-ai-phase-7` | Mobile pass: 900px breakpoint, vertical hub list on small screens | resize browser below 900px |
-| `learn-ai-phase-8` | Production build passes TS strict + Playwright config + GH Actions CI | `npm run build`, `npm run test:e2e` |
-| `learn-ai-phase-9` | Polish + this README + final docs | `npm run build` |
+## Tech stack (PLAN §10)
 
-Each worktree is on its own branch (`phase-N`) and has a tag (`phase-N-done`). The `master` branch holds the phase-0 baseline (clean scaffold before any feature work).
+- **Build:** Vite 8 + React 19 + TypeScript strict
+- **Styling:** Tailwind v4 (CSS-first config via `@theme`)
+- **Content:** MDX from day one (`@mdx-js/rollup`) with `remark-math → rehype-katex` plugin chain
+- **2D:** SVG declaratively + rough.js for decorative scaffolding
+- **3D:** react-three-fiber + three.js (lazy-loaded, code-split)
+- **Gesture:** `@use-gesture/react`
+- **Math typography:** `react-katex` with STIX Two Math
+- **Routing:** `react-router-dom` v7 with `BrowserRouter` + Cloudflare `_redirects` for SPA fallback
+- **Fonts:** Source Serif 4 (body), Inter (UI), JetBrains Mono (numerics) — all via `@fontsource`
 
-**Phases 1–7** share `node_modules` via a Windows junction to `D:\code\learn-ai\node_modules` — no per-phase `npm install` needed.
+**Forbidden in v1:** Framer Motion, react-spring, Redux/Zustand, Next.js.
 
-**Phases 8–9** have their own `node_modules` because production builds and Playwright don't play nicely with junctions. Phase 8 ran `npm install` fresh; phase 9 junctions back to phase 8.
+## Deploy (PLAN §10)
 
-## Project structure (per PLAN §10)
+Cloudflare Pages. Build: `npm run build`. Output: `dist/`. Node 20.x via `.nvmrc`. `_redirects` in `public/`. GitHub Actions workflow at `.github/workflows/ci.yml` runs build + Playwright + Lighthouse CI (perf and a11y must score ≥ 90 on `/vectors`).
+
+## Project structure
 
 ```
 src/
@@ -55,40 +73,22 @@ src/
 ├── routes/
 │   ├── Hub.tsx
 │   ├── topics/Vectors.tsx
-│   └── __test/{TestMDX,SplitCanvasTest}.tsx
+│   └── __test/{TestMDX, SplitCanvasTest}.tsx
 ├── components/
-│   ├── topic/{TopicPage,TopicPageSplit,Act,CanvasNarrative}.tsx
-│   ├── hub/{Constellation,Glyph,EdgeLayer,HubList}.tsx
-│   └── ui/{DragHandle,NotFound}.tsx
+│   ├── topic/{TopicPage, TopicPageSplit, Act, ActDots, CanvasNarrative, ChapterFooter, HeaderPopover}.tsx
+│   ├── hub/{Constellation, Glyph, EdgeLayer, HubList}.tsx
+│   └── ui/{DragHandle, NotFound}.tsx
 ├── playables/vectors/
 │   ├── StevinWreath, CoordinatePlane, DraggableArrow, Parallelogram,
 │   ├── ScalarMul, Magnitude, Direction, HamiltonBridge,
 │   ├── NotationSplit, NDLeap, NDLeapScene3D, ColdOpenScene, ClosingThread
-├── content/vectors/   ← MDX prose, one file per act
-├── hooks/{useActState,useUrlHash,useKeyNudge,useNearViewport}.ts
-└── data/constellation.ts   ← 26 topic positions + dependency edges
+├── content/vectors/    ← MDX prose, one file per act
+├── hooks/{useActState, useUrlHash, useKeyNudge, useNearViewport}.ts
+└── data/constellation.ts
 ```
-
-## Tech stack (PLAN §10)
-
-- Vite 8 + React 19 + TypeScript strict + Tailwind v4 (CSS-first `@theme`)
-- MDX from day one (`@mdx-js/rollup`) with `remark-math → rehype-katex` plugin chain
-- react-three-fiber + three.js for 3D (lazy-loaded chunk)
-- @use-gesture/react for drag; hand-rolled rAF for scroll-driven animation
-- react-router-dom v7 with `BrowserRouter` + Cloudflare `_redirects` for SPA fallback
-- react-katex with STIX Two Math
-- Fonts: Source Serif 4 (body), Inter (UI), JetBrains Mono (numerics) — all via `@fontsource`
-
-**Forbidden in v1:** Framer Motion, react-spring, Redux/Zustand, Next.js.
-
-## Deploy (PLAN §10 — Cloudflare Pages section)
-
-- Cloudflare Pages, free tier, native SPA routing
-- Build cmd: `pnpm build` (or `npm run build`)
-- Output dir: `dist`
-- Node: pinned to 20.x via `.nvmrc`
-- `_redirects` already in `public/`
 
 ## What's next (PLAN §12)
 
-M2 = Functions and Derivatives. Specs at PLAN §7.2 and §7.3. The `TopicPage` template they'll consume is the same one Vectors uses; the work is the playables + the prose. Estimated 4–6 sessions per the §12 honest budget.
+M2 = Functions and Derivatives. Specs at PLAN §7.2 and §7.3. They consume the existing `TopicPage` template (no new abstraction needed). Estimated 4–6 sessions per the §12 budget.
+
+The historical phase worktrees (`D:\code\learn-ai-phase-1` through `phase-9`) are still on disk as snapshots if you want to A/B against a specific phase. They're not needed for development — everything's at `master`.

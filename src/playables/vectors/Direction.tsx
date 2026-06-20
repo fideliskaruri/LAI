@@ -1,11 +1,17 @@
-import { useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { useDrag } from '@use-gesture/react'
+import { CanvasNarrative } from '../../components/topic/CanvasNarrative'
+import { useKeyNudge } from '../../hooks/useKeyNudge'
 
 /**
  * Direction act: an arrow + an arc sweeping from the positive-x axis
  * counterclockwise to the arrow's direction. The angle θ updates.
  *
  * tan⁻¹ explained, not assumed: "the function that asks what angle has this slope."
+ *
+ * Phase 5 accessibility: the tip is tab-focusable; arrow keys nudge by 0.1
+ * math-units, Shift+arrow by 1. CanvasNarrative reads the angle and
+ * magnitude in prose.
  */
 
 const VIEW_W = 600
@@ -19,6 +25,7 @@ const fmtRad = (n: number) => n.toFixed(3)
 
 export function Direction() {
   const svgRef = useRef<SVGSVGElement | null>(null)
+  const tipRef = useRef<SVGGElement | null>(null)
   const [tip, setTip] = useState({ x: 3, y: 2 })
   const startRef = useRef<typeof tip | null>(null)
 
@@ -35,6 +42,18 @@ export function Direction() {
       y: start.y - (my * sy) / UNIT,
     })
   })
+
+  // Keyboard nudge — 0.1 unit per arrow, 1 unit on Shift.
+  const nudgeAmount = (d: number) => {
+    if (d === 0) return 0
+    return Math.abs(d) >= 10 ? Math.sign(d) * 1 : Math.sign(d) * 0.1
+  }
+  useKeyNudge(
+    tipRef,
+    useCallback((dx: number, dy: number) => {
+      setTip((cur) => ({ x: cur.x + nudgeAmount(dx), y: cur.y + nudgeAmount(dy) }))
+    }, []),
+  )
 
   const tipSvg = { x: ORIGIN_X + tip.x * UNIT, y: ORIGIN_Y - tip.y * UNIT }
   const mag = Math.sqrt(tip.x * tip.x + tip.y * tip.y)
@@ -75,6 +94,9 @@ export function Direction() {
 
   return (
     <figure className="w-full">
+      <CanvasNarrative
+        text={`Vector pointing at ${fmtDeg(thetaDeg)} degrees from positive x-axis. Magnitude ${mag.toFixed(2)}.`}
+      />
       <svg
         ref={svgRef}
         viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
@@ -113,7 +135,15 @@ export function Direction() {
         )}
 
         {/* Tip handle */}
-        <g {...bind()} style={{ cursor: 'grab', touchAction: 'none' }}>
+        <g
+          {...bind()}
+          ref={tipRef}
+          tabIndex={0}
+          role="button"
+          aria-label={`Vector tip. Currently pointing at ${fmtDeg(thetaDeg)} degrees, magnitude ${mag.toFixed(2)}. Arrow keys to nudge.`}
+          style={{ cursor: 'grab', touchAction: 'none' }}
+          className="focus-visible:outline-none [&:focus-visible_circle:last-of-type]:stroke-vermilion-deep"
+        >
           <circle cx={tipSvg.x} cy={tipSvg.y} r="22" fill="transparent" />
           <circle cx={tipSvg.x} cy={tipSvg.y} r="6" fill="var(--color-cream)" stroke="var(--color-vermilion)" strokeWidth="2" />
         </g>

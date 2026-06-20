@@ -8,7 +8,6 @@ const VIEW_W = 1280
 const VIEW_H = 800
 
 const STORAGE_KEY = 'learn-ai:v1:state'
-const POINTER_DISMISS_MS = 8000
 
 interface StoredState {
   schema: 1
@@ -40,20 +39,11 @@ export function Constellation() {
   const navigate = useNavigate()
   const [hoveredId, setHoveredId] = useState<string | null>(null)
   const [parallax, setParallax] = useState({ x: 0, y: 0 })
-  const [pointerVisible, setPointerVisible] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const prefersReducedMotion = useRef(false)
-
-  // Detect first visit + decide if start-here pointer should fire
-  useEffect(() => {
-    const stored = readStored()
-    if (!stored) {
-      setPointerVisible(true)
-      const timer = window.setTimeout(() => setPointerVisible(false), POINTER_DISMISS_MS)
-      return () => clearTimeout(timer)
-    }
-    // Revisit: in v1 we don't move the pointer; that's M5 polish.
-  }, [])
+  // Persistent — the only built chapter is Vectors; the pointer should always be on
+  // until the user clicks it. No 8-second dismiss.
+  const pointerVisible = true
 
   // Reduced-motion check
   useEffect(() => {
@@ -79,7 +69,6 @@ export function Constellation() {
   }, [])
 
   const handleSelect = (id: string) => {
-    setPointerVisible(false)
     writeStored({ schema: 1, lastVisited: id })
     navigate(`/${id}`)
   }
@@ -94,27 +83,35 @@ export function Constellation() {
         role="region"
         aria-label="A constellation of playgrounds"
       >
-        {/* Title */}
+        {/* Title block */}
         <text
           x="60"
-          y="74"
+          y="56"
           fontFamily="Inter, sans-serif"
-          fontSize="13"
-          fontStyle="italic"
+          fontSize="10"
+          letterSpacing="0.28em"
           fill="var(--color-dim)"
-          letterSpacing="0.02em"
         >
-          A constellation of playgrounds
+          AN INTERACTIVE BOOK
         </text>
         <text
           x="60"
-          y="92"
-          fontFamily="Inter, sans-serif"
-          fontSize="13"
+          y="86"
+          fontFamily="Source Serif 4, Georgia, serif"
+          fontSize="20"
+          fill="var(--color-ink)"
+        >
+          The math behind machines that learn.
+        </text>
+        <text
+          x="60"
+          y="112"
+          fontFamily="Source Serif 4, Georgia, serif"
           fontStyle="italic"
+          fontSize="14"
           fill="var(--color-dim)"
         >
-          for the math behind machines that learn.
+          Twenty-six chapters. One is open. Click the vermilion star to begin.
         </text>
 
         {/* Part labels (subtle) */}
@@ -148,23 +145,72 @@ export function Constellation() {
             />
           ))}
 
-          {/* Start-here pointer */}
+          {/* Start-here pointer: italic words + hand-drawn curving arrow */}
           {pointerVisible && vectorsTopic && (
             <g style={{ pointerEvents: 'none' }}>
               <text
-                x={vectorsTopic.x - 110}
-                y={vectorsTopic.y + 30}
+                x={vectorsTopic.x - 138}
+                y={vectorsTopic.y + 44}
                 fontFamily="Source Serif 4, Georgia, serif"
                 fontStyle="italic"
-                fontSize="15"
+                fontSize="16"
                 fill="var(--color-vermilion)"
               >
-                start here →
+                start here
               </text>
+              {/* Sketchy curving arrow from the text up-left toward the glyph */}
+              <path
+                d={`
+                  M ${vectorsTopic.x - 46} ${vectorsTopic.y + 40}
+                  C ${vectorsTopic.x - 28} ${vectorsTopic.y + 36},
+                    ${vectorsTopic.x - 18} ${vectorsTopic.y + 24},
+                    ${vectorsTopic.x - 10} ${vectorsTopic.y + 14}
+                `}
+                stroke="var(--color-vermilion)"
+                strokeWidth="1.25"
+                strokeLinecap="round"
+                fill="none"
+                opacity="0.85"
+              />
+              {/* Arrowhead — two short strokes, slightly off-axis for a hand-drawn feel */}
+              <path
+                d={`
+                  M ${vectorsTopic.x - 10} ${vectorsTopic.y + 14}
+                  L ${vectorsTopic.x - 16} ${vectorsTopic.y + 19}
+                  M ${vectorsTopic.x - 10} ${vectorsTopic.y + 14}
+                  L ${vectorsTopic.x - 4} ${vectorsTopic.y + 18}
+                `}
+                stroke="var(--color-vermilion)"
+                strokeWidth="1.25"
+                strokeLinecap="round"
+                fill="none"
+                opacity="0.85"
+              />
             </g>
           )}
         </g>
       </svg>
+
+      {/* Persistent CTA — HTML overlay positioned over the SVG title block.
+          Placed below the italic subtitle (SVG y≈112) to give users a clear,
+          obviously-clickable backup path to the only open chapter. */}
+      <button
+        type="button"
+        onClick={() => handleSelect('vectors')}
+        className="absolute font-serif italic text-vermilion underline decoration-1 underline-offset-4 hover:text-vermilion-deep focus-visible:outline-none focus-visible:text-vermilion-deep transition-colors"
+        style={{
+          // SVG coords (60, 140) → percentages of viewBox (1280 × 800)
+          left: `${(60 / VIEW_W) * 100}%`,
+          top: `${(140 / VIEW_H) * 100}%`,
+          fontSize: '17px',
+          background: 'transparent',
+          border: 'none',
+          padding: 0,
+          cursor: 'pointer',
+        }}
+      >
+        Begin → Vectors
+      </button>
     </div>
   )
 }

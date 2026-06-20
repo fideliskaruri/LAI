@@ -1,3 +1,5 @@
+import { CanvasNarrative } from '../../components/topic/CanvasNarrative'
+
 /**
  * The closing scene of the chapter: Stevin's chain dissolves into a column of
  * 768 decimal numbers — a real word2vec vector for "king". Static visual,
@@ -48,6 +50,10 @@ export function ClosingThread() {
 
   return (
     <figure className="w-full">
+      <CanvasNarrative
+        text="A tiny sketch of Stevin's wreath of spheres on the left. An arrow points right to a column of eight decimal numbers — the components of the word king as a 768-dimensional vector."
+        priority="normal"
+      />
       <svg
         viewBox="0 0 600 480"
         className="w-full h-auto"

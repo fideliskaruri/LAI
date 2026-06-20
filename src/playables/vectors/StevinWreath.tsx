@@ -1,5 +1,7 @@
-import { useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { useDrag } from '@use-gesture/react'
+import { CanvasNarrative } from '../../components/topic/CanvasNarrative'
+import { useKeyNudge } from '../../hooks/useKeyNudge'
 
 /**
  * Stevin's wreath of spheres (1586).
@@ -10,6 +12,10 @@ import { useDrag } from '@use-gesture/react'
  *
  * Phase 1 implementation: visual draggable response only. Real chain physics
  * (redistribution along the perimeter as you drag) is a Phase 2 polish.
+ *
+ * Phase 5 accessibility: each bead is tabbable; arrow keys nudge by 1 unit
+ * (6 px), Shift+arrow by 5 units (30 px). A CanvasNarrative announces drag
+ * state in prose.
  */
 
 const VIEW_W = 600
@@ -19,6 +25,10 @@ const VIEW_H = 480
 const APEX = { x: VIEW_W / 2, y: 80 }
 const LEFT_BASE = { x: 100, y: 380 }
 const RIGHT_BASE = { x: VIEW_W - 100, y: 380 }
+
+// 1 nudge unit = 6 px; Shift step = 5 units = 30 px (useKeyNudge largeStep=5)
+const NUDGE_PX = 6
+const SHIFT_STEP = 5
 
 interface Point {
   x: number
@@ -66,6 +76,7 @@ const NATURAL = naturalBeadPositions()
 
 export function StevinWreath() {
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null)
+  const [focusedIndex, setFocusedIndex] = useState<number | null>(null)
   const [offsets, setOffsets] = useState<Map<number, Point>>(new Map())
 
   const positions = NATURAL.map((p, i) => {
@@ -99,8 +110,33 @@ export function StevinWreath() {
     }
   }
 
+  const handleNudge = useCallback((i: number, dx: number, dy: number) => {
+    setOffsets((prev) => {
+      const next = new Map(prev)
+      const cur = next.get(i) ?? { x: 0, y: 0 }
+      next.set(i, {
+        x: cur.x + dx * NUDGE_PX,
+        // Up arrow comes in as positive dy from useKeyNudge; SVG y is inverted
+        y: cur.y - dy * NUDGE_PX,
+      })
+      return next
+    })
+  }, [])
+
+  const narrative =
+    draggedIndex !== null
+      ? {
+          text: `Bead ${draggedIndex + 1} of 14 has been pulled aside; release to let the chain settle.`,
+          priority: 'high' as const,
+        }
+      : {
+          text: 'A triangular wedge with a chain of fourteen beads draped over it. Tab to focus a bead, arrow keys to nudge.',
+          priority: 'normal' as const,
+        }
+
   return (
     <figure className="w-full">
+      <CanvasNarrative text={narrative.text} priority={narrative.priority} />
       <svg
         viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
         className="w-full h-auto"
@@ -130,10 +166,15 @@ export function StevinWreath() {
         {positions.map((p, i) => (
           <DraggableBead
             key={i}
+            index={i}
             cx={p.x}
             cy={p.y}
             active={draggedIndex === i}
+            focused={focusedIndex === i}
             onDrag={(dx, dy, down) => handleDrag(i, dx, dy, down)}
+            onNudge={(dx, dy) => handleNudge(i, dx, dy)}
+            onFocus={() => setFocusedIndex(i)}
+            onBlur={() => setFocusedIndex((cur) => (cur === i ? null : cur))}
           />
         ))}
 
@@ -146,7 +187,7 @@ export function StevinWreath() {
           letterSpacing="0.22em"
           fill="var(--color-dim)"
         >
-          DRAG ANY BEAD
+          DRAG ANY BEAD  ·  TAB + ARROWS
         </text>
       </svg>
       <figcaption className="font-serif italic text-[13px] text-dim text-center mt-2">
@@ -157,13 +198,19 @@ export function StevinWreath() {
 }
 
 interface DraggableBeadProps {
+  index: number
   cx: number
   cy: number
   active: boolean
+  focused: boolean
   onDrag: (dx: number, dy: number, down: boolean) => void
+  onNudge: (dx: number, dy: number) => void
+  onFocus: () => void
+  onBlur: () => void
 }
 
-function DraggableBead({ cx, cy, active, onDrag }: DraggableBeadProps) {
+function DraggableBead({ index, cx, cy, active, focused, onDrag, onNudge, onFocus, onBlur }: DraggableBeadProps) {
+  const groupRef = useRef<SVGGElement | null>(null)
   const bind = useDrag(
     ({ down, movement: [mx, my] }) => {
       onDrag(mx, my, down)
@@ -171,18 +218,29 @@ function DraggableBead({ cx, cy, active, onDrag }: DraggableBeadProps) {
     { from: () => [0, 0] },
   )
 
+  useKeyNudge(groupRef, onNudge, { largeStep: SHIFT_STEP })
+
+  const highlighted = active || focused
+
   return (
     <g
       {...bind()}
+      ref={groupRef}
+      tabIndex={0}
+      role="button"
+      aria-label={`Bead ${index + 1} of 14, draggable`}
+      onFocus={onFocus}
+      onBlur={onBlur}
       style={{ cursor: active ? 'grabbing' : 'grab', touchAction: 'none' }}
+      className="focus-visible:outline-none [&:focus-visible_circle:last-of-type]:stroke-vermilion-deep"
     >
       {/* Invisible 22px-radius hit target (44px tap zone, PLAN §11.2) */}
       <circle cx={cx} cy={cy} r="22" fill="transparent" />
       <circle
         cx={cx}
         cy={cy}
-        r={active ? 8.5 : 7}
-        fill={active ? 'var(--color-vermilion)' : 'var(--color-graph-ink)'}
+        r={highlighted ? 8.5 : 7}
+        fill={highlighted ? 'var(--color-vermilion)' : 'var(--color-graph-ink)'}
         stroke="var(--color-cream)"
         strokeWidth="1.5"
         style={{

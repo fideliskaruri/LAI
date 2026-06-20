@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { CanvasNarrative } from '../../components/topic/CanvasNarrative'
 
 /**
  * Gibbs resolution: two side-by-side columns showing the same physics
@@ -45,8 +46,14 @@ const rows: Row[] = [
 export function NotationSplit() {
   const [hoveredId, setHoveredId] = useState<string | null>(null)
 
+  const hoveredRow = hoveredId ? rows.find((r) => r.id === hoveredId) : null
+  const narrationText = hoveredRow
+    ? `${hoveredRow.caption}. Tait wrote: ${hoveredRow.tait}. Gibbs wrote: ${hoveredRow.gibbs}.`
+    : "Two columns showing the same physics written in Tait's quaternion notation and Gibbs's vector notation. Hover any row to see both."
+
   return (
     <figure className="w-full">
+      <CanvasNarrative text={narrationText} priority="normal" />
       <div className="grid grid-cols-2 gap-4 max-w-[640px] mx-auto px-2 py-4 bg-cream-deep/40 rounded-sm">
         <Column
           title="Tait, 1873"

@@ -1,11 +1,17 @@
-import { useState, useRef } from 'react'
+import { useCallback, useState, useRef } from 'react'
 import { useDrag } from '@use-gesture/react'
+import { CanvasNarrative } from '../../components/topic/CanvasNarrative'
+import { useKeyNudge } from '../../hooks/useKeyNudge'
 
 /**
  * Descartes act: an empty coordinate plane. Click anywhere to drop a point;
  * drag it. Coordinates display in monospace next to the point.
  *
  * SVG coordinates: viewBox 600×480, origin at (300, 240), 1 math unit = 50 px.
+ *
+ * Phase 5 accessibility: the point is tab-focusable. Arrow keys nudge by
+ * 0.1 math-units (5 px); Shift+arrow by 1 math-unit (50 px). A
+ * CanvasNarrative announces the current coordinates.
  */
 
 const VIEW_W = 600
@@ -24,6 +30,7 @@ const fmt = (n: number) => (n >= 0 ? ' ' : '') + n.toFixed(2)
 
 export function CoordinatePlane() {
   const svgRef = useRef<SVGSVGElement | null>(null)
+  const handleRef = useRef<SVGGElement | null>(null)
   // Default: a point at (3, 2)
   const [point, setPoint] = useState<{ sx: number; sy: number } | null>({
     sx: ORIGIN_X + 3 * UNIT,
@@ -53,10 +60,32 @@ export function CoordinatePlane() {
     setPoint({ sx: origin.sx + mx * scaleX, sy: origin.sy + my * scaleY })
   })
 
+  // Arrow-key nudge: 0.1 math-units (5 px) per arrow, 1 math-unit (50 px) on Shift.
+  // useKeyNudge passes dx=±1 normal, dx=±10 with Shift; dy is positive-up.
+  useKeyNudge(
+    handleRef,
+    useCallback((dx: number, dy: number) => {
+      setPoint((cur) => {
+        if (!cur) return cur
+        const isShiftX = Math.abs(dx) >= 10
+        const isShiftY = Math.abs(dy) >= 10
+        const dxPx = dx === 0 ? 0 : isShiftX ? Math.sign(dx) * 50 : Math.sign(dx) * 5
+        // Up arrow → dy > 0 → screen y should decrease
+        const dyPx = dy === 0 ? 0 : isShiftY ? -Math.sign(dy) * 50 : -Math.sign(dy) * 5
+        return { sx: cur.sx + dxPx, sy: cur.sy + dyPx }
+      })
+    }, []),
+  )
+
   const coords = point ? toMath(point.sx, point.sy) : null
 
   return (
     <figure className="w-full">
+      {coords && (
+        <CanvasNarrative
+          text={`Point at coordinates (${coords.mx.toFixed(2)}, ${coords.my.toFixed(2)}).`}
+        />
+      )}
       <svg
         ref={svgRef}
         viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
@@ -126,9 +155,17 @@ export function CoordinatePlane() {
 
         {/* The point */}
         {point && (
-          <g {...bindPoint()} style={{ cursor: 'grab', touchAction: 'none' }}>
+          <g
+            {...bindPoint()}
+            ref={handleRef}
+            tabIndex={0}
+            role="application"
+            aria-label={`Movable point at coordinates ${coords?.mx.toFixed(2)}, ${coords?.my.toFixed(2)}. Arrow keys to nudge by zero point one, Shift plus arrow to nudge by one.`}
+            style={{ cursor: 'grab', touchAction: 'none' }}
+            className="focus-visible:outline-none [&:focus-visible_circle:last-of-type]:stroke-vermilion-deep"
+          >
             <circle cx={point.sx} cy={point.sy} r="20" fill="transparent" />
-            <circle cx={point.sx} cy={point.sy} r="5" fill="var(--color-vermilion)" />
+            <circle cx={point.sx} cy={point.sy} r="5" fill="var(--color-vermilion)" stroke="var(--color-cream)" strokeWidth="2" />
             {coords && (
               <text
                 x={point.sx + 14}
