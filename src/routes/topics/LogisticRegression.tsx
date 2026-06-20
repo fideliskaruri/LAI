@@ -252,7 +252,6 @@ export function LogisticRegression() {
         topicName="Logistic regression"
         nextTopicId="perceptron"
         nextTopicName="Perceptron"
-        nextStatus="coming-soon"
       />
     </TopicPageSplit>
   )

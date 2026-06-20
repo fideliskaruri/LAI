@@ -92,7 +92,6 @@ export function Eigenvalues() {
         topicName="Eigenvalues"
         nextTopicId="pca"
         nextTopicName="PCA"
-        nextStatus="coming-soon"
       />
     </TopicPage>
   )

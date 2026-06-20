@@ -249,7 +249,6 @@ export function LanguageModels() {
         topicName="Language models"
         nextTopicId="rlhf"
         nextTopicName="RLHF"
-        nextStatus="coming-soon"
       />
     </TopicPageSplit>
   )

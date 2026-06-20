@@ -265,7 +265,6 @@ export function Backprop() {
         topicName="MLP / Backprop"
         nextTopicId="convolutions"
         nextTopicName="Convolutions"
-        nextStatus="coming-soon"
       />
     </TopicPageSplit>
   )

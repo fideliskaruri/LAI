@@ -93,7 +93,6 @@ export function Distributions() {
         topicName="Distributions"
         nextTopicId="linear-regression"
         nextTopicName="Linear regression"
-        nextStatus="coming-soon"
       />
     </TopicPage>
   )

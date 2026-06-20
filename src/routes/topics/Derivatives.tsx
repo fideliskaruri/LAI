@@ -105,7 +105,6 @@ export function Derivatives() {
         topicName="Derivatives"
         nextTopicId="integrals"
         nextTopicName="Integrals"
-        nextStatus="coming-soon"
       />
     </TopicPage>
   )

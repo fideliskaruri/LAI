@@ -198,7 +198,6 @@ export function Diffusion() {
         topicName="Diffusion"
         nextTopicId="agents"
         nextTopicName="Agents"
-        nextStatus="coming-soon"
       />
     </TopicPageSplit>
   )

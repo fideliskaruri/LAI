@@ -93,7 +93,6 @@ export function Integrals() {
         topicName="Integrals"
         nextTopicId="optimization"
         nextTopicName="Optimization"
-        nextStatus="coming-soon"
       />
     </TopicPage>
   )

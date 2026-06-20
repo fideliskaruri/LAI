@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { topics } from '../../data/constellation'
 
 export interface ChapterFooterProps {
   chapterNum: number
@@ -6,7 +7,7 @@ export interface ChapterFooterProps {
   topicName: string
   nextTopicId: string | null
   nextTopicName: string | null
-  nextStatus: 'available' | 'coming-soon'
+  nextStatus?: 'available' | 'coming-soon'
 }
 
 /**
@@ -26,6 +27,11 @@ export function ChapterFooter({
   nextStatus,
 }: ChapterFooterProps) {
   const hasNext = nextTopicId !== null && nextTopicName !== null
+  const resolvedNextStatus: 'available' | 'coming-soon' =
+    nextStatus ??
+    (nextTopicId
+      ? (topics.find((t) => t.id === nextTopicId)?.status ?? 'coming-soon')
+      : 'coming-soon')
 
   return (
     <footer
@@ -86,7 +92,7 @@ export function ChapterFooter({
           }}
         >
           {hasNext ? (
-            nextStatus === 'available' ? (
+            resolvedNextStatus === 'available' ? (
               <>
                 Next, we look at{' '}
                 <Link

@@ -264,7 +264,6 @@ export function LinearRegression() {
         topicName="Linear regression"
         nextTopicId="optimization"
         nextTopicName="Optimization"
-        nextStatus="coming-soon"
       />
     </TopicPageSplit>
   )

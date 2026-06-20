@@ -248,7 +248,6 @@ export function Attention() {
         topicName="Attention"
         nextTopicId="transformers"
         nextTopicName="Transformers"
-        nextStatus="coming-soon"
       />
     </TopicPageSplit>
   )

@@ -233,7 +233,6 @@ export function Convolutions() {
         topicName="Convolutions"
         nextTopicId="transformers"
         nextTopicName="Transformers"
-        nextStatus="coming-soon"
       />
     </TopicPageSplit>
   )

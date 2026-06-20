@@ -90,7 +90,6 @@ export function Functions() {
         topicName="Functions and change"
         nextTopicId="derivatives"
         nextTopicName="Derivatives"
-        nextStatus="coming-soon"
       />
     </TopicPage>
   )

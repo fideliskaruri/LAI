@@ -92,7 +92,6 @@ export function Clustering() {
         topicName="K-means clustering"
         nextTopicId="gmm"
         nextTopicName="Gaussian Mixture Models"
-        nextStatus="coming-soon"
       />
     </TopicPage>
   )

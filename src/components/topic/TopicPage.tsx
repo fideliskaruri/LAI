@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { useActState } from '../../hooks/useActState'
 import { useUrlHash } from '../../hooks/useUrlHash'
+import { useScrollLock } from '../../hooks/useScrollLock'
 import { HeaderPopover } from './HeaderPopover'
 
 export interface ActDef {
@@ -50,10 +51,13 @@ export function TopicPage({ topicId: _topicId, topicName, acts, canvas, children
   const expandTriggerRef = useRef<HTMLButtonElement | null>(null)
   const exitButtonRef = useRef<HTMLButtonElement | null>(null)
 
+  // iOS-safe body scroll lock that preserves and restores scroll position.
+  // Replaces the naive `body.style.overflow = 'hidden'` which collapses body
+  // height on iOS Safari and snaps scrollY to 0 on release.
+  useScrollLock(fullscreen)
+
   useEffect(() => {
     if (!fullscreen) return
-    const prevOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
     const handler = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setFullscreen(false)
     }
@@ -61,7 +65,6 @@ export function TopicPage({ topicId: _topicId, topicName, acts, canvas, children
     exitButtonRef.current?.focus()
     return () => {
       window.removeEventListener('keydown', handler)
-      document.body.style.overflow = prevOverflow
       expandTriggerRef.current?.focus()
     }
   }, [fullscreen])
@@ -121,6 +124,15 @@ export function TopicPage({ topicId: _topicId, topicName, acts, canvas, children
 
   return (
     <div className="min-h-screen">
+      {/* Page tree wrapper. While the fullscreen dialog is open, `inert`
+          disables focus, click, and AT semantics for everything behind it,
+          honoring the aria-modal contract on modern browsers. `aria-hidden`
+          mirrors the state as a belt-and-suspenders fallback. The dialog
+          overlay itself is rendered OUTSIDE this wrapper. */}
+      <div
+        {...({ inert: fullscreen ? '' : undefined } as Record<string, unknown>)}
+        aria-hidden={fullscreen || undefined}
+      >
       {/* Header chrome — fixed, minimal.
           Three slots: back-link (left), chapter/topic block (centered absolutely),
           overflow (right). The centered block is positioned absolutely so it
@@ -215,7 +227,15 @@ export function TopicPage({ topicId: _topicId, topicName, acts, canvas, children
               <polyline points="15 11 15 15 11 15" />
             </svg>
           </button>
-          <div className="w-full max-w-[640px]">{canvas(currentActId)}</div>
+          {/* Inline canvas. Unmount when the fullscreen overlay is open so
+              we don't double-mount WebGL contexts (Chrome caps at 16). The
+              placeholder preserves the sticky-column dimensions so the act
+              dots and sticky math don't shift when fullscreen toggles. */}
+          {fullscreen ? (
+            <div className="w-full max-w-[640px] aspect-[5/4]" aria-hidden="true" />
+          ) : (
+            <div className="w-full max-w-[640px]">{canvas(currentActId)}</div>
+          )}
 
           {/* Act position label — above the dots, updates on scroll */}
           <div
@@ -229,6 +249,7 @@ export function TopicPage({ topicId: _topicId, topicName, acts, canvas, children
             acts={acts}
             currentActId={currentActId}
             onSelect={setCurrentActId}
+            suppressScroll={fullscreen}
           />
         </div>
 
@@ -236,6 +257,7 @@ export function TopicPage({ topicId: _topicId, topicName, acts, canvas, children
         <main className="px-6 md:px-12 pt-[14vh] pb-32">
           <div className="max-w-[580px]">{children}</div>
         </main>
+      </div>
       </div>
 
       {fullscreen && (
@@ -295,9 +317,15 @@ interface ActDotsProps {
   acts: ActDef[]
   currentActId: string
   onSelect: (id: string) => void
+  /**
+   * While the fullscreen overlay is open we update currentActId (so the
+   * fullscreen canvas swaps) but do NOT scroll the prose underneath. On
+   * close, useScrollLock restores the original scroll position.
+   */
+  suppressScroll?: boolean
 }
 
-function ActDots({ acts, currentActId, onSelect }: ActDotsProps) {
+function ActDots({ acts, currentActId, onSelect, suppressScroll = false }: ActDotsProps) {
   const lastIndex = acts.length - 1
   return (
     <nav aria-label="Acts" className="flex items-center justify-center gap-3 mt-2">
@@ -318,8 +346,10 @@ function ActDots({ acts, currentActId, onSelect }: ActDotsProps) {
             <button
               type="button"
               onClick={() => {
-                const el = document.getElementById(a.id)
-                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                if (!suppressScroll) {
+                  const el = document.getElementById(a.id)
+                  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                }
                 onSelect(a.id)
               }}
               aria-label={a.label}

@@ -2,6 +2,8 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { useActState } from '../../hooks/useActState'
 import { useUrlHash } from '../../hooks/useUrlHash'
+import { useScrollLock } from '../../hooks/useScrollLock'
+import { HeaderPopover } from './HeaderPopover'
 
 /**
  * Split-canvas topic template (PLAN §5.2).
@@ -111,10 +113,11 @@ export function TopicPageSplit({
   const expandTriggerRef = useRef<HTMLButtonElement | null>(null)
   const exitButtonRef = useRef<HTMLButtonElement | null>(null)
 
+  // iOS-safe body scroll lock that preserves and restores scroll position.
+  useScrollLock(fullscreen)
+
   useEffect(() => {
     if (!fullscreen) return
-    const prevOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
     const handler = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setFullscreen(false)
     }
@@ -123,11 +126,55 @@ export function TopicPageSplit({
     exitButtonRef.current?.focus()
     return () => {
       window.removeEventListener('keydown', handler)
-      document.body.style.overflow = prevOverflow
       // Return focus to the trigger that opened the overlay.
       expandTriggerRef.current?.focus()
     }
   }, [fullscreen])
+
+  // Overflow popover (PLAN §5.8) — local UI state only. Mirrors TopicPage.
+  const [popoverOpen, setPopoverOpen] = useState(false)
+  const popoverTriggerRef = useRef<HTMLButtonElement | null>(null)
+  const [shareToastVisible, setShareToastVisible] = useState(false)
+  const shareToastTimer = useRef<number | null>(null)
+  // Reduced-motion override — persists for the session on the <html> element.
+  // Lazy initializer keeps the toggle's label in sync with the live DOM state
+  // across navigations.
+  const [reducedMotionOverride, setReducedMotionOverride] = useState<boolean>(() => {
+    if (typeof document === 'undefined') return false
+    return document.documentElement.dataset.reducedMotion === 'true'
+  })
+
+  useEffect(() => {
+    return () => {
+      if (shareToastTimer.current !== null) {
+        window.clearTimeout(shareToastTimer.current)
+      }
+    }
+  }, [])
+
+  function handleShare() {
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      void navigator.clipboard.writeText(window.location.href).catch(() => {})
+    }
+    setShareToastVisible(true)
+    if (shareToastTimer.current !== null) {
+      window.clearTimeout(shareToastTimer.current)
+    }
+    shareToastTimer.current = window.setTimeout(() => {
+      setShareToastVisible(false)
+      shareToastTimer.current = null
+    }, 1500)
+  }
+
+  function handleToggleReducedMotion() {
+    const next = !reducedMotionOverride
+    setReducedMotionOverride(next)
+    if (next) {
+      document.documentElement.setAttribute('data-reduced-motion', 'true')
+    } else {
+      document.documentElement.removeAttribute('data-reduced-motion')
+    }
+  }
 
   const renderActDots = (mt: string) => (
     <nav aria-label="Acts" className={`flex items-center justify-center gap-3 ${mt}`}>
@@ -159,6 +206,14 @@ export function TopicPageSplit({
 
   return (
     <div className="min-h-screen">
+      {/* Page tree wrapper. While the fullscreen dialog is open, `inert`
+          disables focus, click, and AT semantics for everything behind it,
+          honoring the aria-modal contract. The dialog overlay is rendered
+          OUTSIDE this wrapper. */}
+      <div
+        {...({ inert: fullscreen ? '' : undefined } as Record<string, unknown>)}
+        aria-hidden={fullscreen || undefined}
+      >
       <header className="fixed top-0 left-0 right-0 z-30 px-6 py-4 flex items-center justify-between pointer-events-none">
         <Link to="/" className="pointer-events-auto inline-flex items-center gap-3 group">
           <span aria-hidden="true" className="text-vermilion text-[16px] group-hover:-translate-x-0.5 transition-transform">
@@ -168,13 +223,47 @@ export function TopicPageSplit({
             {topicName}
           </span>
         </Link>
-        <button
-          type="button"
-          className="pointer-events-auto font-sans text-[18px] text-dim hover:text-vermilion px-2"
-          aria-label="More options"
-        >
-          ⋯
-        </button>
+        <div className="relative pointer-events-auto">
+          <button
+            ref={popoverTriggerRef}
+            type="button"
+            className="font-sans text-[18px] text-dim hover:text-vermilion px-2"
+            aria-label="More options"
+            aria-haspopup="menu"
+            aria-expanded={popoverOpen}
+            onClick={() => setPopoverOpen((v) => !v)}
+          >
+            ⋯
+          </button>
+          <HeaderPopover
+            open={popoverOpen}
+            onClose={() => setPopoverOpen(false)}
+            triggerRef={popoverTriggerRef}
+            items={[
+              {
+                icon: '↗',
+                label: 'Share',
+                onClick: handleShare,
+              },
+              {
+                icon: '⏯',
+                label: reducedMotionOverride
+                  ? 'Reduced motion: ON'
+                  : 'Reduced motion: OFF',
+                onClick: handleToggleReducedMotion,
+              },
+            ]}
+          />
+          {shareToastVisible && (
+            <div
+              role="status"
+              aria-live="polite"
+              className="absolute right-0 top-full mt-2 z-40 pointer-events-none bg-ink text-cream font-sans text-[12px] tracking-[0.02em] px-3 py-1.5 rounded-sm shadow-md whitespace-nowrap"
+            >
+              Link copied
+            </div>
+          )}
+        </div>
       </header>
 
       <div className="lg:grid lg:grid-cols-[62fr_38fr] lg:gap-0">
@@ -195,28 +284,42 @@ export function TopicPageSplit({
               <polyline points="15 11 15 15 11 15" />
             </svg>
           </button>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-[920px]">
-            <div className="min-w-0">
-              {leftCanvas({
-                state: currentState.left,
-                onChange: (next) => dispatch('left', next),
-                currentActId,
-              })}
+          {/* Inline canvases. Unmount when fullscreen is open so we don't
+              double-mount WebGL contexts (Chrome caps at 16). Placeholder
+              preserves sticky-column dimensions while the overlay is up. */}
+          {fullscreen ? (
+            <div
+              className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-[920px]"
+              aria-hidden="true"
+            >
+              <div className="min-w-0 aspect-[5/4]" />
+              <div className="min-w-0 aspect-[5/4]" />
             </div>
-            <div className="min-w-0">
-              {rightCanvas({
-                state: currentState.right,
-                onChange: (next) => dispatch('right', next),
-                currentActId,
-              })}
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-[920px]">
+              <div className="min-w-0">
+                {leftCanvas({
+                  state: currentState.left,
+                  onChange: (next) => dispatch('left', next),
+                  currentActId,
+                })}
+              </div>
+              <div className="min-w-0">
+                {rightCanvas({
+                  state: currentState.right,
+                  onChange: (next) => dispatch('right', next),
+                  currentActId,
+                })}
+              </div>
             </div>
-          </div>
+          )}
           {renderActDots('mt-6')}
         </div>
 
         <main className="px-6 lg:px-12 pt-[14vh] pb-32">
           <div className="max-w-[580px]">{children}</div>
         </main>
+      </div>
       </div>
 
       {fullscreen && (

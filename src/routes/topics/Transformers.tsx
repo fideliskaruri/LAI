@@ -258,7 +258,6 @@ export function Transformers() {
         topicName="Transformers"
         nextTopicId="language-models"
         nextTopicName="Language models"
-        nextStatus="coming-soon"
       />
     </TopicPageSplit>
   )

@@ -195,7 +195,6 @@ export function Pca() {
         topicName="PCA"
         nextTopicId="clustering"
         nextTopicName="K-means clustering"
-        nextStatus="available"
       />
     </TopicPageSplit>
   )

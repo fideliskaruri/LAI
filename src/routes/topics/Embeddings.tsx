@@ -97,7 +97,6 @@ export function Embeddings() {
         topicName="Word embeddings"
         nextTopicId="attention"
         nextTopicName="Attention"
-        nextStatus="coming-soon"
       />
     </TopicPage>
   )

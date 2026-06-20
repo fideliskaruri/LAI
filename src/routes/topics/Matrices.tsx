@@ -92,7 +92,6 @@ export function Matrices() {
         topicName="Matrices as transformations"
         nextTopicId="eigenvalues"
         nextTopicName="Eigenvalues"
-        nextStatus="coming-soon"
       />
     </TopicPage>
   )

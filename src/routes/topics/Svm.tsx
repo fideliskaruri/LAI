@@ -212,7 +212,6 @@ export function Svm() {
         topicName="Support Vector Machines"
         nextTopicId="backprop"
         nextTopicName="MLP / Backprop"
-        nextStatus="coming-soon"
       />
     </TopicPageSplit>
   )

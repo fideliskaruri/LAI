@@ -92,7 +92,6 @@ export function Gmm() {
         topicName="Gaussian Mixture Models"
         nextTopicId="svm"
         nextTopicName="Support Vector Machines"
-        nextStatus="coming-soon"
       />
     </TopicPage>
   )

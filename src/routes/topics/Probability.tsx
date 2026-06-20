@@ -99,7 +99,6 @@ export function Probability() {
         topicName="Probability"
         nextTopicId="expectation"
         nextTopicName="Expectation and variance"
-        nextStatus="coming-soon"
       />
     </TopicPage>
   )

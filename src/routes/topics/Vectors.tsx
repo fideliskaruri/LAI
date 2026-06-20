@@ -128,7 +128,6 @@ export function Vectors() {
         topicName="Vectors"
         nextTopicId="functions"
         nextTopicName="Functions and change"
-        nextStatus="coming-soon"
       />
     </TopicPage>
   )

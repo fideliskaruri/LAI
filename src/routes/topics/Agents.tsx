@@ -249,7 +249,6 @@ export function Agents() {
         topicName="Agents"
         nextTopicId={null}
         nextTopicName={null}
-        nextStatus="available"
       />
     </TopicPageSplit>
   )

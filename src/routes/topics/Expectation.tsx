@@ -93,7 +93,6 @@ export function Expectation() {
         topicName="Expectation and variance"
         nextTopicId="distributions"
         nextTopicName="Distributions"
-        nextStatus="coming-soon"
       />
     </TopicPage>
   )

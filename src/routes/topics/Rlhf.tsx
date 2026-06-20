@@ -247,7 +247,6 @@ export function Rlhf() {
         topicName="RLHF"
         nextTopicId="diffusion"
         nextTopicName="Diffusion"
-        nextStatus="available"
       />
     </TopicPageSplit>
   )

@@ -245,7 +245,6 @@ export function Perceptron() {
         topicName="Perceptron"
         nextTopicId="backprop"
         nextTopicName="MLP / Backprop"
-        nextStatus="coming-soon"
       />
     </TopicPageSplit>
   )

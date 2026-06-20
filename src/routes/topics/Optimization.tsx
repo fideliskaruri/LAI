@@ -99,7 +99,6 @@ export function Optimization() {
         topicName="Optimization"
         nextTopicId="logistic-regression"
         nextTopicName="Logistic regression"
-        nextStatus="coming-soon"
       />
     </TopicPage>
   )

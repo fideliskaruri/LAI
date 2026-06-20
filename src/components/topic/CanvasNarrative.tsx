@@ -66,6 +66,13 @@ export const CanvasNarrative = forwardRef<CanvasNarrativeHandle, CanvasNarrative
     // Timer that clears the hold and then flushes any pending normal text.
     const holdTimerRef = useRef<number | null>(null)
 
+    // Keep pendingTextRef in sync with the latest text on every render, NOT
+    // inside an effect. If `flush()` runs synchronously after a prop change
+    // but before the effect fires, the effect-based version would read stale
+    // text. Refs may be written during render in React 19 so long as it does
+    // not drive a re-render of the same component.
+    pendingTextRef.current = text
+
     const clearDebounce = useCallback(() => {
       if (timerRef.current !== null) {
         clearTimeout(timerRef.current)
@@ -97,8 +104,6 @@ export const CanvasNarrative = forwardRef<CanvasNarrativeHandle, CanvasNarrative
     )
 
     useEffect(() => {
-      pendingTextRef.current = text
-
       if (priority === 'high') {
         // High-priority always fires immediately and cancels pending.
         clearDebounce()
