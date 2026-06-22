@@ -38,18 +38,24 @@ const CHAPTER_TOTAL = 26
  * deep-link hydration via useUrlHash (PLAN §3).
  */
 export function TopicPage({ topicId: _topicId, topicName, acts, canvas, children }: TopicPageProps) {
+  // Fullscreen overlay state. Declared first so we can pause useActState's
+  // scroll listener while the body-scroll lock is active — otherwise the
+  // position:fixed layout reflow snaps the scroll cursor to 0 and overwrites
+  // the user's manual act selection in the overlay.
+  const [fullscreen, setFullscreen] = useState(false)
+  const expandTriggerRef = useRef<HTMLButtonElement | null>(null)
+  const exitButtonRef = useRef<HTMLButtonElement | null>(null)
+
   const actIds = acts.map((a) => a.id)
-  const { currentActId, setCurrentActId, revalidate } = useActState({ actIds })
+  const { currentActId, setCurrentActId, revalidate } = useActState({
+    actIds,
+    enabled: !fullscreen,
+  })
   useUrlHash({ currentActId, actIds, setCurrentActId, revalidate })
 
   const currentActIndex = Math.max(0, acts.findIndex((a) => a.id === currentActId))
   const currentActNumber = currentActIndex + 1
   const currentAct = acts[currentActIndex]
-
-  // Fullscreen overlay state.
-  const [fullscreen, setFullscreen] = useState(false)
-  const expandTriggerRef = useRef<HTMLButtonElement | null>(null)
-  const exitButtonRef = useRef<HTMLButtonElement | null>(null)
 
   // iOS-safe body scroll lock that preserves and restores scroll position.
   // Replaces the naive `body.style.overflow = 'hidden'` which collapses body
@@ -218,7 +224,7 @@ export function TopicPage({ topicId: _topicId, topicName, acts, canvas, children
             type="button"
             onClick={() => setFullscreen(true)}
             aria-label="Expand canvas to fullscreen"
-            className="absolute top-4 right-4 z-10 inline-flex items-center justify-center w-9 h-9 rounded-sm text-dim hover:text-vermilion hover:bg-cream-deep transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion"
+            className="absolute top-[72px] right-4 z-10 inline-flex items-center justify-center w-9 h-9 rounded-sm text-dim hover:text-vermilion hover:bg-cream-deep transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion"
           >
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <polyline points="3 7 3 3 7 3" />

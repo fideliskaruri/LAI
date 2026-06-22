@@ -30,10 +30,12 @@ import { Recall } from './routes/Recall'
 import { TestMDX } from './routes/__test/TestMDX'
 import { SplitCanvasTest } from './routes/__test/SplitCanvasTest'
 import { NotFound } from './components/ui/NotFound'
+import { ScrollToTop } from './components/ScrollToTop'
 
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Hub />} />
         <Route path="/vectors" element={<Vectors />} />

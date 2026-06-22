@@ -59,8 +59,15 @@ export function TopicPageSplit({
   rightCanvas,
   children,
 }: TopicPageSplitProps) {
+  const [fullscreen, setFullscreen] = useState(false)
+  const expandTriggerRef = useRef<HTMLButtonElement | null>(null)
+  const exitButtonRef = useRef<HTMLButtonElement | null>(null)
+
   const actIds = acts.map((a) => a.id)
-  const { currentActId, setCurrentActId, revalidate } = useActState({ actIds })
+  const { currentActId, setCurrentActId, revalidate } = useActState({
+    actIds,
+    enabled: !fullscreen,
+  })
   useUrlHash({ currentActId, actIds, setCurrentActId, revalidate })
 
   // actStateMap: Map<actId, { left, right }>
@@ -108,10 +115,6 @@ export function TopicPageSplit({
       return map
     })
   }
-
-  const [fullscreen, setFullscreen] = useState(false)
-  const expandTriggerRef = useRef<HTMLButtonElement | null>(null)
-  const exitButtonRef = useRef<HTMLButtonElement | null>(null)
 
   // iOS-safe body scroll lock that preserves and restores scroll position.
   useScrollLock(fullscreen)
@@ -266,8 +269,8 @@ export function TopicPageSplit({
         </div>
       </header>
 
-      <div className="lg:grid lg:grid-cols-[62fr_38fr] lg:gap-0">
-        <div className="relative lg:sticky lg:top-0 lg:h-[100svh] lg:flex lg:flex-col lg:items-center lg:justify-center px-4 lg:px-6 py-12 lg:py-0">
+      <div className="md:grid md:grid-cols-[62fr_38fr] md:gap-0">
+        <div className="relative md:sticky md:top-0 md:h-[100svh] md:flex md:flex-col md:items-center md:justify-center px-4 md:px-6 py-12 md:py-0">
           {/* Expand-to-fullscreen affordance. Sits inside the canvas column so
               it follows the sticky region; vermilion on hover, dim at rest. */}
           <button
@@ -275,7 +278,7 @@ export function TopicPageSplit({
             type="button"
             onClick={() => setFullscreen(true)}
             aria-label="Expand canvases to fullscreen"
-            className="absolute top-4 right-4 z-10 inline-flex items-center justify-center w-9 h-9 rounded-sm text-dim hover:text-vermilion hover:bg-cream-deep transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion"
+            className="absolute top-[72px] right-4 z-10 inline-flex items-center justify-center w-9 h-9 rounded-sm text-dim hover:text-vermilion hover:bg-cream-deep transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion"
           >
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <polyline points="3 7 3 3 7 3" />
@@ -289,14 +292,14 @@ export function TopicPageSplit({
               preserves sticky-column dimensions while the overlay is up. */}
           {fullscreen ? (
             <div
-              className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-[920px]"
+              className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full max-w-[920px]"
               aria-hidden="true"
             >
               <div className="min-w-0 aspect-[5/4]" />
               <div className="min-w-0 aspect-[5/4]" />
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-[920px]">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full max-w-[920px]">
               <div className="min-w-0">
                 {leftCanvas({
                   state: currentState.left,
@@ -316,7 +319,7 @@ export function TopicPageSplit({
           {renderActDots('mt-6')}
         </div>
 
-        <main className="px-6 lg:px-12 pt-[14vh] pb-32">
+        <main className="px-6 md:px-12 pt-[14vh] pb-32">
           <div className="max-w-[580px]">{children}</div>
         </main>
       </div>

@@ -18,6 +18,13 @@ interface UseActStateOptions {
   actIds: string[]
   /** Position from top of viewport (0–1) used as the "current" cursor. PLAN §5.4 = 0.4 */
   threshold?: number
+  /**
+   * When false, the scroll listener is paused and `currentActId` only changes
+   * via explicit `setCurrentActId` calls. Used by the fullscreen overlay so
+   * body-scroll-lock layout reflows don't snap the act back to scrollY=0.
+   * Defaults to true.
+   */
+  enabled?: boolean
 }
 
 interface AnchorRange {
@@ -25,7 +32,7 @@ interface AnchorRange {
   bottom: number
 }
 
-export function useActState({ actIds, threshold = 0.4 }: UseActStateOptions) {
+export function useActState({ actIds, threshold = 0.4, enabled = true }: UseActStateOptions) {
   const [currentActId, setCurrentActId] = useState<string>(actIds[0] ?? '')
   const positionsRef = useRef<Map<string, AnchorRange>>(new Map())
   const rafRef = useRef<number | null>(null)
@@ -63,6 +70,11 @@ export function useActState({ actIds, threshold = 0.4 }: UseActStateOptions) {
   }, [recomputePositions, computeCurrentAct])
 
   useEffect(() => {
+    if (!enabled) {
+      // Paused: don't bind listeners and don't auto-recompute. The caller is
+      // driving `currentActId` manually (e.g. fullscreen overlay).
+      return
+    }
     // Initial measure
     recomputePositions()
     computeCurrentAct()
@@ -101,7 +113,7 @@ export function useActState({ actIds, threshold = 0.4 }: UseActStateOptions) {
       window.removeEventListener('orientationchange', invalidate)
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current)
     }
-  }, [recomputePositions, computeCurrentAct])
+  }, [enabled, recomputePositions, computeCurrentAct])
 
   return { currentActId, setCurrentActId, revalidate }
 }
