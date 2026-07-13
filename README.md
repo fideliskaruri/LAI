@@ -92,3 +92,4 @@ src/
 M2 = Functions and Derivatives. Specs at PLAN §7.2 and §7.3. They consume the existing `TopicPage` template (no new abstraction needed). Estimated 4–6 sessions per the §12 budget.
 
 The historical phase worktrees (`D:\code\learn-ai-phase-1` through `phase-9`) are still on disk as snapshots if you want to A/B against a specific phase. They're not needed for development — everything's at `master`.
+# LAI
